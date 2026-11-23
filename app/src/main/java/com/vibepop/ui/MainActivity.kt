@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
 
     private var currentThemeTargetAddress: String? = null
     private var detailSheet: BottomSheetDialog? = null
-    private var updateDownloadId = -1L
     private lateinit var detail: LayoutTabThemesBinding
     private var hasPromptedBluetoothDialog = false
     private var bluetoothReceiverRegistered = false
@@ -139,12 +138,6 @@ class MainActivity : AppCompatActivity() {
         setupDevicesTab()
         setupSettingsTab()
         observeViewModel()
-        androidx.core.content.ContextCompat.registerReceiver(
-            this,
-            downloadCompleteReceiver,
-            IntentFilter(android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE),
-            androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED
-        )
     }
 
     override fun onResume() {
@@ -716,13 +709,6 @@ class MainActivity : AppCompatActivity() {
         // 应用内更新
         settings.tvUpdateStatus.text = getString(R.string.update_current_version, BuildConfig.VERSION_NAME)
         settings.btnCheckUpdate.setOnClickListener { checkForUpdates() }
-        settings.btnOpenDownloads.setOnClickListener {
-            try {
-                startActivity(Intent(android.app.DownloadManager.ACTION_VIEW_DOWNLOADS))
-            } catch (e: Exception) {
-                Toast.makeText(this, getString(R.string.update_install_failed_open), Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     /**
@@ -1227,43 +1213,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Téléchargement vers le dossier public « Téléchargements » : l'APK y est
-     * visible, la notification permet de lancer l'installation, et un bouton
-     * ouvre le dossier si la notification ne fait rien.
+     * Téléchargement via le gestionnaire du système : l'APK arrive dans la barre de
+     * notifications, et c'est le système qui lance l'installation (l'app n'a donc pas
+     * besoin de la permission « installer des applications inconnues »).
      */
     private fun startUpdateDownload(info: UpdateChecker.UpdateInfo) {
         val settings = binding.tabSettingsLayout
         try {
-            val fileName = "VibePop-${info.versionName}.apk"
             val request = android.app.DownloadManager.Request(android.net.Uri.parse(info.apkUrl))
                 .setTitle("VibePop ${info.versionName}")
                 .setDescription(getString(R.string.update_download_notification))
                 .setMimeType("application/vnd.android.package-archive")
                 .setNotificationVisibility(android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                .setDestinationInExternalPublicDir(android.os.Environment.DIRECTORY_DOWNLOADS, fileName)
-                .setAllowedOverMetered(true)
-                .setAllowedOverRoaming(true)
+                .setDestinationInExternalFilesDir(
+                    this,
+                    android.os.Environment.DIRECTORY_DOWNLOADS,
+                    "VibePop-${info.versionName}.apk"
+                )
 
             val manager = getSystemService(android.app.DownloadManager::class.java)
-            updateDownloadId = manager?.enqueue(request) ?: -1L
+            manager?.enqueue(request)
 
             settings.tvUpdateStatus.text = getString(R.string.update_download_started)
-            settings.btnOpenDownloads.visibility = View.GONE
-            Toast.makeText(this, getString(R.string.update_download_started), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.update_download_started), Toast.LENGTH_LONG).show()
         } catch (e: Exception) {
             settings.tvUpdateStatus.text = getString(R.string.update_download_failed)
-        }
-    }
-
-    private val downloadCompleteReceiver = object : android.content.BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.action != android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE) return
-            if (updateDownloadId == -1L) return
-            val id = intent.getLongExtra(android.app.DownloadManager.EXTRA_DOWNLOAD_ID, -1L)
-            if (id != updateDownloadId) return
-            updateDownloadId = -1L
-            binding.tabSettingsLayout.tvUpdateStatus.text = getString(R.string.update_ready_to_install)
-            binding.tabSettingsLayout.btnOpenDownloads.visibility = View.VISIBLE
         }
     }
 }

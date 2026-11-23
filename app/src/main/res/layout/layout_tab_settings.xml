@@ -410,21 +410,6 @@
                     tools:text="Version actuelle : 1.1.2-fr.9" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnOpenDownloads"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/btn_open_downloads"
-                    android:textColor="@color/primary"
-                    android:textSize="12sp"
-                    android:visibility="gone"
-                    app:cornerRadius="19dp"
-                    app:strokeColor="@color/primary"
-                    tools:visibility="visible" />
-
-                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCheckUpdate"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"

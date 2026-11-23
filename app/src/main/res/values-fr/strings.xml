@@ -200,10 +200,7 @@
     <string name="update_available_title">Mise à jour disponible</string>
     <string name="update_available_message">La version %1$s est disponible (vous avez %2$s). La télécharger maintenant ?</string>
     <string name="update_download">Télécharger</string>
-    <string name="update_download_started">Téléchargement lancé…</string>
-    <string name="update_ready_to_install">APK prêt dans le dossier Téléchargements — touchez la notification pour installer</string>
-    <string name="btn_open_downloads">Ouvrir Téléchargements</string>
-    <string name="update_install_failed_open">Impossible d’ouvrir le dossier Téléchargements</string>
+    <string name="update_download_started">Téléchargement lancé — touchez la notification pour installer</string>
     <string name="update_download_notification">Téléchargement de la mise à jour VibePop</string>
     <string name="update_later">Plus tard</string>
     <string name="update_download_failed">Échec du téléchargement, vérifiez la connexion</string>
