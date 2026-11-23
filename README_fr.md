@@ -1,6 +1,6 @@
 # PK Bluetooth
 
-Version source **2026.11.19**
+Version source **2026.11.20**
 
 > Application Android qui affiche un popup personnalisé quand un appareil Bluetooth se connecte, enregistre ses niveaux de batterie réels et échange des fichiers entre vos appareils.
 > Construite sur [VibePop](https://github.com/daloyanf/vibepop), avec des styles de popup adaptés de [BudPop](https://github.com/AweSanjam/BudPop) et des fonctions batterie/partage inspirées de [btManage](https://github.com/fhnb16/btManage-android). Voir [les notices](THIRD_PARTY_NOTICES.md).
@@ -25,7 +25,7 @@ Ces aperçus reprennent les visuels intégrés et la mise en page réelle du pop
 | :---: | :---: | :---: |
 | ![Style Minimal : carte avec nom et batterie](store/gifs/style-minimal.gif) | ![Style Lovely : entrée animée dans une petite carte](store/gifs/style-lovely.gif) | ![Style Fanciest : entrée plein écran avant la carte](store/gifs/style-fanciest.gif) |
 
-Aperçus illustratifs des trois styles BudPop, reconstitués pour le web. Le rendu réel peut être prévisualisé dans l’application.
+Aperçus des trois styles, rendus depuis les vraies vues de l’application en mode sombre.
 
 ## Téléchargement et mises à jour
 

@@ -22,7 +22,8 @@ assert.ok((html.match(/class="popup-demo"/g) || []).length >= 5);
 assert.ok(html.includes('class="popup-name">AirPods Pro'));
 assert.ok(html.includes('class="popup-battery"'));
 assert.ok(html.includes('85%') && html.includes('--%'));
-assert.ok(html.includes('Aperçus web reconstitués'));
+assert.ok(html.includes('Aperçus du popup complet'));
+assert.ok(html.includes('rendus depuis les vraies vues'));
 
 function simulate(languages, stored, blocked = false, motion = null) {
   const buttons = ['fr', 'en'].map(lang => ({dataset:{language:lang}, attrs:{}, setAttribute(key, value){this.attrs[key] = value}, addEventListener(type, fn){this.click = fn}}));

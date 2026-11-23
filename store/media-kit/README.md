@@ -14,4 +14,15 @@
 
 - GIFs README : `store/gifs/popup-*.gif`, générés par `python3 scripts/generate-readme-gifs.py` (Pillow + ffmpeg, polices système macOS). Ils superposent nom, état et batterie au visuel intégré.
 
-- Styles : `store/gifs/style-*.gif`, générés par `python3 scripts/generate-style-previews.py` ; reconstitutions illustratives des entrées Minimal, Lovely et Fanciest.
+
+## Styles réels (rendu Android hors écran)
+
+Les GIFs `style-*.gif` sont produits depuis les vraies vues BudPop, rendues hors écran par `StyleFrameRenderer` (androidTest), puis encodées :
+
+```bash
+adb shell am instrument -w -e styleFrames true design.mondary.pkbluetooth.test/com.vibepop.qa.IntegrationRunner
+adb pull /sdcard/Android/data/design.mondary.pkbluetooth/files/style-frames /tmp/style-frames
+sh scripts/encode-style-gifs.sh /tmp/style-frames
+```
+
+Le rendu force le mode nuit pour rester cohérent avec la page. Aucun téléphone n'est piloté.

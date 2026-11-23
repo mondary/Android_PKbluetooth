@@ -6,7 +6,7 @@ Historique de Android_PKbluetooth et de sa base VibePop.
 
 ## TODO — Roadmap
 
-Statut : `2026.11.19` — styles d’animation présentés
+Statut : `2026.11.20` — styles rendus depuis l’app
 
 - [x] Mettre le média actif au premier plan du drawer
 - [x] Restaurer le choix lecture unique / boucle pour les vidéos
@@ -21,6 +21,11 @@ Statut : `2026.11.19` — styles d’animation présentés
 ---
 
 ## Releases
+
+## [2026.11.20] - 2026-11-23
+
+### Changed
+- Les aperçus Minimal, Lovely et Fanciest sont désormais rendus depuis les vraies vues BudPop (androidTest, hors écran, mode sombre), et non plus reconstitués en web.
 
 ## [2026.11.19] - 2026-11-23
 

@@ -11,8 +11,16 @@ import java.util.UUID
 
 /** adb shell am instrument -w design.mondary.pkbluetooth.test/com.vibepop.qa.IntegrationRunner */
 class IntegrationRunner : Instrumentation() {
-    override fun onCreate(arguments: Bundle?) { super.onCreate(arguments); start() }
+    private var args: Bundle? = null
+    override fun onCreate(arguments: Bundle?) { args = arguments; super.onCreate(arguments); start() }
     override fun onStart() {
+        if (args?.getString("styleFrames") == "true") {
+            val result = runCatching { runOnMainSync { StyleFrameRenderer.render(targetContext) } }
+            finish(if (result.isSuccess) Activity.RESULT_OK else Activity.RESULT_CANCELED, Bundle().apply {
+                putString("stream", result.exceptionOrNull()?.stackTraceToString() ?: "OK: style frames rendered")
+            })
+            return
+        }
         val result = runCatching { exchange() }
         finish(if (result.isSuccess) Activity.RESULT_OK else Activity.RESULT_CANCELED, Bundle().apply {
             putString("stream", result.exceptionOrNull()?.stackTraceToString() ?: "PASS: reciprocal TLS transfers, invitation/revocation, browser upload, session revocation.")
