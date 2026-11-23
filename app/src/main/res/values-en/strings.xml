@@ -145,13 +145,18 @@
     <string name="themes_title">🎨 Animation studio</string>
     <string name="themes_subtitle">Give each earbud its own animation</string>
     <string name="themes_target_label">Customising</string>
-    <string name="themes_section_hint">Animation played when the earbud connects</string>
+    <string name="themes_section_hint">Media played when the earbud connects</string>
     <string name="cd_preview_theme">Preview this animation</string>
     <string name="preview_need_media">Import a media file first</string>
+    <string name="btn_close_drawer">Close panel</string>
+    <string name="media_current_title">Current media</string>
+    <string name="media_default_active">Default animation · Tap to choose your media</string>
+    <string name="media_legacy_preset">Built-in visual active: %1$s</string>
+    <string name="media_change_action">Change</string>
 
-    <!-- Bundled demo visuals -->
-    <string name="demo_library_title">🧪 Demo visuals</string>
-    <string name="demo_library_hint">Tap one to apply it and see the popup right away</string>
+    <!-- Included visuals -->
+    <string name="media_library_title">Included visuals</string>
+    <string name="media_library_hint">Tap a visual to use it for this device</string>
     <string name="demo_airpods_white">White AirPods</string>
     <string name="demo_shokz">Shokz headset</string>
     <string name="demo_peugeot">Peugeot 3008</string>
@@ -168,8 +173,9 @@
     <string name="theme_import_section_desc">Supports MP4 video (with sound), animated GIF, WebP, PNG and JPG</string>
     <string name="btn_pick_media">🎬 Pick from the gallery</string>
     <string name="theme_video_rules_title">🎬 Video playback &amp; dismiss rules</string>
-    <string name="video_dismiss_on_complete">Close after playing once (recommended)</string>
-    <string name="video_dismiss_timer">Close on the countdown (loops until the timer ends)</string>
+    <string name="video_dismiss_on_complete">Play once, then close</string>
+    <string name="video_dismiss_timer">Loop until the timer ends</string>
+    <string name="video_loop_hint">The countdown uses the duration set in Global settings.</string>
 
     <!-- Devices screen -->
     <string name="devices_title">🎧 Devices</string>
@@ -203,6 +209,8 @@
     <string name="update_browser_opened">Download opened in your browser. Open the downloaded APK to install it.</string>
     <string name="update_open_failed">Could not open the download</string>
     <string name="update_later">Later</string>
+    <string name="support_kofi">Support on Ko-fi</string>
+    <string name="support_kofi_open_failed">Could not open Ko-fi</string>
     <string name="update_download_failed">Download failed, check your connection</string>
 
     <!-- Popup accessibility -->

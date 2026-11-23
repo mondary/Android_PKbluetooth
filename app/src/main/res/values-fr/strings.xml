@@ -145,13 +145,18 @@
     <string name="themes_title">🎨 Atelier</string>
     <string name="themes_subtitle">Donnez à chaque écouteur sa propre animation</string>
     <string name="themes_target_label">Personnaliser</string>
-    <string name="themes_section_hint">Animation jouée à la connexion de l’écouteur</string>
+    <string name="themes_section_hint">Média joué à la connexion de l’écouteur</string>
     <string name="cd_preview_theme">Aperçu de cette animation</string>
     <string name="preview_need_media">Importez d’abord un média</string>
+    <string name="btn_close_drawer">Fermer le panneau</string>
+    <string name="media_current_title">Média actuel</string>
+    <string name="media_default_active">Animation par défaut · Touchez pour choisir votre média</string>
+    <string name="media_legacy_preset">Visuel intégré actif : %1$s</string>
+    <string name="media_change_action">Changer</string>
 
-    <!-- Bibliothèque de démos -->
-    <string name="demo_library_title">🧪 Visuels de démo</string>
-    <string name="demo_library_hint">Touchez pour appliquer et voir le rendu tout de suite</string>
+    <!-- Visuels inclus -->
+    <string name="media_library_title">Visuels intégrés</string>
+    <string name="media_library_hint">Touchez un visuel pour l’utiliser sur cette cible</string>
     <string name="demo_airpods_white">AirPods blancs</string>
     <string name="demo_shokz">Shokz</string>
     <string name="demo_peugeot">Peugeot 3008</string>
@@ -168,8 +173,9 @@
     <string name="theme_import_section_desc">Prend en charge les vidéos MP4 (avec son), les GIF animés, WebP, PNG et JPG</string>
     <string name="btn_pick_media">🎬 Choisir un média</string>
     <string name="theme_video_rules_title">🎬 Lecture et fermeture des vidéos</string>
-    <string name="video_dismiss_on_complete">Fermer après une lecture (recommandé)</string>
-    <string name="video_dismiss_timer">Fermer à la fin du compte à rebours (lecture en boucle)</string>
+    <string name="video_dismiss_on_complete">Lire une fois, puis fermer</string>
+    <string name="video_dismiss_timer">Boucler jusqu’à la fin du délai</string>
+    <string name="video_loop_hint">Le délai du compte à rebours est celui des réglages globaux.</string>
 
     <!-- Écran Appareils -->
     <string name="devices_title">🎧 Appareils</string>
@@ -203,6 +209,8 @@
     <string name="update_browser_opened">Téléchargement ouvert dans le navigateur. Ouvrez le fichier APK téléchargé pour installer.</string>
     <string name="update_open_failed">Impossible d’ouvrir le téléchargement</string>
     <string name="update_later">Plus tard</string>
+    <string name="support_kofi">Soutenir sur Ko-fi</string>
+    <string name="support_kofi_open_failed">Impossible d’ouvrir Ko-fi</string>
     <string name="update_download_failed">Échec du téléchargement, vérifiez la connexion</string>
 
     <!-- Accessibilité du popup -->

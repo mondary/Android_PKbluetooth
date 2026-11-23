@@ -43,25 +43,37 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build signed release APK
-        env:
-          RUN_NUMBER: ${{ github.run_number }}
-        run: ./gradlew assembleRelease -PbuildNumber="$RUN_NUMBER" --no-daemon
+        id: build
+        run: |
+          VERSION_NAME="$(grep -m1 -oE '^### \[[0-9]{4}\.[0-9]{2}\.[0-9]+\]' CHANGELOG.md | sed -E 's/^### \[([0-9.]+)\]$/\1/')"
+          if [ -z "$VERSION_NAME" ]; then
+            echo "No CalVer release heading found in CHANGELOG.md" >&2
+            exit 1
+          fi
+          VERSION_CODE="$(python3 -c 'import sys; y, m, p = map(int, sys.argv[1].split(".")); print(y * 10000 + m * 100 + p)' "$VERSION_NAME")"
+          if [ "$VERSION_CODE" -gt 2100000000 ]; then
+            echo "Android versionCode exceeds the platform limit: $VERSION_CODE" >&2
+            exit 1
+          fi
+          echo "VERSION_NAME=$VERSION_NAME" >> "$GITHUB_ENV"
+          echo "VERSION_CODE=$VERSION_CODE" >> "$GITHUB_ENV"
+          echo "version_name=$VERSION_NAME" >> "$GITHUB_OUTPUT"
+          echo "version_code=$VERSION_CODE" >> "$GITHUB_OUTPUT"
+          ./gradlew assembleRelease --no-daemon
 
       - name: Build update.json
         env:
-          RUN_NUMBER: ${{ github.run_number }}
           COMMIT_MSG: ${{ github.event.head_commit.message }}
         run: |
           cp app/build/outputs/apk/release/app-release.apk VibePop-fr.apk
           python3 - <<'PY'
           import hashlib, json, os
-          run = int(os.environ["RUN_NUMBER"])
           with open("VibePop-fr.apk", "rb") as fh:
               digest = hashlib.sha256(fh.read()).hexdigest()
           lines = [line for line in (os.environ.get("COMMIT_MSG") or "").splitlines() if line.strip()]
           data = {
-              "versionCode": 1000000 + run,
-              "versionName": f"1.1.2-fr.{run}",
+              "versionCode": int(os.environ["VERSION_CODE"]),
+              "versionName": os.environ["VERSION_NAME"],
               "apkUrl": "https://github.com/mondary/vibepop/releases/latest/download/VibePop-fr.apk",
               "sha256": digest,
               "notes": lines[0][:200] if lines else "Build automatique",
@@ -75,7 +87,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: fr.${{ github.run_number }}
-          name: VibePop FR — 1.1.2-fr.${{ github.run_number }}
+          name: VibePop FR — ${{ steps.build.outputs.version_name }}
           target_commitish: ${{ github.sha }}
           body: |
             Build automatique du commit ${{ github.sha }} (branche `fr-live`).
