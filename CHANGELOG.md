@@ -6,7 +6,7 @@ Historique de Android_PKbluetooth et de sa base VibePop.
 
 ## TODO — Roadmap
 
-Statut : `2026.11.13` — centrage de l’icône Android
+Statut : `2026.11.14` — page promotionnelle et aperçus de popups
 
 - [x] Mettre le média actif au premier plan du drawer
 - [x] Restaurer le choix lecture unique / boucle pour les vidéos
@@ -21,6 +21,16 @@ Statut : `2026.11.13` — centrage de l’icône Android
 ---
 
 ## Releases
+
+## [2026.11.14] - 2026-11-23
+
+### Added
+- Page de présentation FR/EN avec téléchargement de l’APK signé et soutien Ko-fi.
+- Présentation des quatre visuels animés intégrés et des trois styles de popup.
+
+### Changed
+- Les médias sont montrés dans une reconstitution du popup complet, avec nom, état de connexion et batterie d’exemple.
+- Lecture animée des aperçus visibles, avec pause hors écran et respect de la réduction des animations.
 
 ## [2026.11.13] - 2026-11-23
 
