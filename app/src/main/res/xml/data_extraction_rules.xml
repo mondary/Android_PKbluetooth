@@ -3,8 +3,11 @@
 <data-extraction-rules>
     <cloud-backup>
         <exclude domain="sharedpref" path="."/>
+        <exclude domain="database" path="battery_history.db"/>
+        <exclude domain="file" path="pk-inbox/"/>
     </cloud-backup>
     <device-transfer>
         <include domain="sharedpref" path="."/>
+        <exclude domain="sharedpref" path="pk-peer-v1.xml"/>
     </device-transfer>
 </data-extraction-rules>

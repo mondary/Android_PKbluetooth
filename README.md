@@ -1,44 +1,57 @@
-# VibePop — fork français
+# PKbluetooth
 
-![Icône VibePop](icon.png)
+> Android app that shows a custom popup when a Bluetooth device connects, records its real battery levels and exchanges files between your devices.
+> Built on [VibePop](https://github.com/daloyanf/vibepop), with popup styles adapted from [BudPop](https://github.com/AweSanjam/BudPop) and battery/sharing features inspired by [btManage](https://github.com/fhnb16/btManage-android). See [third-party notices](THIRD_PARTY_NOTICES.md).
 
-[🇫🇷 Français](README.md) · [🇬🇧 English](README_en.md) · [🇨🇳 中文](README_zh.md)
+![App icon](icon.png)
 
-[![Version FR](https://img.shields.io/badge/FR%20fork-2026.11.1-blue.svg)](https://github.com/mondary/vibepop/releases/latest)
-[![Version amont](https://img.shields.io/badge/Amont-1.1.2-blue.svg)](https://github.com/daloyanf/vibepop/releases/tag/v1.1.2)
-[![Licence MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[🇬🇧 English](README.md) · [🇫🇷 Français](README_fr.md) · [🇨🇳 中文](README_zh.md)
 
-VibePop affiche un popup personnalisable quand un écouteur Bluetooth sélectionné se connecte. Cette branche `fr-live` ajoute une interface française et permet d’attribuer un média différent à chaque appareil.
+PKbluetooth is an independent app (`design.mondary.pkbluetooth`): it installs next to VibePop, and neither updates the other. The popup appears when a whitelisted device connects, on the lock screen too; each device can have its own media, name and duration.
 
-## Médias et lecture
+## Popup and media
 
-- Le drawer met le média actif au premier plan et permet de le remplacer depuis le sélecteur Android.
-- Des visuels intégrés restent disponibles en un geste.
-- Les vidéos peuvent être lues une fois puis fermer le popup, ou boucler jusqu’à la fin du compte à rebours.
-- La durée du popup et la sortie audio se règlent dans les options globales.
+- The drawer centers on the active media; replace it from the Android picker, or keep an included visual.
+- Videos play once and close the popup, or loop until the countdown ends.
+- Three BudPop card styles — bare, lovely, fanciest — with nine device families (earbuds, headphones, speakers, soundbars, keyboards, mice, car adapters, game controllers, other), drawn live in Kotlin. The family is detected from the device, or forced per device.
+- Everything is a preview away: the test button plays the current target's exact configuration.
 
-## Installation
+## Battery
 
-Téléchargez le [dernier APK français](https://github.com/mondary/vibepop/releases/latest/download/VibePop-fr.apk), puis ouvrez le fichier téléchargé sur Android.
+- Only levels really reported by the device are recorded, in a local SQLite store, deduplicated, kept 30 days.
+- The history lists the last 500 readings, per device or overall, with a 24-hour chart; it can be shared as text.
+- Devices that report nothing through Android are read through the standard GATT Battery Service (and Huami bands through their own characteristic).
+- A home-screen widget shows the latest level of up to four devices.
 
-- Android 8.0 (API 26) ou plus récent.
-- Activez les permissions Bluetooth, notifications et superposition demandées par l’application.
+## Sharing
 
-## Build et tests
+- **Browser sharing**: a page served on the local network; any device with the link can take the offered files and send files or text back. Plain HTTP on a network you trust, protected by a random key, revoked when you stop.
+- **PKbluetooth to PKbluetooth**: two installations find each other on the local network, pair once with a six-digit code, then exchange files and text both ways. Every connection is mutually authenticated with a per-installation key that never leaves the Android Keystore; a forgotten peer can never connect again.
+- Received items land in a private inbox, opened or forwarded with Android's own share menu.
 
-Prérequis : JDK 17 et Android SDK.
+## Build and test
+
+JDK 17 and an Android SDK.
 
 ```bash
-./gradlew test
-./gradlew assembleDebug
+./gradlew test assembleDebug
 ```
 
-Consultez le [CHANGELOG](CHANGELOG.md) pour l’historique complet. Les notes du projet amont sont conservées dans [README_zh.md](README_zh.md).
+No release channel exists yet; updates are disabled in the app until there is one. The end-to-end sharing checks run on a device or emulator:
 
-## Soutenir
+```bash
+./gradlew assembleDebugAndroidTest
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+adb install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+adb shell am instrument -w design.mondary.pkbluetooth.test/com.vibepop.qa.IntegrationRunner
+```
 
-[❤️ Soutenir ce projet sur Ko-fi](https://ko-fi.com/pouark)
+See [CHANGELOG.md](CHANGELOG.md) for version history and [README_zh.md](README_zh.md) for the upstream project notes.
 
-## Licence
+## Support
+
+[❤️ Support this project on Ko-fi](https://ko-fi.com/pouark)
+
+## License
 
 [MIT](LICENSE)

@@ -1,5 +1,13 @@
 <resources>
-    <string name="app_name">VibePop</string>
+    <string name="credits_title">Crédits et licences</string>
+    <string name="credits_body">Basé sur VibePop : https://github.com/daloyanf/vibepop\nTrajectoire de vol adaptée de BudPop : https://github.com/AweSanjam/BudPop\nHistorique et partage inspirés par btManage : https://github.com/fhnb16/btManage-android</string>
+    <string name="share_file">Partager un fichier</string>
+    <string name="bud_flight">BudPop · Bibliothèque d’animations</string>
+    <string name="history_title">Historique de batterie</string>
+    <string name="history_empty">Aucune mesure de batterie reçue pour le moment.</string>
+    <string name="history_share">Partager l’historique</string>
+    <string name="app_name">PKbluetooth</string>
+    <string name="updates_unavailable">Les mises à jour PKbluetooth ne sont pas encore configurées.</string>
     <string name="service_notification_title">Service de popup écouteurs actif</string>
     <string name="service_notification_desc">Surveillance de la connexion de vos écouteurs sélectionnés</string>
 

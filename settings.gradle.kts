@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "VibePop"
+rootProject.name = "PKbluetooth"
 include(":app")

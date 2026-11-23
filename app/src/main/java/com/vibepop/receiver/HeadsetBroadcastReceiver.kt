@@ -12,6 +12,7 @@ import android.util.Log
 import com.vibepop.R
 import com.vibepop.data.model.DeviceBatteryState
 import com.vibepop.data.repository.PreferencesRepository
+import com.vibepop.data.repository.BatteryHistory
 import com.vibepop.overlay.PopupWindowManager
 import com.vibepop.ui.PopupActivity
 
@@ -24,10 +25,12 @@ class HeadsetBroadcastReceiver : BroadcastReceiver() {
         private const val TAG = "HeadsetReceiver"
         const val ACTION_BATTERY_LEVEL_CHANGED = "android.bluetooth.device.action.BATTERY_LEVEL_CHANGED"
         const val EXTRA_BATTERY_LEVEL = "android.bluetooth.device.extra.BATTERY_LEVEL"
+        private val historyExecutor = java.util.concurrent.Executors.newSingleThreadExecutor()
     }
 
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.action ?: return
+        if (!PreferencesRepository(context).getPopupConfig().isServiceEnabled) return
         val device: BluetoothDevice? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE, BluetoothDevice::class.java)
         } else {
@@ -46,7 +49,7 @@ class HeadsetBroadcastReceiver : BroadcastReceiver() {
             }
 
             ACTION_BATTERY_LEVEL_CHANGED -> {
-                handleBatteryLevelChanged(intent, device)
+                handleBatteryLevelChanged(context, intent, device)
             }
 
             BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED,
@@ -70,13 +73,27 @@ class HeadsetBroadcastReceiver : BroadcastReceiver() {
      * 设备已连接期间周期上报电量：仅刷新正在显示的弹窗电量徽标，
      * 不重新弹出弹窗，避免用户已连接时反复被打扰
      */
-    private fun handleBatteryLevelChanged(intent: Intent, device: BluetoothDevice?) {
+    private fun handleBatteryLevelChanged(context: Context, intent: Intent, device: BluetoothDevice?) {
         val deviceAddress = try { device?.address ?: "" } catch (e: Exception) { "" }
         if (deviceAddress.isBlank()) {
             Log.d(TAG, "Battery level changed but device address missing, ignoring")
             return
         }
         val level = getRealBatteryLevel(intent, device)
+        val name = try { device?.name ?: context.getString(R.string.device_name_fallback) } catch (_: SecurityException) { context.getString(R.string.device_name_fallback) }
+        if (level in 0..100) {
+            val pending = goAsync()
+            val appContext = context.applicationContext
+            historyExecutor.execute {
+                try {
+                    BatteryHistory(appContext).use { it.record(deviceAddress, name, level) }
+                } catch (e: Exception) {
+                    Log.w(TAG, "Unable to record battery history", e)
+                } finally {
+                    pending.finish()
+                }
+            }
+        }
         Log.d(TAG, "Battery level updated: $deviceAddress -> $level")
         PopupWindowManager.updateBatteryIfShowing(deviceAddress, level)
         PopupActivity.updateBatteryIfShowing(deviceAddress, level)
@@ -139,6 +156,14 @@ class HeadsetBroadcastReceiver : BroadcastReceiver() {
 
         // 读取硬件上报的真实电量
         val realBattery = getRealBatteryLevel(intent, device)
+        if (realBattery in 0..100 && deviceAddress.isNotBlank()) {
+            val pending = goAsync()
+            val app = context.applicationContext
+            historyExecutor.execute {
+                try { BatteryHistory(app).use { it.record(deviceAddress, popupDeviceName, realBattery) } }
+                finally { pending.finish() }
+            }
+        }
 
         val batteryState = DeviceBatteryState(
             deviceName = popupDeviceName,
@@ -171,4 +196,3 @@ class HeadsetBroadcastReceiver : BroadcastReceiver() {
         return -1
     }
 }
-

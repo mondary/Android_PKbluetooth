@@ -41,7 +41,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.vibepop"
+        applicationId = "design.mondary.pkbluetooth"
         minSdk = 26
         targetSdk = 34
         // Le changelog est la source de vérité du fork FR. Le buildNumber reste
@@ -63,7 +63,7 @@ android {
         versionCode = releaseVersionCode ?: calVerCode ?: buildNumber?.let { 1_000_000 + it } ?: 4
         versionName = releaseVersion ?: buildNumber?.let { "1.1.2-fr.$it" } ?: "1.1.2"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.vibepop.qa.IntegrationRunner"
         vectorDrawables {
             useSupportLibrary = true
         }

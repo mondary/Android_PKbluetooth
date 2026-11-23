@@ -26,21 +26,9 @@ object UpdateChecker {
 
     /** 读取发布清单，网络或格式错误时返回 null */
     fun fetchLatest(): UpdateInfo? {
-        val body = httpGetText(MANIFEST_URL) ?: return null
-        return try {
-            val json = JSONObject(body)
-            val apkUrl = json.optString("apkUrl")
-            if (apkUrl.isBlank()) return null
-            UpdateInfo(
-                versionCode = json.optInt("versionCode", 0),
-                versionName = json.optString("versionName"),
-                apkUrl = apkUrl,
-                sha256 = json.optString("sha256"),
-                notes = json.optString("notes")
-            )
-        } catch (e: Exception) {
-            null
-        }
+        // The inherited feed belongs to VibePop and must not update this separate app.
+        // Enable update checks only when PKbluetooth has its own release channel.
+        return null
     }
 
     private fun httpGetText(url: String): String? {

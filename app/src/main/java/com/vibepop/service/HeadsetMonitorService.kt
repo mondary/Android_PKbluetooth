@@ -34,6 +34,7 @@ class HeadsetMonitorService : Service() {
 
         fun start(context: Context) {
             try {
+                if (!com.vibepop.data.repository.PreferencesRepository(context).getPopupConfig().isServiceEnabled) return
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !PermissionHelper.hasBluetoothPermission(context)) {
                     Log.w(TAG, "Bluetooth permission not granted yet, skip starting FGS")
                     return
@@ -60,12 +61,33 @@ class HeadsetMonitorService : Service() {
     }
 
     private var headsetReceiver: HeadsetBroadcastReceiver? = null
+    private val handler = android.os.Handler(android.os.Looper.getMainLooper())
+    private val gattReader by lazy { GattBattery(this) { addr, percent, _ ->
+        val adapter = getSystemService(android.bluetooth.BluetoothManager::class.java)?.adapter
+        val name = runCatching { adapter?.getRemoteDevice(addr)?.name }.getOrNull() ?: addr
+        com.vibepop.data.repository.BatteryHistory(this).use { it.record(addr, name, percent) }
+        handler.post {
+            com.vibepop.overlay.PopupWindowManager.updateBatteryIfShowing(addr, percent)
+            com.vibepop.ui.PopupActivity.updateBatteryIfShowing(addr, percent)
+        }
+    } }
+    private val readGatt = object : Runnable {
+        override fun run() {
+            runCatching {
+                val manager = getSystemService(android.bluetooth.BluetoothManager::class.java)
+                val devices = manager?.getConnectedDevices(android.bluetooth.BluetoothProfile.GATT).orEmpty()
+                gattReader.poll(devices.filter { it.bondState == BluetoothDevice.BOND_BONDED })
+            }
+            handler.postDelayed(this, 60_000)
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "HeadsetMonitorService onCreate")
         startAsForeground()
         registerHeadsetReceiver()
+        handler.post(readGatt)
         isServiceRunning = true
     }
 
@@ -80,6 +102,8 @@ class HeadsetMonitorService : Service() {
         super.onDestroy()
         Log.d(TAG, "HeadsetMonitorService onDestroy")
         unregisterHeadsetReceiver()
+        handler.removeCallbacksAndMessages(null)
+        gattReader.close()
         isServiceRunning = false
     }
 
