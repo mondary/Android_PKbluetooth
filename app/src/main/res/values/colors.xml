@@ -5,13 +5,13 @@
     <color name="primary_dark">#0066CC</color>
     <color name="accent">#30D158</color>
 
-    <!-- Backgrounds (全局暗黑调色板) -->
+    <!-- Dark background palette -->
     <color name="bg_app">#0D1117</color>
     <color name="bg_card_dark">#161B22</color>
     <color name="bg_popup_card">#161B22</color>
     <color name="bg_popup_card_dark">#12161D</color>
 
-    <!-- Text Colors (全暗黑高对比文字) -->
+    <!-- High-contrast text colors -->
     <color name="text_primary">#FFFFFF</color>
     <color name="text_secondary">#8B949E</color>
     <color name="text_popup_title">#FFFFFF</color>

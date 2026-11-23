@@ -16,9 +16,8 @@ import android.view.TextureView
 import java.io.File
 
 /**
- * 极速、全比例、上下左右 100% 满铺居中 (Center Crop) 的 TextureView 视频播放器。
- * 针对各类机型（高通/联发科/麒麟/Exynos）做了尺寸变更时序与解码缓冲区自适应优化，
- * 确保任何比例视频（横屏 16:9、竖屏 9:16、4:3、超宽画幅）均能严丝合缝铺满容器，绝无黑边。
+ * TextureView video player that center-crops any aspect ratio to fill its container.
+ * Handles resize timing and decoder buffer changes across common Android chipsets.
  */
 class FillVideoView @JvmOverloads constructor(
     context: Context,
@@ -137,8 +136,7 @@ class FillVideoView @JvmOverloads constructor(
     }
 
     /**
-     * 严丝合缝满铺居中 (Center Crop) 纹理矩阵计算：
-     * 自动叠加持久化黑边裁切区域，保证有效内容 100% 满铺容器，彻底消灭黑边。
+     * Compute the center-crop texture matrix, including any stored black-border crop.
      */
     fun applyCenterCropTransform() {
         mainHandler.post {
@@ -168,7 +166,7 @@ class FillVideoView @JvmOverloads constructor(
             val activeVidWidth = vVidWidth * effectiveWidthRatio
             val activeVidHeight = vVidHeight * effectiveHeightRatio
 
-            // 计算缩放比例：以有效内容区域铺满容器为准（上下左右全贴合）
+            // Scale the effective picture area to fill the container.
             val scaleX = vWidth / activeVidWidth
             val scaleY = vHeight / activeVidHeight
             val maxScale = maxOf(scaleX, scaleY)
@@ -176,7 +174,7 @@ class FillVideoView @JvmOverloads constructor(
             val scaledWidth = vVidWidth * maxScale
             val scaledHeight = vVidHeight * maxScale
 
-            // 算出中心点偏移（如果黑边不对称，将有效内容几何中心对齐容器中心）
+            // Center the effective picture area when its borders are asymmetric.
             val contentCenterXRatio = (cLeft + cRight) / 2f
             val contentCenterYRatio = (cTop + cBottom) / 2f
             val shiftX = (contentCenterXRatio - 0.5f) * scaledWidth

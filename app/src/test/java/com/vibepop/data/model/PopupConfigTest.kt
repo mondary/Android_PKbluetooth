@@ -6,7 +6,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * 弹窗配置消退策略辅助方法的单元测试
+ * Unit tests for popup dismissal configuration.
  */
 class PopupConfigTest {
 

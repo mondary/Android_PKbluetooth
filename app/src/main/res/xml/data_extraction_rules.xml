@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 云端备份排除本地偏好（含耳机 MAC 白名单）；设备间迁移保留本机偏好 -->
+<!-- Exclude local preferences from cloud backup; preserve them for device transfers. -->
 <data-extraction-rules>
     <cloud-backup>
         <exclude domain="sharedpref" path="."/>

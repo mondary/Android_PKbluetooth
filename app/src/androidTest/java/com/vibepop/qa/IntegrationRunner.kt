@@ -23,7 +23,7 @@ class IntegrationRunner : Instrumentation() {
         val marker = UUID.randomUUID().toString()
         val root = File(ctx.filesDir,"pk-inbox")
         val binary = ByteArray(100_003) { (it * 17).toByte() }
-        val message = "$marker Bonjour 🌱\n第二行"
+        val message = "$marker Bonjour 🌱\nDeuxième ligne"
         val aName = "qa-peer-a"; val bName = "qa-peer-b"
         for (name in listOf(aName,bName)) ctx.getSharedPreferences(name,0).edit().clear().commit()
         try {

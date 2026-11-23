@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat
 object PermissionHelper {
 
     /**
-     * 是否具有悬浮窗权限 (SYSTEM_ALERT_WINDOW)
+     * Whether the display-over-other-apps permission is granted.
      */
     fun hasOverlayPermission(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -25,7 +25,7 @@ object PermissionHelper {
     }
 
     /**
-     * 跳转至悬浮窗授权设置页面
+     * Open the overlay permission settings.
      */
     fun requestOverlayPermission(activity: Activity, requestCode: Int = 1001) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -38,7 +38,7 @@ object PermissionHelper {
     }
 
     /**
-     * 是否具有蓝牙相关权限 (Android 12+ 需要 BLUETOOTH_CONNECT)
+     * Whether the Bluetooth permission is granted (BLUETOOTH_CONNECT on Android 12+).
      */
     fun hasBluetoothPermission(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -52,7 +52,7 @@ object PermissionHelper {
     }
 
     /**
-     * 手机系统蓝牙是否处于开启状态
+     * Whether Bluetooth is enabled.
      */
     fun isBluetoothEnabled(context: Context): Boolean {
         return try {
@@ -66,7 +66,7 @@ object PermissionHelper {
     }
 
     /**
-     * 调起系统原生弹窗快速开启蓝牙或跳转至蓝牙设置
+     * Prompt to enable Bluetooth, or open Bluetooth settings.
      */
     fun promptEnableBluetooth(activity: Activity) {
         try {
@@ -83,7 +83,7 @@ object PermissionHelper {
     }
 
     /**
-     * 请求蓝牙运行时权限
+     * Request the Bluetooth runtime permission.
      */
     fun requestBluetoothPermission(activity: Activity, requestCode: Int = 1002) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -96,7 +96,7 @@ object PermissionHelper {
     }
 
     /**
-     * 是否具有通知权限 (Android 13+ 需要 POST_NOTIFICATIONS)
+     * Whether notification permission is granted (POST_NOTIFICATIONS on Android 13+).
      */
     fun hasNotificationPermission(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -110,7 +110,7 @@ object PermissionHelper {
     }
 
     /**
-     * 请求通知权限
+     * Request notification permission.
      */
     fun requestNotificationPermission(activity: Activity, requestCode: Int = 1003) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -123,7 +123,7 @@ object PermissionHelper {
     }
 
     /**
-     * 是否具有相册/多媒体读取权限
+     * Whether media read permission is granted.
      */
     fun hasMediaPermission(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -145,7 +145,7 @@ object PermissionHelper {
     }
 
     /**
-     * 请求相册/多媒体读取权限
+     * Request media read permission.
      */
     fun requestMediaPermission(activity: Activity, requestCode: Int = 1004) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -167,7 +167,7 @@ object PermissionHelper {
     }
 
     /**
-     * 检查小米/HyperOS/华为等厂商的锁屏显示与后台弹出权限状态
+     * Check manufacturer-specific lock-screen and background popup permissions.
      */
     fun hasOemLockScreenPermission(context: Context): Boolean {
         val isXiaomi = Build.MANUFACTURER.equals("Xiaomi", ignoreCase = true) ||
@@ -184,8 +184,8 @@ object PermissionHelper {
                     Int::class.javaPrimitiveType,
                     String::class.java
                 )
-                val opShowWhenLocked = 10020 // MIUI 锁屏显示
-                val opBackgroundStart = 10021 // MIUI 后台弹出界面
+                val opShowWhenLocked = 10020 // MIUI lock-screen display.
+                val opBackgroundStart = 10021 // MIUI background popup.
                 val result1 = method.invoke(appOps, opShowWhenLocked, android.os.Process.myUid(), context.packageName) as Int
                 val result2 = method.invoke(appOps, opBackgroundStart, android.os.Process.myUid(), context.packageName) as Int
                 result1 == android.app.AppOpsManager.MODE_ALLOWED && result2 == android.app.AppOpsManager.MODE_ALLOWED
@@ -206,16 +206,16 @@ object PermissionHelper {
             }
         }
 
-        // 其他设备，默认跟随悬浮窗权限
+        // Other manufacturers follow the overlay permission.
         return hasOverlayPermission(context)
     }
 
     /**
-     * 打开系统应用详情或厂商特定权限管理页（支持小米/HyperOS/华为/OPPO/vivo 锁屏显示与后台弹出）
+     * Open app details or the manufacturer permission page.
      */
     fun openAppDetailsOrOemSettings(activity: Activity) {
         try {
-            // 小米 / MIUI / HyperOS 权限管理页
+            // Xiaomi / MIUI / HyperOS permission editor.
             val miuiIntent = Intent("miui.intent.action.APP_PERM_EDITOR").apply {
                 setClassName("com.miui.securitycenter", "com.miui.permcenter.permissions.PermissionsEditorActivity")
                 putExtra("extra_pkgname", activity.packageName)

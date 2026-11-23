@@ -10,19 +10,17 @@ import android.util.Log
 import java.io.File
 
 /**
- * 视频黑边智能检测工具：
- * 在相册导入视频时在后台单次提取首帧缩略图，扫描上下左右黑边区域，
- * 返回有效画面的归一化比例矩形 RectF(leftRatio, topRatio, rightRatio, bottomRatio)。
- * 如果没有黑边，返回标准的 RectF(0f, 0f, 1f, 1f)。
+ * Detect black borders in imported videos from a single sampled frame.
+ * Returns the normalized content rectangle, or RectF(0f, 0f, 1f, 1f) when there is no border.
  */
 object VideoCropDetector {
 
     private const val TAG = "VideoCropDetector"
 
-    // 亮度阈值：低于此值（0-255）判定为黑边像素（考虑到微弱噪点/压缩失真，设为 18）
+    // Luminance threshold (0-255) below which a pixel counts as a black border.
     private const val BLACK_LUMINANCE_THRESHOLD = 18
 
-    // 样本缩放尺寸（160x90 即可在 <2ms 内完成整张图遍历）
+    // Sample size: 160x90 is enough to scan the whole frame in under 2 ms.
     private const val SAMPLE_WIDTH = 160
     private const val SAMPLE_HEIGHT = 90
 
@@ -75,7 +73,7 @@ object VideoCropDetector {
         val h = sample.height
         if (w <= 0 || h <= 0) return RectF(0f, 0f, 1f, 1f)
 
-        // 提取像素数据
+        // Read pixel data.
         val pixels = IntArray(w * h)
         sample.getPixels(pixels, 0, w, 0, 0, w, h)
         if (sample !== rawBitmap) {
@@ -83,7 +81,7 @@ object VideoCropDetector {
         }
         rawBitmap.recycle()
 
-        // 1. 扫描左边缘
+        // 1. Scan the left edge.
         var left = 0
         for (x in 0 until w / 3) {
             if (isColumnNonBlack(pixels, w, h, x)) {
@@ -92,7 +90,7 @@ object VideoCropDetector {
             }
         }
 
-        // 2. 扫描右边缘
+        // 2. Scan the right edge.
         var right = w - 1
         for (x in w - 1 downTo (w * 2 / 3)) {
             if (isColumnNonBlack(pixels, w, h, x)) {
@@ -101,7 +99,7 @@ object VideoCropDetector {
             }
         }
 
-        // 3. 扫描顶边缘
+        // 3. Scan the top edge.
         var top = 0
         for (y in 0 until h / 3) {
             if (isRowNonBlack(pixels, w, y)) {
@@ -110,7 +108,7 @@ object VideoCropDetector {
             }
         }
 
-        // 4. 扫描底边缘
+        // 4. Scan the bottom edge.
         var bottom = h - 1
         for (y in h - 1 downTo (h * 2 / 3)) {
             if (isRowNonBlack(pixels, w, y)) {
@@ -124,7 +122,7 @@ object VideoCropDetector {
         val topRatio = (top.toFloat() / h).coerceIn(0f, 0.4f)
         val bottomRatio = ((bottom + 1).toFloat() / h).coerceIn(0.6f, 1f)
 
-        // 如果裁切过小（例如只有 2% 边缘像素误判），视为无黑边
+        // Treat negligible crops (under 2%) as no border.
         val finalLeft = if (leftRatio < 0.02f) 0f else leftRatio
         val finalRight = if (rightRatio > 0.98f) 1f else rightRatio
         val finalTop = if (topRatio < 0.02f) 0f else topRatio
@@ -135,7 +133,7 @@ object VideoCropDetector {
 
     private fun isColumnNonBlack(pixels: IntArray, w: Int, h: Int, x: Int): Boolean {
         var nonBlackCount = 0
-        // 跳过上下 10% 避免角标/水印干扰
+        // Skip the outer 10% to ignore watermarks or overlays.
         val startY = (h * 0.1f).toInt()
         val endY = (h * 0.9f).toInt()
         val total = endY - startY
@@ -149,7 +147,7 @@ object VideoCropDetector {
                 nonBlackCount++
             }
         }
-        // 如果一列中有超过 15% 的像素非黑，则认定该列属于画面内容
+        // A column belongs to the picture when more than 15% of its pixels are not black.
         return nonBlackCount.toFloat() / total > 0.15f
     }
 

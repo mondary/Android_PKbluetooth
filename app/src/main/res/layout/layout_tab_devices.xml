@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <!-- 页面标题 -->
+        <!-- Page title -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
             android:textColor="@color/text_secondary"
             android:textSize="12sp" />
 
-        <!-- 权限 / 服务异常提示条 -->
+        <!-- Permission and service warning -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardPermissionWarning"
             android:layout_width="match_parent"
@@ -92,7 +92,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 全局默认配置入口 -->
+        <!-- Default configuration -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -160,7 +160,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 已配对设备列表 -->
+        <!-- Paired devices -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -217,7 +217,7 @@
                 app:iconTint="@color/primary" />
         </LinearLayout>
 
-        <!-- 已配对设备动态列表容器 -->
+        <!-- Paired device list container -->
         <LinearLayout
             android:id="@+id/layoutBondedDevicesContainer"
             android:layout_width="match_parent"

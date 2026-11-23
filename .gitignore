@@ -27,7 +27,6 @@ keystore.properties
 Thumbs.db
 *.log
 
-# 根目录测试音视频大文件
+# Large test media at the repository root
 /*.mp4
 /*.webm
-

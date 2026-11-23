@@ -44,6 +44,9 @@ android {
         applicationId = "design.mondary.pkbluetooth"
         minSdk = 26
         targetSdk = 34
+        // Ship only the maintained languages; dependency locales are stripped.
+        resourceConfigurations += listOf("en", "fr")
+
         // Le changelog est la source de vérité du fork FR. Le buildNumber reste
         // accepté pour reproduire d'anciens builds de CI.
         val buildNumber = (project.findProperty("buildNumber") as String?)?.toIntOrNull()

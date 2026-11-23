@@ -4,8 +4,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /**
- * 媒体导入类型识别的单元测试：
- * 仅 MP4/WebM 视为视频，MKV 等 MediaPlayer 不可播放的容器应被拒绝导入
+ * Unit tests for media type detection: accept MP4/WebM and reject unsupported video containers.
  */
 class MediaTypeDetectionTest {
 

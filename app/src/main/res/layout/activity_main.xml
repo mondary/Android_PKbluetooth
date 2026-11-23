@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg_app">
 
-    <!-- 主内容区域 (4个独立 Tab 面板) -->
+    <!-- Main content panels -->
     <FrameLayout
         android:id="@+id/contentContainer"
         android:layout_width="0dp"
@@ -26,7 +26,7 @@
 
     </FrameLayout>
 
-    <!-- 现代底部导航栏 -->
+    <!-- Bottom navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"

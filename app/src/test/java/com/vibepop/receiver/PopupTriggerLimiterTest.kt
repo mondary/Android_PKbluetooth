@@ -6,7 +6,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * 弹窗触发节流与防抖控制器的单元测试
+ * Unit tests for popup trigger throttling and debounce.
  */
 class PopupTriggerLimiterTest {
 

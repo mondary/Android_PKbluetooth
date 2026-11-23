@@ -23,7 +23,7 @@ class VibePopApp : Application() {
         instance = this
         createNotificationChannel()
 
-        // 默认若开启服务则自动拉起前台保活监听
+        // Start the foreground monitor when it is enabled.
         val config = PreferencesRepository(this).getPopupConfig()
         if (config.isServiceEnabled) {
             try {

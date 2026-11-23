@@ -5,9 +5,8 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 /**
- * 应用内更新：
- * 从 GitHub Releases 的 latest 标签读取 update.json 并比较 versionCode。
- * APK 下载与安装交给系统浏览器/安装器处理。仅用于 PK 分支的构建。
+ * Fetch the latest GitHub release manifest and compare its version code.
+ * The browser and system installer handle APK downloads and installation.
  */
 object UpdateChecker {
 
@@ -24,7 +23,7 @@ object UpdateChecker {
         val notes: String
     )
 
-    /** 读取发布清单，网络或格式错误时返回 null */
+    /** Return the release manifest, or null on network or format errors. */
     fun fetchLatest(): UpdateInfo? {
         val text = httpGetText(MANIFEST_URL) ?: return null
         return try {

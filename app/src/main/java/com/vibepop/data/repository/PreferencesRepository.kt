@@ -26,7 +26,7 @@ class PreferencesRepository(context: Context) {
         private const val KEY_CROP_RIGHT = "key_crop_right"
         private const val KEY_CROP_BOTTOM = "key_crop_bottom"
 
-        // 耳机专属独立配置键前缀
+        // Per-device configuration key prefixes.
         private const val PREFIX_DEV_NAME = "key_dev_name_"
         private const val PREFIX_DEV_THEME = "key_dev_theme_"
         private const val PREFIX_DEV_MEDIA_PATH = "key_dev_media_path_"
@@ -39,7 +39,7 @@ class PreferencesRepository(context: Context) {
     }
 
     /**
-     * 全局默认弹窗配置
+     * Global default popup configuration.
      */
     fun getPopupConfig(): PopupConfig {
         return PopupConfig(
@@ -61,7 +61,7 @@ class PreferencesRepository(context: Context) {
     }
 
     /**
-     * 获取指定耳机（按 MAC 地址）的专属弹窗配置
+     * Retrieve the popup configuration for a device by MAC address.
      */
     fun getDevicePopupConfig(deviceAddress: String): PopupConfig {
         val globalConfig = getPopupConfig()
@@ -92,7 +92,7 @@ class PreferencesRepository(context: Context) {
     }
 
     /**
-     * 保存指定耳机的专属弹窗配置
+     * Save a device-specific popup configuration.
      */
     fun saveDevicePopupConfig(deviceAddress: String, config: PopupConfig) {
         if (deviceAddress.isBlank()) return
@@ -141,8 +141,7 @@ class PreferencesRepository(context: Context) {
     }
 
     /**
-     * 弹窗响应策略变更（默认全不响应）的一次性升级提示。
-     * 仅在旧版本已有配置数据（升级用户）时返回 true；全新安装直接标记已提示。
+     * Show the target-policy change once to existing users; fresh installs need no notice.
      */
     fun consumeTargetPolicyNotice(): Boolean {
         if (prefs.getBoolean(KEY_TARGET_POLICY_NOTICED, false)) return false
@@ -197,4 +196,3 @@ class PreferencesRepository(context: Context) {
         prefs.edit().putStringSet(KEY_TARGET_DEVICES, HashSet(addresses)).apply()
     }
 }
-

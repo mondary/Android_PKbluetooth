@@ -17,7 +17,7 @@ import com.vibepop.overlay.PopupWindowManager
 import com.vibepop.ui.PopupActivity
 
 /**
- * 蓝牙广播接收器：监听耳机连接事件与真实电量更新并触发拟真弹窗
+ * Listens for Bluetooth connections and battery updates to trigger the popup.
  */
 class HeadsetBroadcastReceiver : BroadcastReceiver() {
 
@@ -70,8 +70,7 @@ class HeadsetBroadcastReceiver : BroadcastReceiver() {
     }
 
     /**
-     * 设备已连接期间周期上报电量：仅刷新正在显示的弹窗电量徽标，
-     * 不重新弹出弹窗，避免用户已连接时反复被打扰
+     * Refresh the badge on battery updates without opening another popup.
      */
     private fun handleBatteryLevelChanged(context: Context, intent: Intent, device: BluetoothDevice?) {
         val deviceAddress = try { device?.address ?: "" } catch (e: Exception) { "" }
@@ -100,7 +99,7 @@ class HeadsetBroadcastReceiver : BroadcastReceiver() {
     }
 
     private fun handleDeviceConnected(context: Context, intent: Intent, device: BluetoothDevice?) {
-        // 防抖检查 (3秒)
+        // Debounce repeated triggers.
         if (!PopupTriggerLimiter.canTrigger()) {
             Log.d(TAG, "Debounce limit reached, skipping popup trigger")
             return
@@ -109,7 +108,7 @@ class HeadsetBroadcastReceiver : BroadcastReceiver() {
         val prefsRepo = PreferencesRepository(context)
         val globalConfig = prefsRepo.getPopupConfig()
 
-        // 尊重监听服务开关：服务关闭后清单静态接收器仍可能收到 ACL 广播，此时一律不触发弹窗
+        // Respect the monitoring switch; static receivers may still get ACL broadcasts.
         if (!globalConfig.isServiceEnabled) {
             Log.d(TAG, "Monitor service disabled, skipping popup trigger")
             return
@@ -132,7 +131,7 @@ class HeadsetBroadcastReceiver : BroadcastReceiver() {
 
         Log.d(TAG, "Checking device: $rawDeviceName, address: $deviceAddress vs targets: ${globalConfig.targetDeviceAddresses}")
 
-        // 耳机过滤策略：默认全不响应。只有用户在白名单中主动勾选了该设备，才响应弹窗
+        // Ignore devices by default; only enabled devices trigger a popup.
         if (globalConfig.targetDeviceAddresses.isEmpty()) {
             Log.d(TAG, "No target devices configured in whitelist (default ignore all), skipping popup trigger")
             return
@@ -148,13 +147,13 @@ class HeadsetBroadcastReceiver : BroadcastReceiver() {
             return
         }
 
-        // 读取该耳机的专属独立弹窗配置
+        // Read the device-specific popup configuration.
         val deviceConfig = prefsRepo.getDevicePopupConfig(deviceAddress)
         val popupDeviceName = if (deviceConfig.customDeviceName.isNotBlank()) deviceConfig.customDeviceName else rawDeviceName
 
         Log.d(TAG, "Triggering popup for connected headset: $popupDeviceName ($deviceAddress), theme: ${deviceConfig.animationTheme}")
 
-        // 读取硬件上报的真实电量
+        // Read the battery level reported by the device.
         val realBattery = getRealBatteryLevel(intent, device)
         if (realBattery in 0..100 && deviceAddress.isNotBlank()) {
             val pending = goAsync()
@@ -177,20 +176,20 @@ class HeadsetBroadcastReceiver : BroadcastReceiver() {
     }
 
     private fun getRealBatteryLevel(intent: Intent, device: BluetoothDevice?): Int {
-        // 1. 尝试从广播 Intent Extra 中提取系统/驱动上报的电量
+        // 1. Read the battery level from the broadcast extras.
         val levelFromIntent = intent.getIntExtra(EXTRA_BATTERY_LEVEL, -1)
         if (levelFromIntent in 0..100) {
             return levelFromIntent
         }
 
         if (device != null) {
-            // 2. 通过反射调用底层 BluetoothDevice.getBatteryLevel() 硬件上报接口
+            // 2. Try the hidden BluetoothDevice.getBatteryLevel() method.
             try {
                 val method = device.javaClass.getMethod("getBatteryLevel")
                 val level = method.invoke(device) as? Int
                 if (level != null && level in 0..100) return level
             } catch (e: Exception) {
-                // 忽略底层反射异常或不支持电量上报的设备
+                // Ignore failures when the device does not report a level.
             }
         }
         return -1

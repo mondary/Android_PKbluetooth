@@ -4,7 +4,7 @@ import android.os.Handler
 import android.os.Looper
 
 /**
- * 弹窗自动消退计时调度器
+ * Schedules automatic popup dismissal.
  */
 class PopupAutoDismissManager(
     private val dismissDelayMillis: Long,
