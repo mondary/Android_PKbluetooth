@@ -1,4 +1,4 @@
-# Chrome_PKbluetooth
+# Android_PKbluetooth
 
 > Application Android qui affiche un popup personnalisé quand un appareil Bluetooth se connecte, enregistre ses niveaux de batterie réels et échange des fichiers entre vos appareils.
 > Construite sur [VibePop](https://github.com/daloyanf/vibepop), avec des styles de popup adaptés de [BudPop](https://github.com/AweSanjam/BudPop) et des fonctions batterie/partage inspirées de [btManage](https://github.com/fhnb16/btManage-android). Voir [les notices](THIRD_PARTY_NOTICES.md).
@@ -7,11 +7,11 @@
 
 [🇬🇧 English](README.md) · [🇫🇷 Français](README_fr.md) · [🇨🇳 中文](README_zh.md)
 
-Chrome_PKbluetooth est une application indépendante (`design.mondary.pkbluetooth`) : elle s'installe à côté de VibePop, et aucune des deux ne met l'autre à jour. Le popup apparaît à la connexion d'un appareil listé en liste blanche, y compris sur l'écran de verrouillé ; chaque appareil peut avoir son média, son nom et sa durée.
+Android_PKbluetooth est une application indépendante (`design.mondary.pkbluetooth`) : elle s'installe à côté de VibePop, et aucune des deux ne met l'autre à jour. Le popup apparaît à la connexion d'un appareil listé en liste blanche, y compris sur l'écran de verrouillé ; chaque appareil peut avoir son média, son nom et sa durée.
 
 ## Téléchargement et mises à jour
 
-- [Télécharger le dernier APK signé](https://github.com/mondary/Chrome_PKbluetooth/releases/latest/download/Chrome_PKbluetooth.apk).
+- [Télécharger le dernier APK signé](https://github.com/mondary/Android_PKbluetooth/releases/latest/download/Android_PKbluetooth.apk).
 - Depuis l'app : Réglages → Mises à jour → **VÉRIFIER**. Si une nouvelle version est disponible, l'app ouvre le téléchargement de l'APK signé ; Android demande de confirmer l'installation. L'installation n'est pas silencieuse.
 - Toutes les versions utilisent la même clé privée de signature : les mises à jour s'installent sur cette version. Gardez la clé secrète et ne désinstallez pas l'app pour la mettre à jour.
 
@@ -32,7 +32,7 @@ Chrome_PKbluetooth est une application indépendante (`design.mondary.pkbluetoot
 ## Partage
 
 - **Partage navigateur** : une page servie sur le réseau local ; tout appareil disposant du lien peut récupérer les fichiers proposés et renvoyer fichiers ou texte. HTTP en clair sur un réseau de confiance, protégé par une clé aléatoire, révoquée à l'arrêt.
-- **Chrome_PKbluetooth vers Chrome_PKbluetooth** : deux installations se découvrent sur le réseau local, s'appairent une fois par un code à six chiffres, puis échangent fichiers et texte dans les deux sens. Chaque connexion est authentifiée mutuellement par une clé propre à l'installation qui ne quitte jamais le Keystore Android ; un pair oublié ne peut plus se reconnecter.
+- **Android_PKbluetooth vers Android_PKbluetooth** : deux installations se découvrent sur le réseau local, s'appairent une fois par un code à six chiffres, puis échangent fichiers et texte dans les deux sens. Chaque connexion est authentifiée mutuellement par une clé propre à l'installation qui ne quitte jamais le Keystore Android ; un pair oublié ne peut plus se reconnecter.
 - Les éléments reçus arrivent dans une boîte de réception privée, ouverts ou transférés via le menu de partage Android.
 
 ## Build et tests

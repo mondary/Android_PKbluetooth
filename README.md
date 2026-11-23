@@ -1,4 +1,4 @@
-# Chrome_PKbluetooth
+# Android_PKbluetooth
 
 > Android app that shows a custom popup when a Bluetooth device connects, records its real battery levels and exchanges files between your devices.
 > Built on [VibePop](https://github.com/daloyanf/vibepop), with popup styles adapted from [BudPop](https://github.com/AweSanjam/BudPop) and battery/sharing features inspired by [btManage](https://github.com/fhnb16/btManage-android). See [third-party notices](THIRD_PARTY_NOTICES.md).
@@ -7,11 +7,11 @@
 
 [🇬🇧 English](README.md) · [🇫🇷 Français](README_fr.md) · [🇨🇳 中文](README_zh.md)
 
-Chrome_PKbluetooth is an independent app (`design.mondary.pkbluetooth`): it installs next to VibePop, and neither updates the other. The popup appears when a whitelisted device connects, on the lock screen too; each device can have its own media, name and duration.
+Android_PKbluetooth is an independent app (`design.mondary.pkbluetooth`): it installs next to VibePop, and neither updates the other. The popup appears when a whitelisted device connects, on the lock screen too; each device can have its own media, name and duration.
 
 ## Download and updates
 
-- [Download the latest signed APK](https://github.com/mondary/Chrome_PKbluetooth/releases/latest/download/Chrome_PKbluetooth.apk).
+- [Download the latest signed APK](https://github.com/mondary/Android_PKbluetooth/releases/latest/download/Android_PKbluetooth.apk).
 - To check from the app: Settings → App updates → **CHECK**. When a newer version is found, the app opens the signed APK download; Android's package installer asks you to confirm installation. Updates are not installed silently.
 - Release signing uses the same private key for every version, so updates install over this release. Keep the key private and do not uninstall the app to update it.
 
@@ -32,7 +32,7 @@ Chrome_PKbluetooth is an independent app (`design.mondary.pkbluetooth`): it inst
 ## Sharing
 
 - **Browser sharing**: a page served on the local network; any device with the link can take the offered files and send files or text back. Plain HTTP on a network you trust, protected by a random key, revoked when you stop.
-- **Chrome_PKbluetooth to Chrome_PKbluetooth**: two installations find each other on the local network, pair once with a six-digit code, then exchange files and text both ways. Every connection is mutually authenticated with a per-installation key that never leaves the Android Keystore; a forgotten peer can never connect again.
+- **Android_PKbluetooth to Android_PKbluetooth**: two installations find each other on the local network, pair once with a six-digit code, then exchange files and text both ways. Every connection is mutually authenticated with a per-installation key that never leaves the Android Keystore; a forgotten peer can never connect again.
 - Received items land in a private inbox, opened or forwarded with Android's own share menu.
 
 ## Build and test

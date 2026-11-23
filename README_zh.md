@@ -1,4 +1,4 @@
-# Chrome_PKbluetooth（VibePop 血统）
+# Android_PKbluetooth（VibePop 血统）
 
 > 蓝牙设备连接时显示自定义弹窗、记录真实电量并在设备之间传输文件的 Android 应用。
 > 基于 [VibePop](https://github.com/daloyanf/vibepop) 构建，弹窗样式改编自 [BudPop](https://github.com/AweSanjam/BudPop)，电量与分享功能受 [btManage](https://github.com/fhnb16/btManage-android) 启发。详见[第三方声明](THIRD_PARTY_NOTICES.md)。
@@ -7,9 +7,9 @@
 
 [🇬🇧 English](README.md) · [🇫🇷 Français](README_fr.md) · [🇨🇳 中文](README_zh.md)
 
-Chrome_PKbluetooth 是独立应用（`design.mondary.pkbluetooth`）：可与 VibePop 并存安装，互不更新。除本节外，以下为上游 VibePop 项目说明。
+Android_PKbluetooth 是独立应用（`design.mondary.pkbluetooth`）：可与 VibePop 并存安装，互不更新。除本节外，以下为上游 VibePop 项目说明。
 
-Chrome_PKbluetooth 最新签名 APK：[下载](https://github.com/mondary/Chrome_PKbluetooth/releases/latest/download/Chrome_PKbluetooth.apk)。应用内可在设置中点击「检查更新」；有新版本时会打开 APK 下载，再由 Android 安装器确认安装。更新不静默进行，所有版本使用同一签名密钥。
+Android_PKbluetooth 最新签名 APK：[下载](https://github.com/mondary/Android_PKbluetooth/releases/latest/download/Android_PKbluetooth.apk)。应用内可在设置中点击「检查更新」；有新版本时会打开 APK 下载，再由 Android 安装器确认安装。更新不静默进行，所有版本使用同一签名密钥。
 
 ---
 

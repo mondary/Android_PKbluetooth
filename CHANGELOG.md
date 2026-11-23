@@ -1,6 +1,6 @@
 # Changelog
 
-Historique de Chrome_PKbluetooth et de sa base VibePop.
+Historique de Android_PKbluetooth et de sa base VibePop.
 
 ---
 
@@ -15,6 +15,11 @@ Statut : `2026.11.1` — simplification de la configuration des médias
 
 ## Releases
 
+### [2026.11.6] - 2026-11-23
+
+- Correction du nom du produit : Android_PKbluetooth (nom affiché, dépôt et URL de téléchargement).
+- Liens de mise à jour et publication alignés sur `mondary/Android_PKbluetooth`.
+
 ### [2026.11.5] - 2026-11-23
 
 - Publication de l'APK signé et du manifeste de mise à jour à URL stable ; vérification intégrée, téléchargement dans le navigateur et confirmation par l'installeur Android.
@@ -23,7 +28,7 @@ Statut : `2026.11.1` — simplification de la configuration des médias
 
 ### [2026.11.4] - 2026-11-23
 
-- Renommage du produit en Chrome_PKbluetooth (nom affiché, page de partage, découverte réseau).
+- Renommage du produit en Android_PKbluetooth (nom affiché, page de partage, découverte réseau).
 - Canal de mises à jour sur GitHub Releases ; le bouton « Vérifier » des réglages est réactivé (téléchargement et installation délégués au navigateur/installeur Android).
 
 ### [2026.11.3] - 2026-11-23

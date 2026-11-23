@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PKbluetooth"
+rootProject.name = "Android_PKbluetooth"
 include(":app")
