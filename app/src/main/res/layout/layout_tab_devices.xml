@@ -148,7 +148,7 @@
                         android:layout_marginTop="2dp"
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp"
-                        tools:text="Thème : AirPods Pro" />
+                        tools:text="Par défaut · Animation : AirPods Pro" />
                 </LinearLayout>
 
                 <ImageView
@@ -164,11 +164,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="16dp"
             android:text="@string/devices_paired_title"
             android:textColor="@color/text_primary"
             android:textSize="14sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="@string/devices_paired_hint"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp" />
 
         <TextView
             android:id="@+id/tvEnabledDevicesSummary"

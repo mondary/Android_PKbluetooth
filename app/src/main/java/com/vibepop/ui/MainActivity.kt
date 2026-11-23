@@ -264,10 +264,9 @@ class MainActivity : AppCompatActivity() {
     private fun openDetail(address: String?) {
         ensureDetailSheet()
         currentThemeTargetAddress = address
-        detail.btnDeviceHistory.visibility = if (address == null) View.GONE else View.VISIBLE
-        detail.btnDeviceHistory.setText(R.string.detail_history_action)
-        detail.cardDeviceHistory.visibility = View.GONE
-        detail.btnDeviceHistory.setOnClickListener { toggleDeviceHistory(address) }
+        detail.cardDeviceData.visibility = if (address == null) View.GONE else View.VISIBLE
+        detail.deviceHistoryContent.visibility = View.GONE
+        detail.ivDeviceHistoryChevron.rotation = 0f
 
         detail.tvDetailTitle.text = if (address == null) {
             getString(R.string.theme_target_global_plain)
@@ -312,8 +311,9 @@ class MainActivity : AppCompatActivity() {
         // Service de surveillance (onglet Réglages)
         binding.tabSettingsLayout.switchService.setOnChangeListenerForService()
 
-        // Entrée « Réglages globaux »
+        // Accès rapide au profil par défaut depuis Appareils et Réglages.
         binding.tabDevicesLayout.rowGlobalSettings.setOnClickListener { openDetail(null) }
+        binding.tabSettingsLayout.rowGlobalSettings.setOnClickListener { openDetail(null) }
 
         // Bandeau permissions
         binding.tabDevicesLayout.cardPermissionWarning.setOnClickListener {
@@ -366,6 +366,15 @@ class MainActivity : AppCompatActivity() {
         // Sélection d'un média : la carte entière et son action ouvrent le sélecteur.
         themes.cardCurrentMedia.setOnClickListener { requestMediaAndPick() }
         themes.btnChooseCurrentMedia.setOnClickListener { requestMediaAndPick() }
+
+        // Données et partage propres à l'appareil
+        themes.rowDeviceHistory.setOnClickListener {
+            currentThemeTargetAddress?.let { toggleDeviceHistory(it) }
+        }
+        themes.rowDeviceShareFile.setOnClickListener { shareFilePicker.launch("*/*") }
+        themes.rowDeviceLanShare.setOnClickListener {
+            startActivity(Intent(this, com.vibepop.share.ShareActivity::class.java))
+        }
 
         // Sortie haut-parleur (option globale)
         themes.switchForceSpeakerphone.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -794,22 +803,6 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setupSettingsTab() {
         val settings = binding.tabSettingsLayout
-        settings.rowBatteryHistory.setOnClickListener {
-            val expand = settings.settingsHistoryContent.visibility != View.VISIBLE
-            settings.settingsHistoryContent.visibility = if (expand) View.VISIBLE else View.GONE
-            if (expand) {
-                loadBatteryHistory(
-                    address = null,
-                    summary = settings.tvSettingsHistoryContent,
-                    chartHost = settings.settingsHistoryChartHost,
-                    shareButton = settings.btnShareSettingsHistory
-                )
-            }
-        }
-        settings.rowShareFile.setOnClickListener { shareFilePicker.launch("*/*") }
-        settings.rowLanShare.setOnClickListener {
-            startActivity(Intent(this, com.vibepop.share.ShareActivity::class.java))
-        }
         settings.rowCredits.setOnClickListener {
             val expand = settings.settingsCreditsContent.visibility != View.VISIBLE
             settings.settingsCreditsContent.visibility = if (expand) View.VISIBLE else View.GONE
@@ -876,11 +869,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun toggleDeviceHistory(address: String?) {
-        val expand = detail.cardDeviceHistory.visibility != View.VISIBLE
-        detail.cardDeviceHistory.visibility = if (expand) View.VISIBLE else View.GONE
-        detail.btnDeviceHistory.setText(
-            if (expand) R.string.history_hide_action else R.string.detail_history_action
-        )
+        val expand = detail.deviceHistoryContent.visibility != View.VISIBLE
+        detail.deviceHistoryContent.visibility = if (expand) View.VISIBLE else View.GONE
+        detail.ivDeviceHistoryChevron.rotation = if (expand) 90f else 0f
         if (expand) {
             loadBatteryHistory(
                 address = address,
@@ -980,10 +971,17 @@ class MainActivity : AppCompatActivity() {
 
         // 弹窗参数配置
         viewModel.popupConfig.observe(this) { config ->
-            binding.tabDevicesLayout.tvGlobalThemeSummary.text =
-                getString(R.string.devices_global_summary, themeLabel(config.animationTheme))
+            val summary = getString(R.string.devices_global_summary, themeLabel(config.animationTheme))
+            binding.tabDevicesLayout.tvGlobalThemeSummary.text = summary
+            binding.tabSettingsLayout.tvGlobalThemeSummary.text = summary
             applyTargetThumb(
                 binding.tabDevicesLayout.ivGlobalThemeThumb,
+                config.animationTheme,
+                config.customMediaType,
+                config.customMediaPath
+            )
+            applyTargetThumb(
+                binding.tabSettingsLayout.ivGlobalThemeThumb,
                 config.animationTheme,
                 config.customMediaType,
                 config.customMediaPath

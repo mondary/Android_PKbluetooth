@@ -19,15 +19,15 @@ Android_PKbluetooth is an independent app (`design.mondary.pkbluetooth`): it ins
 
 - The drawer centers on the active media; replace it from the Android picker, or keep an included visual.
 - The studio separates **Visual** and **Animation** tabs. Browse each BudPop device family and play its animated preview inline before applying it.
-- Rename a device and expand its battery history in the same panel; history and credits also expand directly in Settings.
+- Rename a device, expand its battery history and reach file/Wi‑Fi sharing in the same device panel; Settings also exposes **Other Bluetooth device** as the default profile, and credits and licences stay at the bottom.
 - Videos play once and close the popup, or loop until the countdown ends.
-- Three BudPop card styles — bare, lovely, fanciest — with nine device families (earbuds, headphones, speakers, soundbars, keyboards, mice, car adapters, game controllers, other), drawn live in Kotlin. The family is detected from the device, or forced per device.
+- Three BudPop card styles — bare, lovely, fanciest — with nine device families (earbuds, headphones, speakers, soundbars, keyboards, mice, car adapters, game controllers, generic), drawn live in Kotlin. The family is detected from the device, or forced per device.
 - The test button still plays the current target's exact popup configuration.
 
 ## Battery
 
 - Only levels really reported by the device are recorded, in a local SQLite store, deduplicated, kept 30 days.
-- The history lists the last 500 readings, per device or overall, with a 24-hour chart; it can be shared as text.
+- The history lists the last 500 readings for the selected device, with a 24-hour chart; it can be shared as text.
 - Devices that report nothing through Android are read through the standard GATT Battery Service (and Huami bands through their own characteristic).
 - A home-screen widget shows the latest level of up to four devices.
 
