@@ -1,5 +1,5 @@
 <resources>
-    <string name="peer_title">Nearby Android_PKbluetooth devices</string>
+    <string name="peer_title">Nearby PK Bluetooth devices</string>
     <string name="peer_hint">Open this screen on both phones on the same Wi-Fi. On one phone create an invitation; on the other, select it below and enter its code. Both phones can then send files or text. Leave this screen to stop receiving.</string>
     <string name="peer_error">Could not complete the exchange. Check the address, invitation and receiving phone.</string>
     <string name="peer_invite">Show pairing code (2 minutes)</string>

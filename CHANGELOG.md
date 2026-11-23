@@ -6,7 +6,7 @@ Historique de Android_PKbluetooth et de sa base VibePop.
 
 ## TODO — Roadmap
 
-Statut : `2026.11.9` — nom du paquet Android corrigé
+Statut : `2026.11.11` — nom et icône Android
 
 - [x] Mettre le média actif au premier plan du drawer
 - [x] Restaurer le choix lecture unique / boucle pour les vidéos
@@ -21,6 +21,17 @@ Statut : `2026.11.9` — nom du paquet Android corrigé
 ---
 
 ## Releases
+
+### [2026.11.11] - 2026-11-23
+
+- Le nom affiché sur Android devient « PK Bluetooth » ; le nom du dépôt reste inchangé.
+- Icône Android adaptée avec un fond bleu plein, sans contour de sticker.
+
+### [2026.11.10] - 2026-11-23
+
+- La fiche s’ouvre sur l’animation ou le visuel réellement actif ; les visuels intégrés sélectionnés sont entourés et le fichier importé est indiqué.
+- L’historique batterie est affiché directement dans chaque fiche ; le profil général est nommé « Appareil par défaut ».
+- Correction de l’interrupteur de surveillance pour prendre en compte les changements même sans état tactile pressé.
 
 ### [2026.11.9] - 2026-11-23
 

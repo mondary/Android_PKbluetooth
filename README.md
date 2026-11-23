@@ -1,4 +1,4 @@
-# Android_PKbluetooth
+# PK Bluetooth
 
 > Android app that shows a custom popup when a Bluetooth device connects, records its real battery levels and exchanges files between your devices.
 > Built on [VibePop](https://github.com/daloyanf/vibepop), with popup styles adapted from [BudPop](https://github.com/AweSanjam/BudPop) and battery/sharing features inspired by [btManage](https://github.com/fhnb16/btManage-android). See [third-party notices](THIRD_PARTY_NOTICES.md).
@@ -7,7 +7,7 @@
 
 [🇬🇧 English](README.md) · [🇫🇷 Français](README_fr.md) · [🇨🇳 中文](README_zh.md)
 
-Android_PKbluetooth is an independent app (`design.mondary.pkbluetooth`): it installs next to VibePop, and neither updates the other. The popup appears when a whitelisted device connects, on the lock screen too; each device can have its own media, name and duration.
+PK Bluetooth is an independent app (`design.mondary.pkbluetooth`): it installs next to VibePop, and neither updates the other. The popup appears when a whitelisted device connects, on the lock screen too; each device can have its own media, name and duration.
 
 ## Download and updates
 
@@ -17,9 +17,9 @@ Android_PKbluetooth is an independent app (`design.mondary.pkbluetooth`): it ins
 
 ## Popup and media
 
-- The drawer centers on the active media; replace it from the Android picker, or keep an included visual.
+- The device panel opens on the active visual or animation; the selected included visual is outlined and Browse opens Android files.
 - The studio separates **Visual** and **Animation** tabs. Browse each BudPop device family and play its animated preview inline before applying it.
-- Rename a device, expand its battery history and reach file/Wi‑Fi sharing in the same device panel; Settings also exposes **Other Bluetooth device** as the default profile, and credits and licences stay at the bottom.
+- Battery history is visible in each device panel; Settings offers a **Default device** profile and credits and licences at the bottom. File/Wi‑Fi sharing opens general tools and does not automatically target the selected Bluetooth device.
 - Videos play once and close the popup, or loop until the countdown ends.
 - Three BudPop card styles — bare, lovely, fanciest — with nine device families (earbuds, headphones, speakers, soundbars, keyboards, mice, car adapters, game controllers, generic), drawn live in Kotlin. The family is detected from the device, or forced per device.
 - The test button still plays the current target's exact popup configuration.

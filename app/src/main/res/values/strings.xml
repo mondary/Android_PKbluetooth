@@ -6,9 +6,9 @@
     <string name="history_title">Battery history</string>
     <string name="history_empty">No battery readings have been received yet.</string>
     <string name="history_share">Share history</string>
-    <string name="app_name">Android_PKbluetooth</string>
+    <string name="app_name">PK Bluetooth</string>
     <string name="update_ready_to_check">检查更新以获取新版本。</string>
-    <string name="updates_unavailable">Updates are not configured for Android_PKbluetooth yet.</string>
+    <string name="updates_unavailable">Updates are not configured for PK Bluetooth yet.</string>
     <string name="service_notification_title">蓝牙耳机弹窗服务运行中</string>
     <string name="service_notification_desc">正在后台监听已勾选耳机的连接状态</string>
 
@@ -73,12 +73,12 @@
     <string name="bt_granted_on_toast">蓝牙已授权且处于开启状态</string>
     <string name="bt_enable_button">开启蓝牙</string>
     <string name="bt_not_enabled_title">📡 手机蓝牙未开启</string>
-    <string name="bt_not_enabled_message">检测到系统蓝牙处于关闭状态。开启蓝牙后，VibePop 才能在耳机连接时自动触发个性化弹窗。</string>
+    <string name="bt_not_enabled_message">检测到系统蓝牙处于关闭状态。开启蓝牙后，PK Bluetooth 才能在耳机连接时自动触发个性化弹窗。</string>
     <string name="bt_later">稍后开启</string>
 
     <!-- 弹窗响应策略变更提示 -->
     <string name="target_policy_notice_title">🔔 弹窗响应策略已更新</string>
-    <string name="target_policy_notice_message">为了更精准的体验，VibePop 现在默认不会响应任何耳机。请前往「设备管理」勾选需要触发弹窗的耳机，并可为每个耳机单独定制专属动效。</string>
+    <string name="target_policy_notice_message">为了更精准的体验，PK Bluetooth 现在默认不会响应任何耳机。请前往「设备管理」勾选需要触发弹窗的耳机，并可为每个耳机单独定制专属动效。</string>
     <string name="target_policy_notice_go">去设备管理</string>
     <string name="target_policy_notice_later">知道了</string>
 
@@ -110,7 +110,7 @@
 
     <!-- 动效工坊目标切换 -->
     <string name="theme_target_global">🌐 全局默认</string>
-    <string name="theme_target_global_plain">其他蓝牙设备</string>
+    <string name="theme_target_global_plain">默认设备</string>
     <string name="devices_paired_title">已配对耳机</string>
     <string name="devices_paired_hint">点击设备可打开其视觉、电量记录与分享。</string>
     <string name="devices_global_summary">默认 · 动效：%1$s</string>
@@ -125,7 +125,7 @@
 
     <!-- 通知渠道 -->
     <string name="notification_channel_name">耳机连接监听服务</string>
-    <string name="notification_channel_desc">保持 VibePop 后台耳机弹窗监听服务常驻</string>
+    <string name="notification_channel_desc">保持 PK Bluetooth 后台耳机弹窗监听服务常驻</string>
 
     <!-- 底部导航 -->
     <string name="nav_dashboard">控制台</string>
@@ -163,6 +163,7 @@
     <string name="media_default_active">默认动效 · 点击选择自己的媒体</string>
     <string name="media_legacy_preset">当前使用内置视觉：%1$s</string>
     <string name="media_change_action">浏览文件</string>
+    <string name="selected_visual_file">已选择文件：%1$s</string>
     <string name="detail_original_name">蓝牙名称</string>
     <string name="detail_save_name">保存</string>
     <string name="detail_history_action">电量记录</string>
@@ -245,7 +246,7 @@
     <string name="perm_oem_title">锁屏显示与后台弹出权限</string>
     <string name="perm_oem_desc">小米/OPPO/vivo 等系统在锁屏与后台展示弹窗必需</string>
     <string name="settings_bg_title">💡 后台常驻运行建议</string>
-    <string name="settings_bg_body">国内主流手机系统（小米 HyperOS / 华为 HarmonyOS / OPPO ColorOS / vivo OriginOS）建议在系统「电池与性能」中将 VibePop 设置为「无限制 / 允许完全后台行为」，并在多任务后台中锁定本应用，以防后台监听进程被系统清理。</string>
+    <string name="settings_bg_body">国内主流手机系统（小米 HyperOS / 华为 HarmonyOS / OPPO ColorOS / vivo OriginOS）建议在系统「电池与性能」中将 PK Bluetooth 设置为「无限制 / 允许完全后台行为」，并在多任务后台中锁定本应用，以防后台监听进程被系统清理。</string>
 
     <!-- 应用内更新 -->
     <string name="update_title">🔄 应用更新</string>

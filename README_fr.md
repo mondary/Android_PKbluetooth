@@ -1,4 +1,4 @@
-# Android_PKbluetooth
+# PK Bluetooth
 
 > Application Android qui affiche un popup personnalisé quand un appareil Bluetooth se connecte, enregistre ses niveaux de batterie réels et échange des fichiers entre vos appareils.
 > Construite sur [VibePop](https://github.com/daloyanf/vibepop), avec des styles de popup adaptés de [BudPop](https://github.com/AweSanjam/BudPop) et des fonctions batterie/partage inspirées de [btManage](https://github.com/fhnb16/btManage-android). Voir [les notices](THIRD_PARTY_NOTICES.md).
@@ -7,7 +7,7 @@
 
 [🇬🇧 English](README.md) · [🇫🇷 Français](README_fr.md) · [🇨🇳 中文](README_zh.md)
 
-Android_PKbluetooth est une application indépendante (`design.mondary.pkbluetooth`) : elle s'installe à côté de VibePop, et aucune des deux ne met l'autre à jour. Le popup apparaît à la connexion d'un appareil listé en liste blanche, y compris sur l'écran de verrouillé ; chaque appareil peut avoir son média, son nom et sa durée.
+PK Bluetooth est une application indépendante (`design.mondary.pkbluetooth`) : elle s'installe à côté de VibePop, et aucune des deux ne met l'autre à jour. Le popup apparaît à la connexion d'un appareil listé en liste blanche, y compris sur l'écran de verrouillé ; chaque appareil peut avoir son média, son nom et sa durée.
 
 ## Téléchargement et mises à jour
 
@@ -17,9 +17,9 @@ Android_PKbluetooth est une application indépendante (`design.mondary.pkbluetoo
 
 ## Popup et médias
 
-- Le drawer centre le média actif ; remplacez-le depuis le sélecteur Android, ou gardez un visuel intégré.
+- La fiche s’ouvre sur le visuel ou l’animation active ; le visuel intégré sélectionné est entouré et Explorer donne accès aux fichiers Android.
 - L’atelier sépare les onglets **Visuel** et **Animation**. Parcourez les familles BudPop et lancez leur aperçu animé dans le panneau avant de choisir.
-- Le renommage, l’historique batterie et les partages fichier/Wi‑Fi se déplient dans le panneau de chaque appareil ; les réglages proposent aussi **Autre appareil Bluetooth** comme profil par défaut, avec les crédits et licences tout en bas.
+- L’historique batterie est visible dans chaque fiche ; les réglages proposent **Appareil par défaut** et les crédits et licences en bas de page. Les partages fichier/Wi‑Fi ouvrent des outils généraux et ne ciblent pas automatiquement l’appareil Bluetooth sélectionné.
 - Les vidéos se lisent une fois puis ferment le popup, ou bouclent jusqu'à la fin du compte à rebours.
 - Trois styles de carte BudPop — minimal, lovely, fanciest — avec neuf familles d'appareils (écouteurs, casques, enceintes, barres de son, claviers, souris, adaptateurs voiture, manettes, générique), dessinées à la volée en Kotlin. La famille est détectée depuis l'appareil, ou forcée par appareil.
 - Le bouton de test rejoue toujours la configuration exacte du popup de la cible courante.
