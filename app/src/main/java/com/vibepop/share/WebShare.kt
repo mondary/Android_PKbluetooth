@@ -1,4 +1,4 @@
-// Adapted from btManage-android (Apache-2.0): PKbluetooth session lifecycle and private inbox.
+// Adapted from btManage-android (Apache-2.0): Chrome_PKbluetooth session lifecycle and private inbox.
 package com.vibepop.share
 
 import android.content.Context
@@ -389,7 +389,7 @@ object WebShare {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{phone} · PKbluetooth</title>
+<title>{phone} · Chrome_PKbluetooth</title>
 <style>
 :root { --bg: #f7f7f8; --card: #ffffff; --text: #1b1b1f; --muted: #5d5e66; --line: #e2e2e6; --accent: #0b6bcb; }
 @media (prefers-color-scheme: dark) {

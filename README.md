@@ -1,4 +1,4 @@
-# PKbluetooth
+# Chrome_PKbluetooth
 
 > Android app that shows a custom popup when a Bluetooth device connects, records its real battery levels and exchanges files between your devices.
 > Built on [VibePop](https://github.com/daloyanf/vibepop), with popup styles adapted from [BudPop](https://github.com/AweSanjam/BudPop) and battery/sharing features inspired by [btManage](https://github.com/fhnb16/btManage-android). See [third-party notices](THIRD_PARTY_NOTICES.md).
@@ -7,7 +7,7 @@
 
 [🇬🇧 English](README.md) · [🇫🇷 Français](README_fr.md) · [🇨🇳 中文](README_zh.md)
 
-PKbluetooth is an independent app (`design.mondary.pkbluetooth`): it installs next to VibePop, and neither updates the other. The popup appears when a whitelisted device connects, on the lock screen too; each device can have its own media, name and duration.
+Chrome_PKbluetooth is an independent app (`design.mondary.pkbluetooth`): it installs next to VibePop, and neither updates the other. The popup appears when a whitelisted device connects, on the lock screen too; each device can have its own media, name and duration.
 
 ## Popup and media
 
@@ -26,7 +26,7 @@ PKbluetooth is an independent app (`design.mondary.pkbluetooth`): it installs ne
 ## Sharing
 
 - **Browser sharing**: a page served on the local network; any device with the link can take the offered files and send files or text back. Plain HTTP on a network you trust, protected by a random key, revoked when you stop.
-- **PKbluetooth to PKbluetooth**: two installations find each other on the local network, pair once with a six-digit code, then exchange files and text both ways. Every connection is mutually authenticated with a per-installation key that never leaves the Android Keystore; a forgotten peer can never connect again.
+- **Chrome_PKbluetooth to Chrome_PKbluetooth**: two installations find each other on the local network, pair once with a six-digit code, then exchange files and text both ways. Every connection is mutually authenticated with a per-installation key that never leaves the Android Keystore; a forgotten peer can never connect again.
 - Received items land in a private inbox, opened or forwarded with Android's own share menu.
 
 ## Build and test

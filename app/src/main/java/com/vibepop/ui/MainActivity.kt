@@ -688,8 +688,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 应用内更新
-        settings.tvUpdateStatus.text = getString(R.string.updates_unavailable)
-        settings.btnCheckUpdate.isEnabled = false
+        settings.tvUpdateStatus.text = getString(R.string.update_ready_to_check)
+        settings.btnCheckUpdate.isEnabled = true
+        settings.btnCheckUpdate.setOnClickListener { checkForUpdates() }
         settings.btnSupportKoFi.setOnClickListener {
             try {
                 startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse("https://ko-fi.com/pouark")))

@@ -32,7 +32,7 @@ class PeerActivity : AppCompatActivity() {
         if (p != null && uri != null) send(p, uri, null)
     }
     private val type = "_pkbt-v1._tcp."
-    private fun name(id: String) = "PK-${id.take(24)}"
+    private fun name(id: String) = "Chrome_PKbluetooth-${id.take(16)}"
     private fun button(label: String, action: () -> Unit) {
         list.addView(Button(this).apply { text = label; isAllCaps = false; setOnClickListener { action() } })
     }

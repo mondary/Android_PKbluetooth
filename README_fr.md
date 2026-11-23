@@ -1,4 +1,4 @@
-# PKbluetooth
+# Chrome_PKbluetooth
 
 > Application Android qui affiche un popup personnalisé quand un appareil Bluetooth se connecte, enregistre ses niveaux de batterie réels et échange des fichiers entre vos appareils.
 > Construite sur [VibePop](https://github.com/daloyanf/vibepop), avec des styles de popup adaptés de [BudPop](https://github.com/AweSanjam/BudPop) et des fonctions batterie/partage inspirées de [btManage](https://github.com/fhnb16/btManage-android). Voir [les notices](THIRD_PARTY_NOTICES.md).
@@ -7,7 +7,7 @@
 
 [🇬🇧 English](README.md) · [🇫🇷 Français](README_fr.md) · [🇨🇳 中文](README_zh.md)
 
-PKbluetooth est une application indépendante (`design.mondary.pkbluetooth`) : elle s'installe à côté de VibePop, et aucune des deux ne met l'autre à jour. Le popup apparaît à la connexion d'un appareil listé en liste blanche, y compris sur l'écran de verrouillé ; chaque appareil peut avoir son média, son nom et sa durée.
+Chrome_PKbluetooth est une application indépendante (`design.mondary.pkbluetooth`) : elle s'installe à côté de VibePop, et aucune des deux ne met l'autre à jour. Le popup apparaît à la connexion d'un appareil listé en liste blanche, y compris sur l'écran de verrouillé ; chaque appareil peut avoir son média, son nom et sa durée.
 
 ## Popup et médias
 
@@ -26,7 +26,7 @@ PKbluetooth est une application indépendante (`design.mondary.pkbluetooth`) : e
 ## Partage
 
 - **Partage navigateur** : une page servie sur le réseau local ; tout appareil disposant du lien peut récupérer les fichiers proposés et renvoyer fichiers ou texte. HTTP en clair sur un réseau de confiance, protégé par une clé aléatoire, révoquée à l'arrêt.
-- **PKbluetooth vers PKbluetooth** : deux installations se découvrent sur le réseau local, s'appairent une fois par un code à six chiffres, puis échangent fichiers et texte dans les deux sens. Chaque connexion est authentifiée mutuellement par une clé propre à l'installation qui ne quitte jamais le Keystore Android ; un pair oublié ne peut plus se reconnecter.
+- **Chrome_PKbluetooth vers Chrome_PKbluetooth** : deux installations se découvrent sur le réseau local, s'appairent une fois par un code à six chiffres, puis échangent fichiers et texte dans les deux sens. Chaque connexion est authentifiée mutuellement par une clé propre à l'installation qui ne quitte jamais le Keystore Android ; un pair oublié ne peut plus se reconnecter.
 - Les éléments reçus arrivent dans une boîte de réception privée, ouverts ou transférés via le menu de partage Android.
 
 ## Build et tests
