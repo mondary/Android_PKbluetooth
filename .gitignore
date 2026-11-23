@@ -12,6 +12,7 @@ local.properties
 # Output Packages & Dist
 *.apk
 *.aab
+update.json
 release_dist/
 
 # Signing & Secrets (Local only)
@@ -28,6 +29,5 @@ Thumbs.db
 # 根目录测试音视频大文件
 /*.mp4
 /*.webm
-
 
 
