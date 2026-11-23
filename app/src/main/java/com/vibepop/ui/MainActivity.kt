@@ -42,8 +42,6 @@ class MainActivity : AppCompatActivity() {
 
     private var currentThemeTargetAddress: String? = null
     private var detailSheet: BottomSheetDialog? = null
-    private var pendingUpdateFile: java.io.File? = null
-    private var awaitingInstallPermission = false
     private lateinit var detail: LayoutTabThemesBinding
     private var hasPromptedBluetoothDialog = false
     private var bluetoothReceiverRegistered = false
@@ -147,7 +145,6 @@ class MainActivity : AppCompatActivity() {
         HeadsetMonitorService.start(this)
         ensureBluetoothReceiverRegistered()
         viewModel.refreshPermissions(this)
-        resumePendingUpdateInstall()
         if (viewModel.consumeTargetPolicyNotice()) {
             showTargetPolicyNotice()
         } else {
@@ -711,14 +708,7 @@ class MainActivity : AppCompatActivity() {
 
         // 应用内更新
         settings.tvUpdateStatus.text = getString(R.string.update_current_version, BuildConfig.VERSION_NAME)
-        settings.btnCheckUpdate.setOnClickListener {
-            val pendingFile = pendingUpdateFile?.takeIf { it.isFile }
-            if (pendingFile != null) {
-                installUpdate(pendingFile)
-            } else {
-                checkForUpdates()
-            }
-        }
+        settings.btnCheckUpdate.setOnClickListener { checkForUpdates() }
     }
 
     /**
@@ -1197,8 +1187,6 @@ class MainActivity : AppCompatActivity() {
     private fun checkForUpdates() {
         val settings = binding.tabSettingsLayout
         settings.btnCheckUpdate.isEnabled = false
-        settings.btnCheckUpdate.setText(R.string.update_check)
-        settings.pbUpdate.visibility = View.GONE
         settings.tvUpdateStatus.text = getString(R.string.update_checking)
 
         lifecycleScope.launch {
@@ -1206,12 +1194,10 @@ class MainActivity : AppCompatActivity() {
             settings.btnCheckUpdate.isEnabled = true
 
             if (info == null) {
-                settings.btnCheckUpdate.setText(R.string.update_check)
                 settings.tvUpdateStatus.text = getString(R.string.update_check_failed)
                 return@launch
             }
             if (info.versionCode <= BuildConfig.VERSION_CODE) {
-                settings.btnCheckUpdate.setText(R.string.update_check)
                 settings.tvUpdateStatus.text = getString(R.string.update_up_to_date, info.versionName)
                 return@launch
             }
@@ -1219,122 +1205,25 @@ class MainActivity : AppCompatActivity() {
             com.google.android.material.dialog.MaterialAlertDialogBuilder(this@MainActivity)
                 .setTitle(getString(R.string.update_available_title))
                 .setMessage(getString(R.string.update_available_message, info.versionName, BuildConfig.VERSION_NAME))
-                .setPositiveButton(getString(R.string.update_download)) { _, _ -> startUpdateDownload(info) }
+                .setPositiveButton(getString(R.string.update_open_page)) { _, _ -> openUpdatePage(info) }
                 .setNegativeButton(getString(R.string.update_later), null)
                 .show()
             settings.tvUpdateStatus.text = getString(R.string.update_available_title)
         }
     }
 
-    private fun startUpdateDownload(info: UpdateChecker.UpdateInfo) {
+    /**
+     * Remet le téléchargement à Android/le navigateur, sans demander à VibePop
+     * la permission sensible REQUEST_INSTALL_PACKAGES.
+     */
+    private fun openUpdatePage(info: UpdateChecker.UpdateInfo) {
         val settings = binding.tabSettingsLayout
-        settings.btnCheckUpdate.isEnabled = false
-        settings.pbUpdate.visibility = View.VISIBLE
-        settings.pbUpdate.progress = 0
-        settings.tvUpdateStatus.text = getString(R.string.update_downloading, 0)
-
         try {
-            val target = java.io.File(cacheDir, "updates/VibePop-fr-${info.versionCode}.apk")
-            lifecycleScope.launch {
-                val downloaded = withContext(Dispatchers.IO) {
-                    UpdateChecker.downloadApk(info.apkUrl, target) { percent ->
-                        runOnUiThread {
-                            settings.pbUpdate.progress = percent
-                            settings.tvUpdateStatus.text = getString(R.string.update_downloading, percent)
-                        }
-                    }
-                }
-
-                settings.pbUpdate.visibility = View.GONE
-                settings.btnCheckUpdate.isEnabled = true
-
-                if (!downloaded) {
-                    settings.btnCheckUpdate.setText(R.string.update_check)
-                    settings.tvUpdateStatus.text = getString(R.string.update_download_failed)
-                    return@launch
-                }
-
-                val apkMatchesRelease = withContext(Dispatchers.IO) {
-                    val digest = UpdateChecker.sha256(target)
-                    val archive = packageManager.getPackageArchiveInfo(target.absolutePath, 0)
-                    !info.sha256.isBlank() &&
-                        info.sha256.equals(digest, ignoreCase = true) &&
-                        archive != null &&
-                        archive.packageName == packageName &&
-                        archive.versionCode == info.versionCode
-                }
-                if (!apkMatchesRelease) {
-                    target.delete()
-                    settings.btnCheckUpdate.setText(R.string.update_check)
-                    settings.tvUpdateStatus.text = getString(R.string.update_checksum_failed)
-                    return@launch
-                }
-
-                pendingUpdateFile = target
-                settings.tvUpdateStatus.text = getString(R.string.update_ready)
-                settings.btnCheckUpdate.setText(R.string.update_install)
-                installUpdate(target)
-            }
+            startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse(info.apkUrl)))
+            settings.tvUpdateStatus.text = getString(R.string.update_browser_opened)
         } catch (e: Exception) {
-            settings.pbUpdate.visibility = View.GONE
-            settings.btnCheckUpdate.isEnabled = true
-            settings.btnCheckUpdate.setText(R.string.update_check)
-            settings.tvUpdateStatus.text = getString(R.string.update_download_failed)
-        }
-    }
-
-    private fun installUpdate(file: java.io.File) {
-        if (!file.isFile) {
-            pendingUpdateFile = null
-            binding.tabSettingsLayout.btnCheckUpdate.setText(R.string.update_check)
-            binding.tabSettingsLayout.tvUpdateStatus.text = getString(R.string.update_download_failed)
-            return
-        }
-
-        pendingUpdateFile = file
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !packageManager.canRequestPackageInstalls()) {
-            awaitingInstallPermission = true
-            binding.tabSettingsLayout.tvUpdateStatus.text = getString(R.string.update_install_permission)
-            try {
-                startActivity(
-                    Intent(
-                        android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
-                        android.net.Uri.parse("package:$packageName")
-                    )
-                )
-            } catch (e: Exception) {
-                awaitingInstallPermission = false
-                Toast.makeText(this, getString(R.string.update_install_permission), Toast.LENGTH_LONG).show()
-            }
-            return
-        }
-
-        try {
-            val uri = androidx.core.content.FileProvider.getUriForFile(
-                this,
-                "$packageName.fileprovider",
-                file
-            )
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                setDataAndType(uri, "application/vnd.android.package-archive")
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            }
-            startActivity(intent)
-            binding.tabSettingsLayout.tvUpdateStatus.text = getString(R.string.update_ready)
-        } catch (e: Exception) {
-            binding.tabSettingsLayout.tvUpdateStatus.text = getString(R.string.update_install_failed)
-            Toast.makeText(this, getString(R.string.update_install_failed), Toast.LENGTH_LONG).show()
-        }
-    }
-
-    private fun resumePendingUpdateInstall() {
-        if (!awaitingInstallPermission) return
-        awaitingInstallPermission = false
-        val file = pendingUpdateFile?.takeIf { it.isFile } ?: return
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && packageManager.canRequestPackageInstalls()) {
-            installUpdate(file)
-        } else {
-            binding.tabSettingsLayout.tvUpdateStatus.text = getString(R.string.update_install_permission)
+            settings.tvUpdateStatus.text = getString(R.string.update_open_failed)
+            Toast.makeText(this, getString(R.string.update_open_failed), Toast.LENGTH_LONG).show()
         }
     }
 }

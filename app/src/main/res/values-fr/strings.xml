@@ -198,14 +198,10 @@
     <string name="update_check_failed">Impossible de vérifier, réessayez plus tard</string>
     <string name="update_up_to_date">À jour (%1$s)</string>
     <string name="update_available_title">Mise à jour disponible</string>
-    <string name="update_available_message">La version %1$s est disponible (vous avez %2$s). La télécharger et l’installer ? Android peut demander une autorisation la première fois.</string>
-    <string name="update_download">Télécharger</string>
-    <string name="update_downloading">Téléchargement… %1$d%%</string>
-    <string name="update_checksum_failed">Le fichier téléchargé ne correspond pas à la version attendue</string>
-    <string name="update_ready">Téléchargé, prêt à installer</string>
-    <string name="update_install">Installer</string>
-    <string name="update_install_permission">Autorisez VibePop à installer des applis inconnues dans les paramètres. Au retour, l’installateur s’ouvrira automatiquement.</string>
-    <string name="update_install_failed">Impossible d’ouvrir l’installateur Android</string>
+    <string name="update_available_message">La version %1$s est disponible (vous avez %2$s). Ouvrir son téléchargement ?</string>
+    <string name="update_open_page">Télécharger</string>
+    <string name="update_browser_opened">Téléchargement ouvert dans le navigateur. Ouvrez le fichier APK téléchargé pour installer.</string>
+    <string name="update_open_failed">Impossible d’ouvrir le téléchargement</string>
     <string name="update_later">Plus tard</string>
     <string name="update_download_failed">Échec du téléchargement, vérifiez la connexion</string>
 
