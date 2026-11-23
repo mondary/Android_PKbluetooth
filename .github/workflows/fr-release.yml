@@ -58,12 +58,13 @@ jobs:
           run = int(os.environ["RUN_NUMBER"])
           with open("VibePop-fr.apk", "rb") as fh:
               digest = hashlib.sha256(fh.read()).hexdigest()
+          lines = [line for line in (os.environ.get("COMMIT_MSG") or "").splitlines() if line.strip()]
           data = {
               "versionCode": 1000000 + run,
               "versionName": f"1.1.2-fr.{run}",
               "apkUrl": "https://github.com/mondary/vibepop/releases/download/latest/VibePop-fr.apk",
               "sha256": digest,
-              "notes": (os.environ.get("COMMIT_MSG") or "").splitlines()[0][:200],
+              "notes": lines[0][:200] if lines else "Build automatique",
           }
           with open("update.json", "w", encoding="utf-8") as fh:
               json.dump(data, fh, ensure_ascii=False, indent=2)
