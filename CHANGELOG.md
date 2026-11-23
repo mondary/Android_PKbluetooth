@@ -6,7 +6,7 @@ Historique de Android_PKbluetooth et de sa base VibePop.
 
 ## TODO — Roadmap
 
-Statut : `2026.11.12` — convention de documentation et de version
+Statut : `2026.11.13` — centrage de l’icône Android
 
 - [x] Mettre le média actif au premier plan du drawer
 - [x] Restaurer le choix lecture unique / boucle pour les vidéos
@@ -21,6 +21,11 @@ Statut : `2026.11.12` — convention de documentation et de version
 ---
 
 ## Releases
+
+## [2026.11.13] - 2026-11-23
+
+### Changed
+- Symbole Bluetooth centré et badge PK repositionné en bas à droite dans l’icône Android.
 
 ## [2026.11.12] - 2026-11-23
 
