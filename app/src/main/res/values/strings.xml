@@ -137,6 +137,11 @@
 
     <!-- 动效工坊 -->
     <string name="themes_title">🎨 动效工坊</string>
+    <string name="themes_subtitle">为每只耳机单独设置专属动效</string>
+    <string name="themes_target_label">配置目标</string>
+    <string name="themes_section_hint">耳机连接时播放的动效</string>
+    <string name="cd_preview_theme">预览此动效</string>
+    <string name="preview_need_media">请先导入一个本地媒体文件</string>
     <string name="themes_popup_name">弹窗显示名称</string>
     <string name="themes_rename">✏️ 重命名</string>
     <string name="themes_section_title">动效主题</string>

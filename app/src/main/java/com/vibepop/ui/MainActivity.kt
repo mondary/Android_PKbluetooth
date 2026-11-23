@@ -16,10 +16,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.vibepop.R
+import com.vibepop.data.model.DeviceBatteryState
+import com.vibepop.data.model.PopupConfig
 import com.vibepop.databinding.ActivityMainBinding
 import com.vibepop.service.HeadsetMonitorService
+import com.vibepop.util.MediaThumbnailLoader
 import com.vibepop.util.PermissionHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,6 +38,8 @@ class MainActivity : AppCompatActivity() {
     private var isProgrammaticSpinnerChange = false
     private var hasPromptedBluetoothDialog = false
     private var bluetoothReceiverRegistered = false
+    private var bondedDeviceItems = listOf<BondedDeviceItem>()
+    private var customThumbKey: String? = null
 
     private val bluetoothStateReceiver = object : android.content.BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -295,6 +304,11 @@ class MainActivity : AppCompatActivity() {
             applyThemeToCurrentTarget("custom_media")
         }
 
+        // 每个主题的试听按钮：只预览，不改变当前配置
+        themes.btnPreviewClassic.setOnClickListener { previewTheme("classic_airpods") }
+        themes.btnPreviewGreatVictory.setOnClickListener { previewTheme("great_victory") }
+        themes.btnPreviewCustom.setOnClickListener { previewTheme("custom_media") }
+
         // 修改弹窗显示名称重命名
         themes.btnRenameTargetDevice.setOnClickListener {
             showRenameDialog()
@@ -319,6 +333,9 @@ class MainActivity : AppCompatActivity() {
                 viewModel.saveDevicePopupConfig(this, address, devConfig.copy(videoDismissMode = mode))
             }
         }
+
+        // 即使暂时没有可用的已配对设备，也要让「全局默认」这一项可见
+        setupThemesDropdown(bondedDeviceItems)
     }
 
     private fun showRenameDialog() {
@@ -478,6 +495,7 @@ class MainActivity : AppCompatActivity() {
         themes.tvCurrentTargetDeviceName.text = currentName
 
         updateThemeCardsUI(config.animationTheme, config.customMediaType, config.customMediaPath)
+        updateCustomMediaThumbnail(config.customMediaPath, config.customMediaType)
 
         if (config.videoDismissMode == "on_complete") {
             themes.rbVideoOnComplete.isChecked = true
@@ -626,6 +644,7 @@ class MainActivity : AppCompatActivity() {
 
         // 已配对设备列表展示与动效工坊下拉框联动
         viewModel.bondedDevices.observe(this) { devices ->
+            bondedDeviceItems = devices
             renderBondedDevices(devices)
             setupThemesDropdown(devices)
         }
@@ -885,6 +904,85 @@ class MainActivity : AppCompatActivity() {
             card.addView(row)
             container.addView(card)
         }
+    }
+
+    /**
+     * 试听某个主题：仅用于预览，不写回任何偏好
+     */
+    private fun previewTheme(theme: String) {
+        if (!PermissionHelper.hasOverlayPermission(this)) {
+            Toast.makeText(this, getString(R.string.overlay_needed_toast), Toast.LENGTH_SHORT).show()
+            binding.bottomNav.selectedItemId = R.id.nav_settings
+            PermissionHelper.requestOverlayPermission(this)
+            return
+        }
+
+        val base = currentTargetConfig() ?: return
+        val config = if (theme == "custom_media") {
+            if (base.customMediaPath.isNullOrBlank()) {
+                Toast.makeText(this, getString(R.string.preview_need_media), Toast.LENGTH_SHORT).show()
+                return
+            }
+            base.copy(animationTheme = theme)
+        } else {
+            base.copy(animationTheme = theme, customMediaPath = null, customMediaType = "preset")
+        }
+
+        viewModel.previewPopup(applicationContext, config, previewDeviceState())
+    }
+
+    private fun currentTargetConfig(): PopupConfig? =
+        currentThemeTargetAddress?.let { viewModel.getDevicePopupConfig(it) } ?: viewModel.popupConfig.value
+
+    /** 预览时展示当前目标耳机的真实名称，没有选中设备时退回通用文案 */
+    private fun previewDeviceState(): DeviceBatteryState {
+        val address = currentThemeTargetAddress ?: return DeviceBatteryState.mock()
+        val deviceName = bondedDeviceItems.firstOrNull { it.address == address }?.name ?: ""
+        return DeviceBatteryState(
+            deviceName = deviceName,
+            deviceAddress = address,
+            isConnected = true,
+            batteryLevel = 85,
+            isCharging = false
+        )
+    }
+
+    /** 为自定义媒体卡片生成缩略图，失败时回退到调色板图标 */
+    private fun updateCustomMediaThumbnail(path: String?, type: String) {
+        val themes = binding.tabThemesLayout
+        val lastModified = path?.let { java.io.File(it).lastModified() } ?: 0L
+        val key = "$path|$type|$lastModified"
+        if (key == customThumbKey) return
+        customThumbKey = key
+
+        if (path.isNullOrBlank() || type == "lottie") {
+            showCustomMediaIcon()
+            return
+        }
+
+        val targetPx = (48 * resources.displayMetrics.density).toInt()
+        val isVideo = type == "video" || path.endsWith(".mp4", true) || path.endsWith(".webm", true)
+
+        lifecycleScope.launch {
+            val bitmap = withContext(Dispatchers.IO) {
+                MediaThumbnailLoader.load(path, isVideo, targetPx)
+            }
+            if (customThumbKey != key) return@launch
+            if (bitmap != null) {
+                themes.ivCustomMediaThumb.setImageBitmap(bitmap)
+                themes.ivCustomMediaThumb.visibility = View.VISIBLE
+                themes.ivCustomMediaIcon.visibility = View.GONE
+            } else {
+                showCustomMediaIcon()
+            }
+        }
+    }
+
+    private fun showCustomMediaIcon() {
+        val themes = binding.tabThemesLayout
+        themes.ivCustomMediaThumb.setImageDrawable(null)
+        themes.ivCustomMediaThumb.visibility = View.GONE
+        themes.ivCustomMediaIcon.visibility = View.VISIBLE
     }
 }
 

@@ -14,34 +14,45 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <!-- 页面标题与目标切换下拉框 (单行齐平) -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!-- 页面标题 -->
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/themes_title"
+            android:textColor="@color/text_primary"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/themes_subtitle"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
+        <!-- 目标切换：全局默认或某一只已开启的耳机 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/themes_target_label"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/spinnerThemeTarget"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_battery_badge"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/themes_title"
-                android:textColor="@color/text_primary"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/spinnerThemeTarget"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:background="@drawable/bg_battery_badge"
-                android:gravity="center_vertical|end"
-                android:popupBackground="@color/bg_card_dark"
-                android:dropDownVerticalOffset="38dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:spinnerMode="dropdown" />
-        </LinearLayout>
+            android:popupBackground="@color/bg_card_dark"
+            android:dropDownVerticalOffset="46dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:spinnerMode="dropdown" />
 
         <!-- 弹窗显示名称与重命名卡片 -->
         <com.google.android.material.card.MaterialCardView
@@ -111,6 +122,14 @@
             android:textSize="14sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/themes_section_hint"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp" />
+
         <!-- 卡片 1: 经典 AirPods -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardThemeClassic"
@@ -161,6 +180,18 @@
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
                 </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/btnPreviewClassic"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="2dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/cd_preview_theme"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_play"
+                    app:tint="@color/primary" />
 
                 <ImageView
                     android:id="@+id/ivCheckClassic"
@@ -222,6 +253,18 @@
                         android:textSize="11sp" />
                 </LinearLayout>
 
+                <ImageButton
+                    android:id="@+id/btnPreviewGreatVictory"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="2dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/cd_preview_theme"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_play"
+                    app:tint="@color/primary" />
+
                 <ImageView
                     android:id="@+id/ivCheckGreatVictory"
                     android:layout_width="22dp"
@@ -252,11 +295,29 @@
                 android:orientation="horizontal"
                 android:padding="16dp">
 
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/ic_nav_palette"
-                    app:tint="@color/accent" />
+                <FrameLayout
+                    android:layout_width="48dp"
+                    android:layout_height="48dp">
+
+                    <ImageView
+                        android:id="@+id/ivCustomMediaThumb"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_media_thumb"
+                        android:clipToOutline="true"
+                        android:contentDescription="@string/popup_desc_background"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone"
+                        tools:src="@drawable/ic_nav_palette" />
+
+                    <ImageView
+                        android:id="@+id/ivCustomMediaIcon"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_nav_palette"
+                        app:tint="@color/accent" />
+                </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -282,6 +343,18 @@
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
                 </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/btnPreviewCustom"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="2dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/cd_preview_theme"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_play"
+                    app:tint="@color/primary" />
 
                 <ImageView
                     android:id="@+id/ivCheckCustom"

@@ -137,6 +137,11 @@
 
     <!-- Animation studio -->
     <string name="themes_title">🎨 Animation studio</string>
+    <string name="themes_subtitle">Give each earbud its own animation</string>
+    <string name="themes_target_label">Customising</string>
+    <string name="themes_section_hint">Animation played when the earbud connects</string>
+    <string name="cd_preview_theme">Preview this animation</string>
+    <string name="preview_need_media">Import a media file first</string>
     <string name="themes_popup_name">Popup name</string>
     <string name="themes_rename">✏️ Rename</string>
     <string name="themes_section_title">Animation theme</string>

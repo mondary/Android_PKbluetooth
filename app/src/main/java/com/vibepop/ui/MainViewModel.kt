@@ -298,6 +298,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
+     * 预览指定配置（用于「动效工坊」里每个主题的试听按钮），不写回任何偏好
+     */
+    fun previewPopup(context: Context, config: PopupConfig, deviceState: DeviceBatteryState) {
+        PopupWindowManager.showPopup(context, deviceState, config)
+    }
+
+    /**
      * 弹窗响应策略变更（默认全不响应）一次性提示（供 MainActivity 消费）
      */
     fun consumeTargetPolicyNotice(): Boolean {
