@@ -6,7 +6,7 @@ Historique de Android_PKbluetooth et de sa base VibePop.
 
 ## TODO — Roadmap
 
-Statut : `2026.11.11` — nom et icône Android
+Statut : `2026.11.12` — convention de documentation et de version
 
 - [x] Mettre le média actif au premier plan du drawer
 - [x] Restaurer le choix lecture unique / boucle pour les vidéos
@@ -21,6 +21,12 @@ Statut : `2026.11.11` — nom et icône Android
 ---
 
 ## Releases
+
+## [2026.11.12] - 2026-11-23
+
+### Changed
+- Ajout d’un accès explicite à la documentation anglaise et de la version dans les README.
+- Le build et la publication reconnaissent les en-têtes de version au format Keep a Changelog.
 
 ### [2026.11.11] - 2026-11-23
 
