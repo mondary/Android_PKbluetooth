@@ -13,7 +13,8 @@ NAME_FONT = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
 TEXT_FONT = "/System/Library/Fonts/Supplemental/Arial.ttf"
 
 DEVICES = [
-    ("airpods_white", "AirPods Pro", "85%", True, "popup-airpods.gif"),
+    ("shokz", "Shokz", "85%", True, "popup-shokz.gif"),
+    ("open_ear_black", "Open-ear noirs", "85%", True, "popup-open-ear.gif"),
     ("peugeot", "Peugeot 3008", "--%", False, "popup-peugeot.gif"),
 ]
 

@@ -6,7 +6,7 @@ Historique de Android_PKbluetooth et de sa base VibePop.
 
 ## TODO — Roadmap
 
-Statut : `2026.11.17` — APK allégé et aperçus du popup
+Statut : `2026.11.18` — aperçus Shokz et Open-ear
 
 - [x] Mettre le média actif au premier plan du drawer
 - [x] Restaurer le choix lecture unique / boucle pour les vidéos
@@ -21,6 +21,11 @@ Statut : `2026.11.17` — APK allégé et aperçus du popup
 ---
 
 ## Releases
+
+## [2026.11.18] - 2026-11-23
+
+### Changed
+- Les READMEs présentent désormais les popups Shokz, Open-ear et Peugeot, au lieu des AirPods en portrait.
 
 ## [2026.11.17] - 2026-11-23
 

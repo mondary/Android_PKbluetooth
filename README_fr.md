@@ -1,6 +1,6 @@
 # PK Bluetooth
 
-Version source **2026.11.17**
+Version source **2026.11.18**
 
 > Application Android qui affiche un popup personnalisé quand un appareil Bluetooth se connecte, enregistre ses niveaux de batterie réels et échange des fichiers entre vos appareils.
 > Construite sur [VibePop](https://github.com/daloyanf/vibepop), avec des styles de popup adaptés de [BudPop](https://github.com/AweSanjam/BudPop) et des fonctions batterie/partage inspirées de [btManage](https://github.com/fhnb16/btManage-android). Voir [les notices](THIRD_PARTY_NOTICES.md).
@@ -13,9 +13,9 @@ PK Bluetooth est une application indépendante (`design.mondary.pkbluetooth`) : 
 
 ## Aperçu du popup
 
-| AirPods blancs | Peugeot 3008 |
-| :---: | :---: |
-| ![Popup AirPods : nom, état et batterie](store/gifs/popup-airpods.gif) | ![Popup Peugeot 3008 : nom, état et batterie](store/gifs/popup-peugeot.gif) |
+| Shokz | Open-ear noirs | Peugeot 3008 |
+| :---: | :---: | :---: |
+| ![Popup Shokz : nom, état et batterie](store/gifs/popup-shokz.gif) | ![Popup Open-ear : nom, état et batterie](store/gifs/popup-open-ear.gif) | ![Popup Peugeot 3008 : nom, état et batterie](store/gifs/popup-peugeot.gif) |
 
 Ces aperçus reprennent les visuels intégrés et la mise en page réelle du popup : nom de l’appareil, état de connexion et batterie. Le niveau reste inconnu (`--%`) quand l’appareil ne le transmet pas.
 
