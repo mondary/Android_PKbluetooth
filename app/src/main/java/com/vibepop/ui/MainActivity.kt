@@ -1109,6 +1109,7 @@ class MainActivity : AppCompatActivity() {
     private fun checkForUpdates() {
         val settings = binding.tabSettingsLayout
         settings.btnCheckUpdate.isEnabled = false
+        settings.pbUpdate.visibility = View.GONE
         settings.tvUpdateStatus.text = getString(R.string.update_checking)
 
         lifecycleScope.launch {
@@ -1127,18 +1128,78 @@ class MainActivity : AppCompatActivity() {
             com.google.android.material.dialog.MaterialAlertDialogBuilder(this@MainActivity)
                 .setTitle(getString(R.string.update_available_title))
                 .setMessage(getString(R.string.update_available_message, info.versionName, BuildConfig.VERSION_NAME))
-                .setPositiveButton(getString(R.string.update_open_page)) { _, _ -> openUpdatePage(info) }
+                .setPositiveButton(getString(R.string.update_download)) { _, _ -> downloadUpdate(info) }
                 .setNegativeButton(getString(R.string.update_later), null)
                 .show()
             settings.tvUpdateStatus.text = getString(R.string.update_available_title)
         }
     }
 
-    /** 打开下载页，把安装交给浏览器和系统安装器（应用不申请安装权限） */
-    private fun openUpdatePage(info: UpdateChecker.UpdateInfo) {
+    private fun downloadUpdate(info: UpdateChecker.UpdateInfo) {
+        val settings = binding.tabSettingsLayout
+        settings.btnCheckUpdate.isEnabled = false
+        settings.pbUpdate.visibility = View.VISIBLE
+        settings.pbUpdate.progress = 0
+        settings.tvUpdateStatus.text = getString(R.string.update_downloading, 0)
+
+        lifecycleScope.launch {
+            val target = java.io.File(cacheDir, "updates/VibePop-fr-${info.versionCode}.apk")
+            val downloaded = withContext(Dispatchers.IO) {
+                UpdateChecker.downloadApk(info.apkUrl, target) { percent ->
+                    runOnUiThread {
+                        settings.pbUpdate.progress = percent
+                        settings.tvUpdateStatus.text = getString(R.string.update_downloading, percent)
+                    }
+                }
+            }
+
+            settings.pbUpdate.visibility = View.GONE
+            settings.btnCheckUpdate.isEnabled = true
+
+            if (!downloaded) {
+                settings.tvUpdateStatus.text = getString(R.string.update_download_failed)
+                return@launch
+            }
+
+            val digest = withContext(Dispatchers.IO) { UpdateChecker.sha256(target) }
+            if (info.sha256.isNotBlank() && !info.sha256.equals(digest, ignoreCase = true)) {
+                target.delete()
+                settings.tvUpdateStatus.text = getString(R.string.update_checksum_failed)
+                return@launch
+            }
+
+            settings.tvUpdateStatus.text = getString(R.string.update_ready)
+            installUpdate(target)
+        }
+    }
+
+    private fun installUpdate(file: java.io.File) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !packageManager.canRequestPackageInstalls()) {
+            Toast.makeText(this, getString(R.string.update_install_permission), Toast.LENGTH_LONG).show()
+            try {
+                startActivity(
+                    Intent(
+                        android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                        android.net.Uri.parse("package:$packageName")
+                    )
+                )
+            } catch (e: Exception) {
+                // 某些系统没有该设置页，忽略
+            }
+            return
+        }
+
         try {
-            startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse(info.apkUrl)))
-            binding.tabSettingsLayout.tvUpdateStatus.text = getString(R.string.update_ready)
+            val uri = androidx.core.content.FileProvider.getUriForFile(
+                this,
+                "$packageName.fileprovider",
+                file
+            )
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, "application/vnd.android.package-archive")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            startActivity(intent)
         } catch (e: Exception) {
             Toast.makeText(this, getString(R.string.update_install_failed), Toast.LENGTH_LONG).show()
         }

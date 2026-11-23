@@ -335,6 +335,15 @@
                     android:textSize="11sp"
                     tools:text="Version actuelle : 1.1.2-fr.3" />
 
+                <ProgressBar
+                    android:id="@+id/pbUpdate"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:max="100"
+                    android:visibility="gone" />
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCheckUpdate"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
