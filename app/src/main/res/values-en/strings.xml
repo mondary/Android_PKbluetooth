@@ -200,13 +200,10 @@
     <string name="update_available_title">Update available</string>
     <string name="update_available_message">Version %1$s is out (you have %2$s). Download it now?</string>
     <string name="update_download">Download</string>
+    <string name="update_download_started">Download started — tap the notification to install</string>
+    <string name="update_download_notification">Downloading the VibePop update</string>
     <string name="update_later">Later</string>
-    <string name="update_downloading">Downloading… %1$d%%</string>
     <string name="update_download_failed">Download failed, check your connection</string>
-    <string name="update_checksum_failed">Downloaded file is invalid (SHA-256 mismatch)</string>
-    <string name="update_ready">Downloaded, ready to install</string>
-    <string name="update_install_permission">Allow VibePop to install unknown apps, then try again</string>
-    <string name="update_install_failed">Could not start the installer</string>
 
     <!-- Popup accessibility -->
     <string name="popup_desc_background">Custom background image</string>

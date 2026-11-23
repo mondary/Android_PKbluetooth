@@ -1058,7 +1058,6 @@ class MainActivity : AppCompatActivity() {
     private fun checkForUpdates() {
         val settings = binding.tabSettingsLayout
         settings.btnCheckUpdate.isEnabled = false
-        settings.pbUpdate.visibility = View.GONE
         settings.tvUpdateStatus.text = getString(R.string.update_checking)
 
         lifecycleScope.launch {
@@ -1077,80 +1076,39 @@ class MainActivity : AppCompatActivity() {
             com.google.android.material.dialog.MaterialAlertDialogBuilder(this@MainActivity)
                 .setTitle(getString(R.string.update_available_title))
                 .setMessage(getString(R.string.update_available_message, info.versionName, BuildConfig.VERSION_NAME))
-                .setPositiveButton(getString(R.string.update_download)) { _, _ -> downloadUpdate(info) }
+                .setPositiveButton(getString(R.string.update_download)) { _, _ -> startUpdateDownload(info) }
                 .setNegativeButton(getString(R.string.update_later), null)
                 .show()
             settings.tvUpdateStatus.text = getString(R.string.update_available_title)
         }
     }
 
-    private fun downloadUpdate(info: UpdateChecker.UpdateInfo) {
+    /**
+     * Téléchargement via le gestionnaire du système : l'APK arrive dans la barre de
+     * notifications, et c'est le système qui lance l'installation (l'app n'a donc pas
+     * besoin de la permission « installer des applications inconnues »).
+     */
+    private fun startUpdateDownload(info: UpdateChecker.UpdateInfo) {
         val settings = binding.tabSettingsLayout
-        settings.btnCheckUpdate.isEnabled = false
-        settings.pbUpdate.visibility = View.VISIBLE
-        settings.pbUpdate.progress = 0
-        settings.tvUpdateStatus.text = getString(R.string.update_downloading, 0)
-
-        lifecycleScope.launch {
-            val target = java.io.File(cacheDir, "updates/VibePop-fr-${info.versionCode}.apk")
-            val downloaded = withContext(Dispatchers.IO) {
-                UpdateChecker.downloadApk(info.apkUrl, target) { percent ->
-                    runOnUiThread {
-                        settings.pbUpdate.progress = percent
-                        settings.tvUpdateStatus.text = getString(R.string.update_downloading, percent)
-                    }
-                }
-            }
-
-            settings.pbUpdate.visibility = View.GONE
-            settings.btnCheckUpdate.isEnabled = true
-
-            if (!downloaded) {
-                settings.tvUpdateStatus.text = getString(R.string.update_download_failed)
-                return@launch
-            }
-
-            val digest = withContext(Dispatchers.IO) { UpdateChecker.sha256(target) }
-            if (info.sha256.isNotBlank() && !info.sha256.equals(digest, ignoreCase = true)) {
-                target.delete()
-                settings.tvUpdateStatus.text = getString(R.string.update_checksum_failed)
-                return@launch
-            }
-
-            settings.tvUpdateStatus.text = getString(R.string.update_ready)
-            installUpdate(target)
-        }
-    }
-
-    private fun installUpdate(file: java.io.File) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !packageManager.canRequestPackageInstalls()) {
-            Toast.makeText(this, getString(R.string.update_install_permission), Toast.LENGTH_LONG).show()
-            try {
-                startActivity(
-                    Intent(
-                        android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
-                        android.net.Uri.parse("package:$packageName")
-                    )
-                )
-            } catch (e: Exception) {
-                // 某些系统没有该设置页，忽略
-            }
-            return
-        }
-
         try {
-            val uri = androidx.core.content.FileProvider.getUriForFile(
-                this,
-                "$packageName.fileprovider",
-                file
-            )
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                setDataAndType(uri, "application/vnd.android.package-archive")
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            }
-            startActivity(intent)
+            val request = android.app.DownloadManager.Request(android.net.Uri.parse(info.apkUrl))
+                .setTitle("VibePop ${info.versionName}")
+                .setDescription(getString(R.string.update_download_notification))
+                .setMimeType("application/vnd.android.package-archive")
+                .setNotificationVisibility(android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                .setDestinationInExternalFilesDir(
+                    this,
+                    android.os.Environment.DIRECTORY_DOWNLOADS,
+                    "VibePop-${info.versionName}.apk"
+                )
+
+            val manager = getSystemService(android.app.DownloadManager::class.java)
+            manager?.enqueue(request)
+
+            settings.tvUpdateStatus.text = getString(R.string.update_download_started)
+            Toast.makeText(this, getString(R.string.update_download_started), Toast.LENGTH_LONG).show()
         } catch (e: Exception) {
-            Toast.makeText(this, getString(R.string.update_install_failed), Toast.LENGTH_LONG).show()
+            settings.tvUpdateStatus.text = getString(R.string.update_download_failed)
         }
     }
 }

@@ -1,11 +1,8 @@
 package com.vibepop.update
 
 import org.json.JSONObject
-import java.io.File
-import java.io.FileOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
-import java.security.MessageDigest
 
 /**
  * 应用内更新：
@@ -44,65 +41,6 @@ object UpdateChecker {
         } catch (e: Exception) {
             null
         }
-    }
-
-    /** 下载 APK，回调 0..100 的进度 */
-    fun downloadApk(url: String, target: File, onProgress: (Int) -> Unit): Boolean {
-        target.parentFile?.mkdirs()
-        var connection: HttpURLConnection? = null
-        return try {
-            connection = (URL(url).openConnection() as HttpURLConnection).apply {
-                instanceFollowRedirects = true
-                connectTimeout = TIMEOUT_MS
-                readTimeout = TIMEOUT_MS
-                setRequestProperty("User-Agent", USER_AGENT)
-            }
-            if (connection.responseCode !in 200..299) {
-                return false
-            }
-            val total = connection.contentLengthLong
-            connection.inputStream.use { input ->
-                FileOutputStream(target).use { output ->
-                    val buffer = ByteArray(64 * 1024)
-                    var written = 0L
-                    var lastPercent = -1
-                    while (true) {
-                        val read = input.read(buffer)
-                        if (read <= 0) break
-                        output.write(buffer, 0, read)
-                        written += read
-                        if (total > 0) {
-                            val percent = (written * 100 / total).toInt()
-                            if (percent != lastPercent) {
-                                lastPercent = percent
-                                onProgress(percent)
-                            }
-                        }
-                    }
-                }
-            }
-            true
-        } catch (e: Exception) {
-            target.delete()
-            false
-        } finally {
-            connection?.disconnect()
-        }
-    }
-
-    fun sha256(file: File): String? = try {
-        val digest = MessageDigest.getInstance("SHA-256")
-        file.inputStream().use { input ->
-            val buffer = ByteArray(64 * 1024)
-            while (true) {
-                val read = input.read(buffer)
-                if (read <= 0) break
-                digest.update(buffer, 0, read)
-            }
-        }
-        digest.digest().joinToString("") { byte -> "%02x".format(byte.toInt() and 0xFF) }
-    } catch (e: Exception) {
-        null
     }
 
     private fun httpGetText(url: String): String? {

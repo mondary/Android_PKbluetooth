@@ -29,9 +29,8 @@
     <!-- 触觉反馈 -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
-    <!-- 检查更新并下载新版本 APK (PK 分支构建) -->
+    <!-- 检查并下载更新（交给系统下载管理器安装，应用本身不申请安装权限） -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <!-- 唤醒屏幕以在锁屏/熄屏时展示弹窗 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -101,17 +100,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
-        <!-- 应用内更新：把下载好的 APK 交给系统安装器 -->
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
 
     </application>
 

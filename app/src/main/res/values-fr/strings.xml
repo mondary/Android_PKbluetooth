@@ -200,13 +200,10 @@
     <string name="update_available_title">Mise à jour disponible</string>
     <string name="update_available_message">La version %1$s est disponible (vous avez %2$s). La télécharger maintenant ?</string>
     <string name="update_download">Télécharger</string>
+    <string name="update_download_started">Téléchargement lancé — touchez la notification pour installer</string>
+    <string name="update_download_notification">Téléchargement de la mise à jour VibePop</string>
     <string name="update_later">Plus tard</string>
-    <string name="update_downloading">Téléchargement… %1$d%%</string>
     <string name="update_download_failed">Échec du téléchargement, vérifiez la connexion</string>
-    <string name="update_checksum_failed">Fichier téléchargé invalide (SHA-256)</string>
-    <string name="update_ready">Téléchargé, prêt à installer</string>
-    <string name="update_install_permission">Autorisez VibePop à installer des applis inconnues, puis réessayez</string>
-    <string name="update_install_failed">Impossible de lancer l’installateur</string>
 
     <!-- Accessibilité du popup -->
     <string name="popup_desc_background">Image d’arrière-plan personnalisée</string>
