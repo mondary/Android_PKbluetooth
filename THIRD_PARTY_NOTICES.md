@@ -1,13 +1,13 @@
 # Third-party notices
 
-Chrome_PKbluetooth builds on three open-source projects. Their licenses are shipped offline in the app
+Android_PKbluetooth builds on three open-source projects. Their licenses are shipped offline in the app
 (Settings → Credits) and reproduced below.
 
 ## VibePop — base application
 
 The whole app is a derivative of [VibePop](https://github.com/daloyanf/vibepop) by Fang Yan
 (Yanfist): the service, receivers, popup window and lock-screen activity, the media drawer,
-permissions and settings. Reused as-is, adapted, or extended for Chrome_PKbluetooth.
+permissions and settings. Reused as-is, adapted, or extended for Android_PKbluetooth.
 
 MIT License — Copyright (c) 2026 Fang Yan (Yanfist). Full text: `app/src/main/res/raw/vibepop_license.txt`.
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="peer_title">附近的 Chrome_PKbluetooth 设备</string>
+    <string name="peer_title">附近的 Android_PKbluetooth 设备</string>
     <string name="peer_hint">两部手机连接同一 Wi-Fi，并打开此页面。在一部手机上显示配对码；在另一部手机上选择其标识并输入配对码。配对后即可双向发送文件和文本。离开此页面将停止接收。</string>
     <string name="peer_error">传输失败。请检查地址、配对码和接收设备。</string>
     <string name="peer_invite">显示配对码（2 分钟有效）</string>

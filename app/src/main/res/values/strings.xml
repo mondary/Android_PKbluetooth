@@ -6,9 +6,9 @@
     <string name="history_title">Battery history</string>
     <string name="history_empty">No battery readings have been received yet.</string>
     <string name="history_share">Share history</string>
-    <string name="app_name">Chrome_PKbluetooth</string>
+    <string name="app_name">Android_PKbluetooth</string>
     <string name="update_ready_to_check">检查更新以获取新版本。</string>
-    <string name="updates_unavailable">Updates are not configured for Chrome_PKbluetooth yet.</string>
+    <string name="updates_unavailable">Updates are not configured for Android_PKbluetooth yet.</string>
     <string name="service_notification_title">蓝牙耳机弹窗服务运行中</string>
     <string name="service_notification_desc">正在后台监听已勾选耳机的连接状态</string>
 

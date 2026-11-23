@@ -1,5 +1,5 @@
 <resources>
-    <string name="peer_title">Appareils Chrome_PKbluetooth à proximité</string>
+    <string name="peer_title">Appareils Android_PKbluetooth à proximité</string>
     <string name="peer_hint">Ouvrez cet écran sur les deux téléphones, sur le même Wi-Fi. Sur l’un, affichez le code ; sur l’autre, choisissez son identifiant ci-dessous et saisissez le code. Les échanges de fichiers et de texte fonctionnent ensuite dans les deux sens. Quittez cet écran pour arrêter la réception.</string>
     <string name="peer_error">Échange impossible. Vérifiez l’adresse, le code et le téléphone destinataire.</string>
     <string name="peer_invite">Afficher le code (2 minutes)</string>

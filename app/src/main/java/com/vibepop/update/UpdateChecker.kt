@@ -11,7 +11,7 @@ import java.net.URL
  */
 object UpdateChecker {
 
-    const val MANIFEST_URL = "https://github.com/mondary/Chrome_PKbluetooth/releases/latest/download/update.json"
+    const val MANIFEST_URL = "https://github.com/mondary/Android_PKbluetooth/releases/latest/download/update.json"
 
     private const val TIMEOUT_MS = 20_000
     private const val USER_AGENT = "VibePop-FR-Updater"
