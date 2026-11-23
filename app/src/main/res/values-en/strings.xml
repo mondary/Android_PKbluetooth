@@ -6,8 +6,9 @@
     <string name="history_title">Battery history</string>
     <string name="history_empty">No battery readings have been received yet.</string>
     <string name="history_share">Share history</string>
-    <string name="app_name">PKbluetooth</string>
-    <string name="updates_unavailable">Updates are not configured for PKbluetooth yet.</string>
+    <string name="app_name">Chrome_PKbluetooth</string>
+    <string name="update_ready_to_check">Tap CHECK to look for a new version.</string>
+    <string name="updates_unavailable">Updates are not configured for Chrome_PKbluetooth yet.</string>
     <string name="service_notification_title">Earbud popup service running</string>
     <string name="service_notification_desc">Monitoring the connection state of your selected earbuds</string>
 

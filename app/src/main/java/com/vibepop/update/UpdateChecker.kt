@@ -11,7 +11,7 @@ import java.net.URL
  */
 object UpdateChecker {
 
-    const val MANIFEST_URL = "https://github.com/mondary/vibepop/releases/latest/download/update.json"
+    const val MANIFEST_URL = "https://github.com/mondary/Chrome_PKbluetooth/releases/latest/download/update.json"
 
     private const val TIMEOUT_MS = 20_000
     private const val USER_AGENT = "VibePop-FR-Updater"
@@ -26,9 +26,19 @@ object UpdateChecker {
 
     /** 读取发布清单，网络或格式错误时返回 null */
     fun fetchLatest(): UpdateInfo? {
-        // The inherited feed belongs to VibePop and must not update this separate app.
-        // Enable update checks only when PKbluetooth has its own release channel.
-        return null
+        val text = httpGetText(MANIFEST_URL) ?: return null
+        return try {
+            val root = JSONObject(text)
+            UpdateInfo(
+                versionCode = root.getInt("versionCode"),
+                versionName = root.getString("versionName"),
+                apkUrl = root.getString("apkUrl"),
+                sha256 = root.optString("sha256"),
+                notes = root.optString("notes")
+            )
+        } catch (e: Exception) {
+            null
+        }
     }
 
     private fun httpGetText(url: String): String? {

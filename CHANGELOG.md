@@ -1,6 +1,6 @@
 # Changelog
 
-Historique de PKbluetooth et de sa base VibePop.
+Historique de Chrome_PKbluetooth et de sa base VibePop.
 
 ---
 
@@ -14,6 +14,11 @@ Statut : `2026.11.1` — simplification de la configuration des médias
 ---
 
 ## Releases
+
+### [2026.11.4] - 2026-11-23
+
+- Renommage du produit en Chrome_PKbluetooth (nom affiché, page de partage, découverte réseau).
+- Canal de mises à jour sur GitHub Releases ; le bouton « Vérifier » des réglages est réactivé (téléchargement et installation délégués au navigateur/installeur Android).
 
 ### [2026.11.3] - 2026-11-23
 
