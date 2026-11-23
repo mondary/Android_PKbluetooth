@@ -44,12 +44,24 @@ android {
         applicationId = "com.vibepop"
         minSdk = 26
         targetSdk = 34
-        // Les builds officiels gardent la version upstream. Nos builds FR passent
-        // -PbuildNumber=<n> : 1.1.2-fr.<n> avec un versionCode toujours croissant,
-        // ce qui permet la mise à jour automatique depuis l'app.
+        // Le changelog est la source de vérité du fork FR. Le buildNumber reste
+        // accepté pour reproduire d'anciens builds de CI.
         val buildNumber = (project.findProperty("buildNumber") as String?)?.toIntOrNull()
-        versionCode = buildNumber?.let { 1_000_000 + it } ?: 4
-        versionName = buildNumber?.let { "1.1.2-fr.$it" } ?: "1.1.2"
+        val changelogVersion = rootProject.file("CHANGELOG.md")
+            .takeIf { it.exists() }
+            ?.readText()
+            ?.let { Regex("""(?m)^### \[(\d{4}\.\d{2}\.\d+)]""").find(it)?.groupValues?.get(1) }
+        val releaseVersion = (project.findProperty("frVersion") as String?) ?: changelogVersion
+        val releaseVersionCode = (project.findProperty("frVersionCode") as String?)?.toIntOrNull()
+        val calVerCode = releaseVersion
+            ?.let { Regex("""(\d{4})\.(\d{2})\.(\d+)""").matchEntire(it) }
+            ?.let { match ->
+                match.groupValues[1].toInt() * 10_000 +
+                    match.groupValues[2].toInt() * 100 +
+                    match.groupValues[3].toInt()
+            }
+        versionCode = releaseVersionCode ?: calVerCode ?: buildNumber?.let { 1_000_000 + it } ?: 4
+        versionName = releaseVersion ?: buildNumber?.let { "1.1.2-fr.$it" } ?: "1.1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

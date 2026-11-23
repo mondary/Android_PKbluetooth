@@ -145,13 +145,18 @@
     <string name="themes_title">🎨 动效工坊</string>
     <string name="themes_subtitle">为每只耳机单独设置专属动效</string>
     <string name="themes_target_label">配置目标</string>
-    <string name="themes_section_hint">耳机连接时播放的动效</string>
+    <string name="themes_section_hint">耳机连接时播放的媒体</string>
     <string name="cd_preview_theme">预览此动效</string>
     <string name="preview_need_media">请先导入一个本地媒体文件</string>
+    <string name="btn_close_drawer">关闭面板</string>
+    <string name="media_current_title">当前媒体</string>
+    <string name="media_default_active">默认动效 · 点击选择自己的媒体</string>
+    <string name="media_legacy_preset">当前使用内置视觉：%1$s</string>
+    <string name="media_change_action">更换</string>
 
-    <!-- 内置演示视觉库 -->
-    <string name="demo_library_title">🧪 内置演示视觉</string>
-    <string name="demo_library_hint">点按即应用，并立即预览弹窗效果</string>
+    <!-- 内置视觉 -->
+    <string name="media_library_title">内置视觉</string>
+    <string name="media_library_hint">点击一个视觉，将它用于此设备</string>
     <string name="demo_airpods_white">白色 AirPods</string>
     <string name="demo_shokz">Shokz 骨传导</string>
     <string name="demo_peugeot">Peugeot 3008</string>
@@ -168,8 +173,9 @@
     <string name="theme_import_section_desc">支持 MP4 视频（可带原声音效）、GIF 动图、WebP、PNG、JPG</string>
     <string name="btn_pick_media">🎬 从相册选择视频 / 图片 / 动图</string>
     <string name="theme_video_rules_title">🎬 视频播放与关闭规则</string>
-    <string name="video_dismiss_on_complete">单次播放完毕后自动关闭（推荐）</string>
-    <string name="video_dismiss_timer">固定倒计时关闭（循环播放直至计时结束）</string>
+    <string name="video_dismiss_on_complete">播放一次后关闭</string>
+    <string name="video_dismiss_timer">循环播放，直到倒计时结束</string>
+    <string name="video_loop_hint">倒计时使用全局设置中的弹窗停留时长。</string>
 
     <!-- 设备管理 -->
     <string name="devices_title">🎧 设备管理</string>
@@ -203,6 +209,8 @@
     <string name="update_browser_opened">已在浏览器中打开下载。下载完成后，请打开 APK 文件进行安装。</string>
     <string name="update_open_failed">无法打开下载链接</string>
     <string name="update_later">稍后</string>
+    <string name="support_kofi">通过 Ko-fi 支持</string>
+    <string name="support_kofi_open_failed">无法打开 Ko-fi</string>
     <string name="update_download_failed">下载失败，请检查网络</string>
 
     <!-- 弹窗无障碍描述 -->

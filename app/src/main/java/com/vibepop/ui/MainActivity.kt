@@ -264,6 +264,11 @@ class MainActivity : AppCompatActivity() {
         detail = LayoutTabThemesBinding.inflate(layoutInflater)
         detailSheet = BottomSheetDialog(this).apply {
             setContentView(detail.root)
+            findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)?.apply {
+                setBackgroundResource(R.drawable.bg_bottom_sheet)
+                clipToOutline = true
+            }
+            behavior.isFitToContents = true
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
             behavior.skipCollapsed = true
         }
@@ -304,6 +309,10 @@ class MainActivity : AppCompatActivity() {
         // Aperçu de la cible courante
         themes.btnTestPopup.setOnClickListener { previewCurrentTarget() }
 
+        // Sélection d'un média : la carte entière et son action ouvrent le sélecteur.
+        themes.cardCurrentMedia.setOnClickListener { requestMediaAndPick() }
+        themes.btnChooseCurrentMedia.setOnClickListener { requestMediaAndPick() }
+
         // Sortie haut-parleur (option globale)
         themes.switchForceSpeakerphone.setOnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.isPressed) {
@@ -319,21 +328,6 @@ class MainActivity : AppCompatActivity() {
                 viewModel.updateDismissSeconds(seconds)
             }
         }
-
-        themes.cardThemeClassic.setOnClickListener {
-            applyThemeToCurrentTarget("classic_airpods")
-        }
-        themes.cardThemeGreatVictory.setOnClickListener {
-            applyThemeToCurrentTarget("great_victory")
-        }
-        themes.cardThemeCustom.setOnClickListener {
-            applyThemeToCurrentTarget("custom_media")
-        }
-
-        // 每个主题的试听按钮：只预览，不改变当前配置
-        themes.btnPreviewClassic.setOnClickListener { previewTheme("classic_airpods") }
-        themes.btnPreviewGreatVictory.setOnClickListener { previewTheme("great_victory") }
-        themes.btnPreviewCustom.setOnClickListener { previewTheme("custom_media") }
 
         // 修改弹窗显示名称重命名
         themes.btnRenameTargetDevice.setOnClickListener {
@@ -355,70 +349,33 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // 内置演示视觉库
-        buildDemoLibrary()
+        // Visuels livrés avec l'application
+        buildIncludedVisualLibrary()
     }
 
-    /** 内置演示视觉：res/raw 里的 GIF，点按即应用为当前目标的自定义媒体 */
-    private data class DemoVisual(
+    /** Visuel intégré depuis res/raw, appliqué comme média personnalisé à la cible. */
+    private data class IncludedVisual(
         val labelRes: Int,
         val rawRes: Int,
         val fileName: String
     )
 
-    private val demoVisuals = listOf(
-        DemoVisual(R.string.demo_airpods_white, R.raw.demo_airpods_white, "airpods_white"),
-        DemoVisual(R.string.demo_open_ear, R.raw.demo_open_ear_black, "open_ear_black"),
-        DemoVisual(R.string.demo_shokz, R.raw.demo_shokz, "shokz"),
-        DemoVisual(R.string.demo_peugeot, R.raw.demo_peugeot, "peugeot")
+    private val includedVisuals = listOf(
+        IncludedVisual(R.string.demo_airpods_white, R.raw.demo_airpods_white, "airpods_white"),
+        IncludedVisual(R.string.demo_open_ear, R.raw.demo_open_ear_black, "open_ear_black"),
+        IncludedVisual(R.string.demo_shokz, R.raw.demo_shokz, "shokz"),
+        IncludedVisual(R.string.demo_peugeot, R.raw.demo_peugeot, "peugeot")
     )
 
-    private fun buildDemoLibrary() {
-        val container = detail.layoutDemoLibrary
+    private fun buildIncludedVisualLibrary() {
+        val container = detail.layoutMediaLibrary
         if (container.childCount > 0) return
 
         val density = resources.displayMetrics.density
         val size = (88 * density).toInt()
         val gap = (12 * density).toInt()
 
-        // Première tuile : choisir un média depuis la galerie
-        val pick = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            gravity = android.view.Gravity.CENTER_HORIZONTAL
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { marginEnd = gap }
-            isClickable = true
-            isFocusable = true
-            contentDescription = getString(R.string.btn_pick_media)
-            setOnClickListener { requestMediaAndPick() }
-        }
-        val pickIcon = ImageView(this).apply {
-            layoutParams = LinearLayout.LayoutParams(size, size)
-            scaleType = ImageView.ScaleType.CENTER_INSIDE
-            setBackgroundResource(R.drawable.bg_media_thumb)
-            clipToOutline = true
-            setPadding((24 * density).toInt(), (24 * density).toInt(), (24 * density).toInt(), (24 * density).toInt())
-            setImageResource(R.drawable.ic_add)
-            setColorFilter(ContextCompat.getColor(this@MainActivity, R.color.primary))
-        }
-        val pickLabel = TextView(this).apply {
-            text = getString(R.string.btn_pick_media)
-            setTextColor(ContextCompat.getColor(this@MainActivity, R.color.text_secondary))
-            textSize = 10f
-            gravity = android.view.Gravity.CENTER
-            maxLines = 2
-            layoutParams = LinearLayout.LayoutParams(
-                size,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { topMargin = (6 * density).toInt() }
-        }
-        pick.addView(pickIcon)
-        pick.addView(pickLabel)
-        container.addView(pick)
-
-        for (demo in demoVisuals) {
+        for (visual in includedVisuals) {
             val item = LinearLayout(this).apply {
                 orientation = LinearLayout.VERTICAL
                 gravity = android.view.Gravity.CENTER_HORIZONTAL
@@ -428,8 +385,8 @@ class MainActivity : AppCompatActivity() {
                 ).apply { marginEnd = gap }
                 isClickable = true
                 isFocusable = true
-                contentDescription = getString(demo.labelRes)
-                setOnClickListener { applyDemoVisual(demo) }
+                contentDescription = getString(visual.labelRes)
+                setOnClickListener { applyIncludedVisual(visual) }
             }
 
             val preview = ImageView(this).apply {
@@ -437,11 +394,11 @@ class MainActivity : AppCompatActivity() {
                 scaleType = ImageView.ScaleType.CENTER_CROP
                 setBackgroundResource(R.drawable.bg_media_thumb)
                 clipToOutline = true
-                setImageBitmap(decodeDemoThumbnail(demo.rawRes, size))
+                setImageBitmap(decodeIncludedThumbnail(visual.rawRes, size))
             }
 
             val label = TextView(this).apply {
-                text = getString(demo.labelRes)
+                text = getString(visual.labelRes)
                 setTextColor(ContextCompat.getColor(this@MainActivity, R.color.text_secondary))
                 textSize = 10f
                 gravity = android.view.Gravity.CENTER
@@ -458,7 +415,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun decodeDemoThumbnail(rawRes: Int, targetPx: Int): android.graphics.Bitmap? {
+    private fun decodeIncludedThumbnail(rawRes: Int, targetPx: Int): android.graphics.Bitmap? {
         return try {
             val bounds = android.graphics.BitmapFactory.Options().apply { inJustDecodeBounds = true }
             android.graphics.BitmapFactory.decodeResource(resources, rawRes, bounds)
@@ -477,13 +434,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun applyDemoVisual(demo: DemoVisual) {
+    private fun applyIncludedVisual(visual: IncludedVisual) {
         val address = currentThemeTargetAddress
         val applied = viewModel.applyBundledDemo(
             applicationContext,
             address,
-            demo.rawRes,
-            demo.fileName,
+            visual.rawRes,
+            visual.fileName,
             "image"
         )
         if (!applied) {
@@ -491,7 +448,7 @@ class MainActivity : AppCompatActivity() {
             return
         }
         loadThemeTargetUI(address)
-        previewTheme("custom_media")
+        previewCurrentTarget()
     }
 
     private fun showRenameDialog() {
@@ -555,23 +512,6 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun applyThemeToCurrentTarget(theme: String) {
-        val address = currentThemeTargetAddress
-        if (address == null) {
-            viewModel.updateAnimationTheme(theme)
-            loadThemeTargetUI(null)
-        } else {
-            val devConfig = viewModel.getDevicePopupConfig(address)
-            val updated = if (theme != "custom_media") {
-                devConfig.copy(animationTheme = theme, customMediaPath = null, customMediaType = "preset")
-            } else {
-                devConfig.copy(animationTheme = theme)
-            }
-            viewModel.saveDevicePopupConfig(this, address, updated)
-            loadThemeTargetUI(address)
-        }
-    }
-
     private fun loadThemeTargetUI(targetAddress: String?) {
         val config = if (targetAddress == null) {
             viewModel.popupConfig.value ?: return
@@ -589,7 +529,7 @@ class MainActivity : AppCompatActivity() {
         } ?: true
         themes.tvTargetDisabledHint.visibility = if (targetEnabled) View.GONE else View.VISIBLE
 
-        updateThemeCardsUI(config.animationTheme, config.customMediaType, config.customMediaPath)
+        updateCurrentMediaUI(config.animationTheme, config.customMediaType, config.customMediaPath)
         updateCustomMediaThumbnail(config.customMediaPath, config.customMediaType)
 
         if (config.videoDismissMode == "on_complete") {
@@ -709,6 +649,13 @@ class MainActivity : AppCompatActivity() {
         // 应用内更新
         settings.tvUpdateStatus.text = getString(R.string.update_current_version, BuildConfig.VERSION_NAME)
         settings.btnCheckUpdate.setOnClickListener { checkForUpdates() }
+        settings.btnSupportKoFi.setOnClickListener {
+            try {
+                startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse("https://ko-fi.com/pouark")))
+            } catch (e: Exception) {
+                Toast.makeText(this, getString(R.string.support_kofi_open_failed), Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     /**
@@ -836,51 +783,34 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateThemeCardsUI(theme: String, mediaType: String, mediaPath: String?) {
+    private fun updateCurrentMediaUI(theme: String, mediaType: String, mediaPath: String?) {
         val themes = detail
 
-        val activeStrokeColor = ContextCompat.getColor(this, R.color.primary)
-        val defaultStrokeColor = ContextCompat.getColor(this, R.color.card_stroke)
-        val activeStrokeWidth = (2 * resources.displayMetrics.density).toInt()
-        val defaultStrokeWidth = (1 * resources.displayMetrics.density).toInt()
-
-        // 重置三张卡片边框与对勾
-        themes.cardThemeClassic.strokeColor = defaultStrokeColor
-        themes.cardThemeClassic.strokeWidth = defaultStrokeWidth
-        themes.ivCheckClassic.visibility = View.GONE
-
-        themes.cardThemeGreatVictory.strokeColor = defaultStrokeColor
-        themes.cardThemeGreatVictory.strokeWidth = defaultStrokeWidth
-        themes.ivCheckGreatVictory.visibility = View.GONE
-
-        themes.cardThemeCustom.strokeColor = defaultStrokeColor
-        themes.cardThemeCustom.strokeWidth = defaultStrokeWidth
-        themes.ivCheckCustom.visibility = View.GONE
-
-        val isVideoTheme = theme == "great_victory" || (theme == "custom_media" && mediaType == "video")
-        themes.cardVideoOptions.visibility = if (isVideoTheme) View.VISIBLE else View.GONE
-
-        if (theme == "great_victory") {
-            themes.cardThemeGreatVictory.strokeColor = activeStrokeColor
-            themes.cardThemeGreatVictory.strokeWidth = activeStrokeWidth
-            themes.ivCheckGreatVictory.visibility = View.VISIBLE
-        } else if (theme == "custom_media") {
-            themes.cardThemeCustom.strokeColor = activeStrokeColor
-            themes.cardThemeCustom.strokeWidth = activeStrokeWidth
-            themes.ivCheckCustom.visibility = View.VISIBLE
-            val typeDesc = when (mediaType) {
-                "video" -> getString(R.string.media_type_video_mp4)
-                "image" -> getString(R.string.media_type_image_gif)
-                "lottie" -> getString(R.string.media_type_lottie)
-                else -> getString(R.string.media_type_other)
-            }
-            val fileName = mediaPath?.let { java.io.File(it).name } ?: ""
-            themes.tvCustomMediaDetail.text = if (fileName.isNotEmpty()) getString(R.string.media_active_hint, typeDesc, fileName) else getString(R.string.media_active_hint_no_file, typeDesc)
-        } else {
-            themes.cardThemeClassic.strokeColor = activeStrokeColor
-            themes.cardThemeClassic.strokeWidth = activeStrokeWidth
-            themes.ivCheckClassic.visibility = View.VISIBLE
+        val hasCustomMedia = theme == "custom_media" && !mediaPath.isNullOrBlank()
+        val typeDesc = when (mediaType) {
+            "video" -> getString(R.string.media_type_video_mp4)
+            "image" -> getString(R.string.media_type_image_gif)
+            "lottie" -> getString(R.string.media_type_lottie)
+            else -> getString(R.string.media_type_other)
         }
+        val fileName = mediaPath?.let { java.io.File(it).name }.orEmpty()
+
+        themes.tvCurrentMediaDetail.text = when {
+            hasCustomMedia && fileName.isNotBlank() ->
+                getString(R.string.media_active_hint, typeDesc, fileName)
+            hasCustomMedia ->
+                getString(R.string.media_active_hint_no_file, typeDesc)
+            theme == "great_victory" ->
+                getString(R.string.media_legacy_preset, getString(R.string.dash_theme_great_victory))
+            else -> getString(R.string.media_default_active)
+        }
+
+        val pathIsVideo = mediaPath?.let {
+            it.endsWith(".mp4", ignoreCase = true) || it.endsWith(".webm", ignoreCase = true)
+        } == true
+        val isVideoTheme = theme == "great_victory" ||
+            (theme == "custom_media" && (mediaType == "video" || pathIsVideo))
+        themes.cardVideoOptions.visibility = if (isVideoTheme) View.VISIBLE else View.GONE
     }
 
     private fun renderBondedDevices(devices: List<BondedDeviceItem>) {
@@ -1102,31 +1032,6 @@ class MainActivity : AppCompatActivity() {
         viewModel.previewPopup(applicationContext, config, previewDeviceState())
     }
 
-    /**
-     * 试听某个主题：仅用于预览，不写回任何偏好
-     */
-    private fun previewTheme(theme: String) {
-        if (!PermissionHelper.hasOverlayPermission(this)) {
-            Toast.makeText(this, getString(R.string.overlay_needed_toast), Toast.LENGTH_SHORT).show()
-            binding.bottomNav.selectedItemId = R.id.nav_settings
-            PermissionHelper.requestOverlayPermission(this)
-            return
-        }
-
-        val base = currentTargetConfig() ?: return
-        val config = if (theme == "custom_media") {
-            if (base.customMediaPath.isNullOrBlank()) {
-                Toast.makeText(this, getString(R.string.preview_need_media), Toast.LENGTH_SHORT).show()
-                return
-            }
-            base.copy(animationTheme = theme)
-        } else {
-            base.copy(animationTheme = theme, customMediaPath = null, customMediaType = "preset")
-        }
-
-        viewModel.previewPopup(applicationContext, config, previewDeviceState())
-    }
-
     private fun currentTargetConfig(): PopupConfig? =
         currentThemeTargetAddress?.let { viewModel.getDevicePopupConfig(it) } ?: viewModel.popupConfig.value
 
@@ -1143,7 +1048,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    /** 为自定义媒体卡片生成缩略图，失败时回退到调色板图标 */
+    /** Charge la vignette du média actif, avec une icône de repli si nécessaire. */
     private fun updateCustomMediaThumbnail(path: String?, type: String) {
         val themes = detail
         val lastModified = path?.let { java.io.File(it).lastModified() } ?: 0L
@@ -1165,9 +1070,9 @@ class MainActivity : AppCompatActivity() {
             }
             if (customThumbKey != key) return@launch
             if (bitmap != null) {
-                themes.ivCustomMediaThumb.setImageBitmap(bitmap)
-                themes.ivCustomMediaThumb.visibility = View.VISIBLE
-                themes.ivCustomMediaIcon.visibility = View.GONE
+                themes.ivCurrentMediaThumb.setImageBitmap(bitmap)
+                themes.ivCurrentMediaThumb.visibility = View.VISIBLE
+                themes.ivCurrentMediaIcon.visibility = View.GONE
             } else {
                 showCustomMediaIcon()
             }
@@ -1176,9 +1081,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun showCustomMediaIcon() {
         val themes = detail
-        themes.ivCustomMediaThumb.setImageDrawable(null)
-        themes.ivCustomMediaThumb.visibility = View.GONE
-        themes.ivCustomMediaIcon.visibility = View.VISIBLE
+        themes.ivCurrentMediaThumb.setImageDrawable(null)
+        themes.ivCurrentMediaThumb.visibility = View.GONE
+        themes.ivCurrentMediaIcon.visibility = View.VISIBLE
     }
 
     /**
