@@ -7,9 +7,8 @@ import android.util.LruCache
 import java.io.File
 
 /**
- * 本地多媒体封面提取：
- * 为「动效工坊」的自定义媒体卡片生成一张静态封面（视频取首帧，图片 / GIF 直接解码）。
- * 失败或文件不存在时返回 null，由调用方回退到默认图标。
+ * Load a static thumbnail from local media: the first video frame or a decoded image/GIF.
+ * Return null on failure so the caller can display a fallback icon.
  */
 object MediaThumbnailLoader {
 

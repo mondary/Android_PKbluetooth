@@ -8,16 +8,16 @@
         <item name="android:navigationBarColor">@color/bg_app</item>
         <item name="android:windowBackground">@color/bg_app</item>
 
-        <!-- 全局暗黑卡片与文字表面色 -->
+        <!-- Dark card and text colors -->
         <item name="colorSurface">@color/bg_card_dark</item>
         <item name="colorOnSurface">@color/text_primary</item>
 
-        <!-- 全局暗黑弹窗对话框主题 -->
+        <!-- Dark dialog theme -->
         <item name="materialAlertDialogTheme">@style/Theme.VibePop.Dialog</item>
         <item name="alertDialogTheme">@style/Theme.VibePop.Dialog</item>
     </style>
 
-    <!-- 弹窗对话框暗黑毛玻璃风格 -->
+    <!-- Dark popup dialog style -->
     <style name="Theme.VibePop.Dialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="colorSurface">#161B22</item>
         <item name="colorOnSurface">#FFFFFF</item>
@@ -41,7 +41,7 @@
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
-    <!-- 锁屏与前台透明浮层 Activity 主题 -->
+    <!-- Transparent lock-screen popup activity theme -->
     <style name="Theme.VibePop.Transparent" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>

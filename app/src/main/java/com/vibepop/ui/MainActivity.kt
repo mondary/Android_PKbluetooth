@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // 1. 全屏原生相册选择器（直接完整打开系统相册，避免半屏拖拽）
+    // 1. Full-screen system media picker.
     private val fullGalleryPickerLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // 2. 备用文件选择器
+    // 2. Fallback file picker.
     private val fallbackPickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
             handleMediaPicked(uri)
@@ -136,7 +136,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // 3. 相册/多媒体权限申请 Launcher
+    // 3. Media permission launcher.
     private val mediaPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) {
@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Android 12+ 未授予 BLUETOOTH_CONNECT 时注册蓝牙广播会抛 SecurityException，先检查后注册
+        // Register only once BLUETOOTH_CONNECT is granted; registration throws otherwise.
         ensureBluetoothReceiverRegistered()
 
         HeadsetMonitorService.start(this)
@@ -187,7 +187,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * 保证已授权蓝牙权限时注册系统蓝牙状态广播接收器 (Android 12+ 注册需 BLUETOOTH_CONNECT)
+     * Register the Bluetooth state receiver once permission is granted.
      */
     private fun ensureBluetoothReceiverRegistered() {
         if (bluetoothReceiverRegistered) return
@@ -201,7 +201,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * 弹窗响应策略变更为"默认全不响应"后，向升级用户展示一次性说明
+     * Show the target-policy notice once to upgrading users.
      */
     private fun showTargetPolicyNotice() {
         com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
@@ -237,7 +237,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * 底部导航：Appareils / Réglages, plus la page de détail d'une cible
+     * Bottom navigation: devices, settings and the target detail sheet.
      */
     private fun com.google.android.material.switchmaterial.SwitchMaterial.setOnChangeListenerForService() {
         setOnCheckedChangeListener { _, isChecked ->
@@ -261,7 +261,7 @@ class MainActivity : AppCompatActivity() {
         binding.tabSettingsLayout.root.visibility = if (itemId == R.id.nav_settings) View.VISIBLE else View.GONE
     }
 
-    /** 打开某个目标的配置抽屉；address 为 null 表示全局默认 */
+    /** Open a target's configuration sheet; null means the default profile. */
     private fun openDetail(address: String?) {
         ensureDetailSheet()
         currentThemeTargetAddress = address
@@ -308,7 +308,7 @@ class MainActivity : AppCompatActivity() {
 
 
     /**
-     * 1. 🏠 控制台面板交互绑定
+     * 1. Dashboard bindings.
      */
     private fun setupDashboardTab() {
         // Service de surveillance (onglet Réglages)
@@ -330,7 +330,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * 2. 🎨 配置抽屉交互绑定（首次打开时调用一次）
+     * 2. Configuration sheet bindings, called once on first open.
      */
     private fun bindDetailSheet() {
         val themes = detail
@@ -392,7 +392,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // 视频消退规则
+        // Video dismissal rule.
         themes.rgVideoDismissMode.setOnCheckedChangeListener { _, checkedId ->
             val mode = if (checkedId == R.id.rbVideoOnComplete) "on_complete" else "timer"
             val address = currentThemeTargetAddress
@@ -792,7 +792,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * 3. 🎧 设备管理面板交互绑定
+     * 3. Device management bindings.
      */
     private fun setupDevicesTab() {
         val devices = binding.tabDevicesLayout
@@ -818,7 +818,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * 4. ⚙️ 系统设置与权限面板交互绑定
+     * 4. Settings and permissions bindings.
      */
     private fun setupSettingsTab() {
         val settings = binding.tabSettingsLayout
@@ -874,7 +874,7 @@ class MainActivity : AppCompatActivity() {
             PermissionHelper.openAppDetailsOrOemSettings(this)
         }
 
-        // 应用内更新
+        // In-app updates.
         settings.tvUpdateStatus.text = getString(R.string.update_ready_to_check)
         settings.btnCheckUpdate.isEnabled = true
         settings.btnCheckUpdate.setOnClickListener { checkForUpdates() }
@@ -954,17 +954,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * 统一观察 ViewModel 状态
+     * Observe ViewModel state.
      */
     private fun observeViewModel() {
-        // 权限状态驱动
+        // Permission state.
         viewModel.isOverlayGranted.observe(this) { updatePermissionsUI() }
         viewModel.isBluetoothGranted.observe(this) { updatePermissionsUI() }
         viewModel.isNotificationGranted.observe(this) { updatePermissionsUI() }
         viewModel.isMediaGranted.observe(this) { updatePermissionsUI() }
         viewModel.isOemGranted.observe(this) { updatePermissionsUI() }
 
-        // 服务状态
+        // Service state.
         viewModel.isServiceRunning.observe(this) { running ->
             val dash = binding.tabSettingsLayout
             if (dash.switchService.isChecked != running) {
@@ -985,13 +985,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // 已配对设备列表展示与动效工坊下拉框联动
+        // Paired devices and animation target selection.
         viewModel.bondedDevices.observe(this) { devices ->
             bondedDeviceItems = devices
             renderBondedDevices(devices)
         }
 
-        // 弹窗参数配置
+        // Popup configuration.
         viewModel.popupConfig.observe(this) { config ->
             val summary = getString(R.string.devices_global_summary, themeLabel(config.animationTheme))
             binding.tabDevicesLayout.tvGlobalThemeSummary.text = summary
@@ -1048,7 +1048,7 @@ class MainActivity : AppCompatActivity() {
         updatePermissionButton(settings.btnGrantMedia, media)
         updatePermissionButton(settings.btnOpenOemSettings, oem, isOem = true)
 
-        // 控制台权限与状态警告条
+        // Permission and status warning banner.
         val missingList = mutableListOf<String>()
         if (!overlay) missingList.add(getString(R.string.perm_missing_overlay))
         if (!bluetooth) missingList.add(getString(R.string.perm_missing_bluetooth))
@@ -1076,7 +1076,7 @@ class MainActivity : AppCompatActivity() {
     ) {
         if (granted) {
             button.text = getString(R.string.btn_granted)
-            button.isEnabled = isOem // 厂商设置允许再次点击查看
+            button.isEnabled = isOem // Manufacturer settings can be reopened.
             button.setTextColor(ContextCompat.getColor(this, R.color.status_connected))
             button.strokeColor = ContextCompat.getColorStateList(this, R.color.status_connected)
         } else {
@@ -1180,7 +1180,7 @@ class MainActivity : AppCompatActivity() {
                 )
             }
 
-            // 1. 左侧：该耳机已绑定的视觉（无则回退到耳机图标）
+            // 1. Left: the device's visual, or an icon fallback.
             val thumb = ImageView(this).apply {
                 layoutParams = LinearLayout.LayoutParams((48 * density).toInt(), (48 * density).toInt())
                 scaleType = ImageView.ScaleType.CENTER_CROP
@@ -1191,7 +1191,7 @@ class MainActivity : AppCompatActivity() {
             applyTargetThumb(thumb, device.animationTheme, device.customMediaType, device.customMediaPath)
             row.addView(thumb)
 
-            // 2. 中间耳机信息
+            // 2. Middle: device details.
             val infoLayout = LinearLayout(this).apply {
                 orientation = LinearLayout.VERTICAL
                 val lp = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
@@ -1219,7 +1219,7 @@ class MainActivity : AppCompatActivity() {
             infoLayout.addView(statusSubTv)
             row.addView(infoLayout)
 
-            // 3. 右侧状态开关（仅点击此处时才切换开启/关闭状态）
+            // 3. Right: the enable switch, which toggles only when tapped directly.
             val switchBtn = com.google.android.material.switchmaterial.SwitchMaterial(this).apply {
                 isChecked = isSelected
                 isClickable = true
@@ -1329,7 +1329,7 @@ class MainActivity : AppCompatActivity() {
         else -> if (com.vibepop.overlay.BudPanel.matches(theme)) com.vibepop.overlay.BudPanel.label(theme) else getString(R.string.dash_theme_classic)
     }
 
-    /** 预览当前目标的完整配置（不修改任何偏好） */
+    /** Preview the current target without changing any preference. */
     private fun previewCurrentTarget() {
         if (!PermissionHelper.hasOverlayPermission(this)) {
             Toast.makeText(this, getString(R.string.overlay_needed_toast), Toast.LENGTH_SHORT).show()
@@ -1344,7 +1344,7 @@ class MainActivity : AppCompatActivity() {
     private fun currentTargetConfig(): PopupConfig? =
         currentThemeTargetAddress?.let { viewModel.getDevicePopupConfig(it) } ?: viewModel.popupConfig.value
 
-    /** 预览时展示当前目标耳机的真实名称，没有选中设备时退回通用文案 */
+    /** Use the target's real name for the preview, or a generic label. */
     private fun previewDeviceState(): DeviceBatteryState {
         val address = currentThemeTargetAddress ?: return DeviceBatteryState.mock()
         val deviceName = bondedDeviceItems.firstOrNull { it.address == address }?.name ?: ""
@@ -1396,7 +1396,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * 检查 GitHub 上的最新版本，有新版本时提示下载
+     * Check GitHub for a newer version and prompt to download it.
      */
     private fun checkForUpdates() {
         val settings = binding.tabSettingsLayout

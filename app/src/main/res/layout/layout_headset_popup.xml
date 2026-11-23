@@ -8,7 +8,7 @@
     android:clipChildren="false"
     android:clipToPadding="false">
 
-    <!-- 充满整个卡片的全景动效弹窗 (支持视频/动图/Lottie，高度约 240dp) -->
+    <!-- Full-card media popup, approximately 240dp high -->
     <FrameLayout
         android:id="@+id/cardPopup"
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
         android:background="@drawable/bg_popup_card"
         android:clipToOutline="true">
 
-        <!-- 第 1 层：满铺多媒体展示区 (视频 MP4 / 动图 GIF / 图片 / Lottie) -->
+        <!-- Layer 1: video, GIF, image or Lottie media -->
         <FrameLayout
             android:id="@+id/mediaContainer"
             android:layout_width="match_parent"
@@ -28,7 +28,7 @@
                 android:layout_height="match_parent"
                 android:visibility="gone" />
 
-            <!-- 视频播放 (MP4 / WebM，FillVideoView 测量期 Center Crop 满铺无黑边) -->
+            <!-- MP4 / WebM playback, center-cropped to fill -->
             <com.vibepop.overlay.FillVideoView
                 android:id="@+id/videoView"
                 android:layout_width="match_parent"
@@ -36,7 +36,7 @@
                 android:layout_gravity="center"
                 android:visibility="gone" />
 
-            <!-- 图片 / 动图 (PNG / JPG / WebP / GIF) -->
+            <!-- Images and GIFs -->
             <ImageView
                 android:id="@+id/ivCustomImage"
                 android:layout_width="match_parent"
@@ -45,7 +45,7 @@
                 android:visibility="gone"
                 android:contentDescription="@string/popup_desc_background" />
 
-            <!-- Lottie 矢量动画 (.json) -->
+            <!-- Lottie vector animation -->
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lottieAnimationView"
                 android:layout_width="match_parent"
@@ -56,14 +56,14 @@
                 app:lottie_loop="true" />
         </FrameLayout>
 
-        <!-- 第 2 层：柔和半透明景深渐变滤镜 (可按需控制) -->
+        <!-- Layer 2: optional translucent gradient -->
         <View
             android:id="@+id/viewGradientOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bg_gradient_overlay" />
 
-        <!-- 第 3 层：极简原生悬浮内容层 (无任何臃肿胶囊，纯粹轻盈) -->
+        <!-- Layer 3: device information -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -73,7 +73,7 @@
             android:paddingEnd="20dp"
             android:paddingBottom="14dp">
 
-            <!-- 顶部极简指示条 -->
+            <!-- Drag handle -->
             <ImageView
                 android:id="@+id/ivDragHandle"
                 android:layout_width="32dp"
@@ -83,7 +83,7 @@
                 android:src="@drawable/ic_pill_bar"
                 android:contentDescription="@string/popup_desc_drag" />
 
-            <!-- 顶部信息栏：左侧设备信息与连接状态，右上角真实电量胶囊徽标 -->
+            <!-- Device name, connection status and reported battery level -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <!-- 左侧设备名与状态 -->
+                <!-- Device name and connection status -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -142,7 +142,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- 右上角单一真实电量徽标 -->
+                <!-- Battery badge -->
                 <LinearLayout
                     android:id="@+id/layoutBatteryBadge"
                     android:layout_width="wrap_content"
@@ -188,7 +188,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- 留白让动画居中完美展现 -->
+            <!-- Leave space for the centered animation -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

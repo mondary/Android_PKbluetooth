@@ -2,272 +2,272 @@
     <string name="credits_title">Credits and licences</string>
     <string name="credits_body">Based on VibePop: https://github.com/daloyanf/vibepop\nFlight choreography adapted from BudPop: https://github.com/AweSanjam/BudPop\nBattery history and sharing inspired by btManage: https://github.com/fhnb16/btManage-android</string>
     <string name="share_file">Share a file</string>
-    <string name="bud_flight">BudPop 动画</string>
+    <string name="bud_flight">BudPop animations</string>
     <string name="history_title">Battery history</string>
     <string name="history_empty">No battery readings have been received yet.</string>
     <string name="history_share">Share history</string>
     <string name="app_name">PK Bluetooth</string>
-    <string name="update_ready_to_check">检查更新以获取新版本。</string>
+    <string name="update_ready_to_check">Tap CHECK to look for a new version.</string>
     <string name="updates_unavailable">Updates are not configured for PK Bluetooth yet.</string>
-    <string name="service_notification_title">蓝牙耳机弹窗服务运行中</string>
-    <string name="service_notification_desc">正在后台监听已勾选耳机的连接状态</string>
+    <string name="service_notification_title">Earbud popup service running</string>
+    <string name="service_notification_desc">Monitoring the connection state of your selected earbuds</string>
 
-    <!-- UI 基础文案 -->
-    <string name="btn_test_popup">模拟弹窗预览</string>
-    <string name="btn_confirm">确定</string>
-    <string name="btn_cancel">取消</string>
-    <string name="btn_go_settings">去设置</string>
+    <!-- Default English UI -->
+    <string name="btn_test_popup">Preview a popup</string>
+    <string name="btn_confirm">OK</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_go_settings">Go to settings</string>
 
-    <!-- 权限说明 -->
-    <string name="perm_overlay_title">悬浮窗权限（必需）</string>
-    <string name="perm_overlay_desc">允许在桌面或任意应用上方弹出耳机动效卡片</string>
-    <string name="perm_bluetooth_title">蓝牙连接权限</string>
-    <string name="perm_bluetooth_desc">用于识别耳机连接状态并读取硬件真实电量</string>
-    <string name="perm_notification_title">通知权限</string>
-    <string name="perm_notification_desc">保持前台服务常驻，防止监听进程被系统后台清理</string>
-    <string name="btn_grant">去授权</string>
-    <string name="btn_granted">已开启</string>
-    <string name="perm_missing_overlay">悬浮窗</string>
-    <string name="perm_missing_bluetooth">蓝牙权限</string>
-    <string name="perm_missing_notification">通知</string>
+    <!-- Permissions -->
+    <string name="perm_overlay_title">Display over other apps (required)</string>
+    <string name="perm_overlay_desc">Lets the earbud animation card appear over the home screen or any app</string>
+    <string name="perm_bluetooth_title">Bluetooth access</string>
+    <string name="perm_bluetooth_desc">Used to detect earbud connections and read the real battery level</string>
+    <string name="perm_notification_title">Notifications</string>
+    <string name="perm_notification_desc">Keeps the foreground service alive so the monitor is not killed in the background</string>
+    <string name="btn_grant">Allow</string>
+    <string name="btn_granted">Enabled</string>
+    <string name="perm_missing_overlay">overlay</string>
+    <string name="perm_missing_bluetooth">Bluetooth</string>
+    <string name="perm_missing_notification">notifications</string>
 
-    <!-- 弹窗设置 -->
-    <string name="setting_dismiss_delay">弹窗停留时长：%1$d 秒</string>
+    <!-- Popup settings -->
+    <string name="setting_dismiss_delay">Popup duration: %1$d s</string>
 
-    <!-- 弹窗展示文本 -->
-    <string name="default_device_name">自定义名称</string>
-    <string name="status_connected_text">已连接</string>
+    <!-- Popup content -->
+    <string name="default_device_name">Custom name</string>
+    <string name="status_connected_text">Connected</string>
     <string name="battery_unknown">--%</string>
-    <string name="device_name_fallback">蓝牙耳机</string>
-    <string name="device_name_unknown">未知设备</string>
-    <string name="name_empty_placeholder">空</string>
+    <string name="device_name_fallback">Bluetooth earbuds</string>
+    <string name="device_name_unknown">Unknown device</string>
+    <string name="name_empty_placeholder">Empty</string>
 
-    <!-- 控制台 -->
-    <string name="dash_service_running">服务运行中</string>
-    <string name="dash_service_stopped">服务已暂停</string>
-    <string name="dash_service_sub_running">已勾选耳机连接时将自动在屏幕底部唤起动效弹窗</string>
-    <string name="dash_service_sub_stopped">点击右侧开关开启耳机连接自动监听</string>
-    <string name="dash_devices_enabled">已开启 (%1$d台)</string>
-    <string name="dash_devices_none">未开启 (全不响应)</string>
-    <string name="dash_missing_perm_summary">尚有 %1$s 权限未授予，点击一键配置</string>
-    <string name="dash_bt_off_warning">⚠️ 手机系统蓝牙未开启，点击开启蓝牙</string>
+    <!-- Dashboard -->
+    <string name="dash_service_running">Service running</string>
+    <string name="dash_service_stopped">Service paused</string>
+    <string name="dash_service_sub_running">A popup appears at the bottom of the screen when a selected earbud connects</string>
+    <string name="dash_service_sub_stopped">Turn on the switch to monitor earbud connections</string>
+    <string name="dash_devices_enabled">Enabled (%1$d)</string>
+    <string name="dash_devices_none">Off (no device responds)</string>
+    <string name="dash_missing_perm_summary">Missing permission: %1$s. Tap to set it up</string>
+    <string name="dash_bt_off_warning">⚠️ Bluetooth is off — tap to turn it on</string>
     <string name="dash_theme_classic">AirPods Pro</string>
-    <string name="dash_theme_great_victory">伟大胜利</string>
-    <string name="dash_theme_custom">相册自定义</string>
+    <string name="dash_theme_great_victory">Open-ear earbuds</string>
+    <string name="dash_theme_custom">Custom media</string>
 
-    <!-- 主题与媒体类型描述 -->
-    <string name="media_type_video_mp4">视频 (MP4)</string>
-    <string name="media_type_image_gif">图片 / GIF</string>
-    <string name="media_type_lottie">Lottie 矢量</string>
-    <string name="media_type_other">相册媒体</string>
-    <string name="media_type_video_full">视频 (MP4 / 自带声音)</string>
-    <string name="media_type_image_full">图片 / GIF 动图</string>
-    <string name="media_active_hint">当前已生效：%1$s (%2$s)</string>
-    <string name="media_active_hint_no_file">当前已生效：%1$s</string>
+    <!-- Media types -->
+    <string name="media_type_video_mp4">Video (MP4)</string>
+    <string name="media_type_image_gif">Image / GIF</string>
+    <string name="media_type_lottie">Lottie vector</string>
+    <string name="media_type_other">Gallery media</string>
+    <string name="media_type_video_full">Video (MP4, with sound)</string>
+    <string name="media_type_image_full">Image / animated GIF</string>
+    <string name="media_active_hint">Active: %1$s (%2$s)</string>
+    <string name="media_active_hint_no_file">Active: %1$s</string>
 
-    <!-- 蓝牙状态提示 -->
-    <string name="bt_off_toast">⚠️ 手机蓝牙已关闭，将无法监听耳机弹窗</string>
-    <string name="bt_on_toast">✅ 手机蓝牙已开启</string>
-    <string name="bt_off_prompt_toast">⚠️ 手机蓝牙未开启，请先开启系统蓝牙</string>
-    <string name="bt_refreshed_toast">已刷新已配对蓝牙设备列表</string>
-    <string name="bt_granted_on_toast">蓝牙已授权且处于开启状态</string>
-    <string name="bt_enable_button">开启蓝牙</string>
-    <string name="bt_not_enabled_title">📡 手机蓝牙未开启</string>
-    <string name="bt_not_enabled_message">检测到系统蓝牙处于关闭状态。开启蓝牙后，PK Bluetooth 才能在耳机连接时自动触发个性化弹窗。</string>
-    <string name="bt_later">稍后开启</string>
+    <!-- Bluetooth status -->
+    <string name="bt_off_toast">⚠️ Bluetooth is off — earbud popups are disabled</string>
+    <string name="bt_on_toast">✅ Bluetooth is on</string>
+    <string name="bt_off_prompt_toast">⚠️ Bluetooth is off — turn it on first</string>
+    <string name="bt_refreshed_toast">Paired devices refreshed</string>
+    <string name="bt_granted_on_toast">Bluetooth is allowed and on</string>
+    <string name="bt_enable_button">Turn on Bluetooth</string>
+    <string name="bt_not_enabled_title">📡 Bluetooth is off</string>
+    <string name="bt_not_enabled_message">Bluetooth is currently off. Turn it on so PK Bluetooth can show your popup when the earbuds connect.</string>
+    <string name="bt_later">Later</string>
 
-    <!-- 弹窗响应策略变更提示 -->
-    <string name="target_policy_notice_title">🔔 弹窗响应策略已更新</string>
-    <string name="target_policy_notice_message">为了更精准的体验，PK Bluetooth 现在默认不会响应任何耳机。请前往「设备管理」勾选需要触发弹窗的耳机，并可为每个耳机单独定制专属动效。</string>
-    <string name="target_policy_notice_go">去设备管理</string>
-    <string name="target_policy_notice_later">知道了</string>
+    <!-- Popup target policy notice -->
+    <string name="target_policy_notice_title">🔔 Popup behaviour updated</string>
+    <string name="target_policy_notice_message">To make popups more precise, PK Bluetooth no longer responds to any earbud by default. Open Devices to pick the earbuds that should trigger a popup — each one can have its own animation.</string>
+    <string name="target_policy_notice_go">Open devices</string>
+    <string name="target_policy_notice_later">Got it</string>
 
-    <!-- 媒体导入 -->
-    <string name="import_success_global">🎉 全局 %1$s 导入成功！</string>
-    <string name="import_success_device">🎉 耳机专属多媒体导入成功！</string>
-    <string name="import_failed">导入失败，请检查文件格式</string>
-    <string name="media_perm_granted_toast">已获得媒体权限，请再次点击导入</string>
-    <string name="media_perm_needed_toast">需要媒体读取权限以导入自定义动效</string>
-    <string name="overlay_needed_toast">请先授予悬浮窗权限以展示弹窗</string>
+    <!-- Media import -->
+    <string name="import_success_global">🎉 Global %1$s imported!</string>
+    <string name="import_success_device">🎉 Media imported for this earbud!</string>
+    <string name="import_failed">Import failed — check the file format</string>
+    <string name="media_perm_granted_toast">Media access granted — tap import again</string>
+    <string name="media_perm_needed_toast">Media access is required to import your own animation</string>
+    <string name="overlay_needed_toast">Grant the overlay permission first to show popups</string>
 
-    <!-- 重命名 -->
-    <string name="rename_dialog_title">✏️ 修改弹窗显示名称</string>
-    <string name="rename_dialog_hint">弹窗显示名称（留空则展示系统蓝牙原名）</string>
-    <string name="rename_dialog_message">正在为【%1$s】设置弹窗上展示的名称：</string>
-    <string name="rename_global_default">默认设备</string>
-    <string name="rename_target_fallback">所选耳机</string>
-    <string name="rename_updated_toast">已更新弹窗显示名称为：%1$s</string>
-    <string name="rename_cleared_toast">已清空自定义名称（弹窗将显示系统原名）</string>
+    <!-- Rename -->
+    <string name="rename_dialog_title">✏️ Rename the popup</string>
+    <string name="rename_dialog_hint">Popup name (leave empty to use the Bluetooth name)</string>
+    <string name="rename_dialog_message">Name shown in the popup for “%1$s”:</string>
+    <string name="rename_global_default">Default device</string>
+    <string name="rename_target_fallback">Selected earbud</string>
+    <string name="rename_updated_toast">Popup name updated to: %1$s</string>
+    <string name="rename_cleared_toast">Custom name cleared (the Bluetooth name will be used)</string>
 
-    <!-- 设备列表 -->
-    <string name="device_empty_hint">未发现已配对的蓝牙设备。请先在系统蓝牙设置中连接配对，之后即可在此处单独配置。</string>
-    <string name="device_enabled_status">✅ 已开启弹窗响应</string>
-    <string name="device_disabled_status">⏸️ 未开启（不响应） • MAC: %1$s</string>
-    <string name="device_need_enable_toast">请先开启右侧响应开关，再进行动效配置</string>
-    <string name="device_clear_all">全部关闭</string>
-    <string name="device_clear_all_toast">已关闭全部耳机的弹窗响应</string>
-    <string name="device_none_enabled_toast">当前没有开启响应的耳机</string>
+    <!-- Devices -->
+    <string name="device_empty_hint">No paired Bluetooth device found. Pair your earbuds in the system Bluetooth settings and they will show up here for customisation.</string>
+    <string name="device_enabled_status">✅ Popup enabled</string>
+    <string name="device_disabled_status">⏸️ Off (no popup) • MAC: %1$s</string>
+    <string name="device_need_enable_toast">Turn on the switch on the right before choosing an animation</string>
+    <string name="device_clear_all">Disable all</string>
+    <string name="device_clear_all_toast">Popups disabled for all earbuds</string>
+    <string name="device_none_enabled_toast">No earbud is enabled right now</string>
 
-    <!-- 动效工坊目标切换 -->
-    <string name="theme_target_global">🌐 全局默认</string>
-    <string name="theme_target_global_plain">默认设备</string>
-    <string name="devices_paired_title">已配对耳机</string>
-    <string name="devices_paired_hint">点击设备可打开其视觉、电量记录与分享。</string>
-    <string name="devices_global_summary">默认 · 动效：%1$s</string>
-    <string name="btn_back">返回</string>
+    <!-- Theme target switcher -->
+    <string name="theme_target_global">🌐 Global default</string>
+    <string name="theme_target_global_plain">Default device</string>
+    <string name="devices_paired_title">Paired earbuds</string>
+    <string name="devices_paired_hint">Tap a device to open its visuals, history and sharing.</string>
+    <string name="devices_global_summary">Default · Animation: %1$s</string>
+    <string name="btn_back">Back</string>
     <string name="theme_target_device">🎧 %1$s</string>
-    <string name="theme_target_device_off">🎧 %1$s（未启用）</string>
-    <string name="theme_target_disabled_hint">该耳机的弹窗响应未开启，请到「设备管理」中启用</string>
+    <string name="theme_target_device_off">🎧 %1$s (off)</string>
+    <string name="theme_target_disabled_hint">Popups are off for this earbud. Enable it in the Devices tab.</string>
     <string name="spinner_arrow">%1$s  ▼</string>
 
-    <!-- 列表拼接分隔符 -->
-    <string name="list_separator">、</string>
+    <!-- List separator -->
+    <string name="list_separator">", "</string>
 
-    <!-- 通知渠道 -->
-    <string name="notification_channel_name">耳机连接监听服务</string>
-    <string name="notification_channel_desc">保持 PK Bluetooth 后台耳机弹窗监听服务常驻</string>
+    <!-- Notification channel -->
+    <string name="notification_channel_name">Earbud connection monitor</string>
+    <string name="notification_channel_desc">Keeps the PK Bluetooth monitor service running in the background</string>
 
-    <!-- 底部导航 -->
-    <string name="nav_dashboard">控制台</string>
-    <string name="nav_themes">动效工坊</string>
-    <string name="nav_devices">设备管理</string>
-    <string name="nav_settings">设置/权限</string>
+    <!-- Bottom navigation -->
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_themes">Studio</string>
+    <string name="nav_devices">Devices</string>
+    <string name="nav_settings">Settings</string>
 
-    <!-- 控制台 -->
-    <string name="app_tagline">蓝牙耳机自定义拟真弹窗</string>
-    <string name="cd_app_logo">应用图标</string>
-    <string name="dash_status_ready">服务已就绪</string>
-    <string name="dash_config_hint_title">系统配置提示</string>
-    <string name="dash_click_to_configure">点击立即配置</string>
-    <string name="dash_fix_now">去处理 ›</string>
-    <string name="dash_service_title">耳机连接后台监听</string>
-    <string name="dash_service_sub">开启后当已勾选的蓝牙耳机连接成功时，自动在屏幕底部唤起动效弹窗</string>
-    <string name="dash_preview_title">弹窗预览与控制</string>
-    <string name="dash_preview_sub">实时配置音频路由与停留时长，并一键预览暗黑拟真弹窗效果</string>
-    <string name="dash_force_speaker_title">强制手机扬声器外放声音</string>
-    <string name="dash_force_speaker_desc">即使已连接蓝牙耳机，视频动效声音也优先从手机外放喇叭播放</string>
-    <string name="dash_test_popup">✨ 模拟弹窗一键测试</string>
-    <string name="dash_snapshot_title">当前配置速览</string>
-    <string name="dash_snapshot_theme">生效主题</string>
-    <string name="dash_snapshot_target">响应目标</string>
+    <!-- Dashboard screen -->
+    <string name="app_tagline">Custom lifelike popups for Bluetooth earbuds</string>
+    <string name="cd_app_logo">App icon</string>
+    <string name="dash_status_ready">Service ready</string>
+    <string name="dash_config_hint_title">System setup needed</string>
+    <string name="dash_click_to_configure">Tap to configure now</string>
+    <string name="dash_fix_now">Fix now ›</string>
+    <string name="dash_service_title">Earbud connection monitor</string>
+    <string name="dash_service_sub">When enabled, a popup slides up from the bottom as soon as a selected earbud connects</string>
+    <string name="dash_preview_title">Popup preview &amp; controls</string>
+    <string name="dash_preview_sub">Set audio routing and display duration, then preview the dark lifelike popup in one tap</string>
+    <string name="dash_force_speaker_title">Force phone loudspeaker</string>
+    <string name="dash_force_speaker_desc">Play the animation sound through the phone speaker even with earbuds connected</string>
+    <string name="dash_test_popup">✨ Test the popup</string>
+    <string name="dash_snapshot_title">Current setup</string>
+    <string name="dash_snapshot_theme">Active theme</string>
+    <string name="dash_snapshot_target">Responding to</string>
 
-    <!-- 动效工坊 -->
-    <string name="themes_title">🎨 动效工坊</string>
-    <string name="themes_subtitle">为每只耳机单独设置专属动效</string>
-    <string name="themes_target_label">配置目标</string>
-    <string name="themes_section_hint">耳机连接时播放的媒体</string>
-    <string name="cd_preview_theme">预览此动效</string>
-    <string name="preview_need_media">请先导入一个本地媒体文件</string>
-    <string name="btn_close_drawer">关闭面板</string>
-    <string name="media_current_title">当前媒体</string>
-    <string name="media_default_active">默认动效 · 点击选择自己的媒体</string>
-    <string name="media_legacy_preset">当前使用内置视觉：%1$s</string>
-    <string name="media_change_action">浏览文件</string>
-    <string name="selected_visual_file">已选择文件：%1$s</string>
-    <string name="detail_original_name">蓝牙名称</string>
-    <string name="detail_save_name">保存</string>
-    <string name="detail_history_action">电量记录</string>
-    <string name="history_hide_action">收起记录</string>
-    <string name="history_shown_count">显示 %1$d / %2$d 条记录</string>
-    <string name="history_loading">正在加载电量记录…</string>
-    <string name="settings_history_subtitle">此设备最近的测量记录</string>
-    <string name="settings_share_file_subtitle">选择要发送的文件</string>
-    <string name="settings_lan_share_subtitle">在本地网络中交换文件</string>
-    <string name="settings_credits_subtitle">来源与许可</string>
-    <string name="settings_device_data_title">设备数据与分享</string>
-    <string name="animation_tab_visual">视觉</string>
-    <string name="animation_tab_motion">动画</string>
-    <string name="animation_browser_title">BudPop 动画</string>
-    <string name="animation_browser_hint">点击设备，在下方查看动画预览。</string>
-    <string name="animation_preview_hint">内嵌预览 · 不会打开系统弹窗</string>
+    <!-- Animation studio -->
+    <string name="themes_title">🎨 Animation studio</string>
+    <string name="themes_subtitle">Give each earbud its own animation</string>
+    <string name="themes_target_label">Customising</string>
+    <string name="themes_section_hint">Media played when the earbud connects</string>
+    <string name="cd_preview_theme">Preview this animation</string>
+    <string name="preview_need_media">Import a media file first</string>
+    <string name="btn_close_drawer">Close panel</string>
+    <string name="media_current_title">Current media</string>
+    <string name="media_default_active">Default animation · Tap to choose your media</string>
+    <string name="media_legacy_preset">Built-in visual active: %1$s</string>
+    <string name="media_change_action">Browse files</string>
+    <string name="selected_visual_file">Selected file: %1$s</string>
+    <string name="detail_original_name">Bluetooth name</string>
+    <string name="detail_save_name">Save</string>
+    <string name="detail_history_action">History</string>
+    <string name="history_hide_action">Hide history</string>
+    <string name="history_shown_count">Showing %1$d of %2$d readings</string>
+    <string name="history_loading">Loading battery history…</string>
+    <string name="settings_history_subtitle">Recent readings for this device</string>
+    <string name="settings_share_file_subtitle">Choose a file to send</string>
+    <string name="settings_lan_share_subtitle">Exchange files on your local network</string>
+    <string name="settings_credits_subtitle">Sources and licences</string>
+    <string name="settings_device_data_title">Device data</string>
+    <string name="animation_tab_visual">Visual</string>
+    <string name="animation_tab_motion">Animation</string>
+    <string name="animation_browser_title">BudPop animations</string>
+    <string name="animation_browser_hint">Tap a device to play its animated preview here.</string>
+    <string name="animation_preview_hint">Inline preview · no system popup is opened</string>
     <string name="animation_preview_caption">%1$s — %2$s</string>
-    <string name="animation_style_bare">简洁</string>
+    <string name="animation_style_bare">Bare</string>
     <string name="animation_style_lovely">Lovely</string>
     <string name="animation_style_fanciest">Fanciest</string>
-    <string name="animation_style_bare_desc">简洁卡片，仅显示图标、名称和电量。</string>
-    <string name="animation_style_lovely_desc">在屏幕底部的小卡片中播放入场动画。</string>
-    <string name="animation_style_fanciest_desc">全屏入场，设备飞过屏幕后落入卡片。</string>
-    <string name="bud_kind_earbuds">耳塞</string>
-    <string name="bud_kind_headphones">头戴耳机</string>
-    <string name="bud_kind_speaker">音箱</string>
-    <string name="bud_kind_soundbar">回音壁</string>
-    <string name="bud_kind_keyboard">键盘</string>
-    <string name="bud_kind_mouse">鼠标</string>
-    <string name="bud_kind_car">车载适配器</string>
-    <string name="bud_kind_gamepad">游戏手柄</string>
-    <string name="bud_kind_other">通用</string>
-    <string name="bud_kind_desc_earbuds">左右耳机从两侧飞入并交错。</string>
-    <string name="bud_kind_desc_headphones">头戴耳机旋转落下并弹跳。</string>
-    <string name="bud_kind_desc_speaker">音箱飞入、弹跳，然后律动。</string>
-    <string name="bud_kind_desc_soundbar">回音壁旋转滑入，均衡器随即亮起。</string>
-    <string name="bud_kind_desc_keyboard">键盘落在桌面上，按键依次波动。</string>
-    <string name="bud_kind_desc_mouse">鼠标像光标一样飞入并点击。</string>
-    <string name="bud_kind_desc_car">车载适配器驶入、刹车并开始接收信号。</string>
-    <string name="bud_kind_desc_gamepad">手柄翻转入场，按键闪烁。</string>
-    <string name="bud_kind_desc_other">卡片中显示通用设备图标。</string>
+    <string name="animation_style_bare_desc">A clean card with just the icon, name and battery.</string>
+    <string name="animation_style_lovely_desc">An animated entrance inside a compact card at the bottom.</string>
+    <string name="animation_style_fanciest_desc">A full-screen entrance, with devices flying across before they land.</string>
+    <string name="bud_kind_earbuds">Earbuds</string>
+    <string name="bud_kind_headphones">Headphones</string>
+    <string name="bud_kind_speaker">Speaker</string>
+    <string name="bud_kind_soundbar">Soundbar</string>
+    <string name="bud_kind_keyboard">Keyboard</string>
+    <string name="bud_kind_mouse">Mouse</string>
+    <string name="bud_kind_car">Car adapter</string>
+    <string name="bud_kind_gamepad">Gamepad</string>
+    <string name="bud_kind_other">Generic</string>
+    <string name="bud_kind_desc_earbuds">The pair flies in from opposite sides and crosses over.</string>
+    <string name="bud_kind_desc_headphones">Headphones drop in spinning, then bounce.</string>
+    <string name="bud_kind_desc_speaker">The speaker is lobbed in, bounces, then pulses.</string>
+    <string name="bud_kind_desc_soundbar">The soundbar slides in twirling and its EQ lights up.</string>
+    <string name="bud_kind_desc_keyboard">The keyboard drops onto the desk and its keys ripple.</string>
+    <string name="bud_kind_desc_mouse">The mouse zips in like a cursor and clicks.</string>
+    <string name="bud_kind_desc_car">The adapter drives in, brakes and picks up a signal.</string>
+    <string name="bud_kind_desc_gamepad">The controller tumbles in and its buttons flash.</string>
+    <string name="bud_kind_desc_other">A simple device icon appears in the card.</string>
 
-    <!-- 内置视觉 -->
-    <string name="media_library_title">内置视觉</string>
-    <string name="media_library_hint">点击一个视觉，将它用于此设备</string>
-    <string name="demo_airpods_white">白色 AirPods</string>
-    <string name="demo_shokz">Shokz 骨传导</string>
+    <!-- Included visuals -->
+    <string name="media_library_title">Included visuals</string>
+    <string name="media_library_hint">Tap a visual to use it for this device</string>
+    <string name="demo_airpods_white">White AirPods</string>
+    <string name="demo_shokz">Shokz headset</string>
     <string name="demo_peugeot">Peugeot 3008</string>
-    <string name="demo_open_ear">黑色开放式耳机</string>
-    <string name="themes_popup_name">弹窗显示名称</string>
-    <string name="themes_rename">✏️ 重命名</string>
-    <string name="themes_section_title">动效主题</string>
-    <string name="theme_classic_title">经典 AirPods Pro</string>
-    <string name="theme_classic_desc">拟真开盖、耳机出仓动效与右上角电量指示</string>
-    <string name="theme_victory_title">伟大胜利</string>
-    <string name="theme_victory_desc">深色背景的循环动画（无声）</string>
-    <string name="theme_custom_title">本地多媒体导入</string>
-    <string name="theme_custom_desc">点击下方按钮导入 MP4 视频或高清壁纸</string>
-    <string name="theme_import_section_desc">支持 MP4 视频（可带原声音效）、GIF 动图、WebP、PNG、JPG</string>
-    <string name="btn_pick_media">🎬 从相册选择视频 / 图片 / 动图</string>
-    <string name="theme_video_rules_title">🎬 视频播放与关闭规则</string>
-    <string name="video_dismiss_on_complete">播放一次后关闭</string>
-    <string name="video_dismiss_timer">循环播放，直到倒计时结束</string>
-    <string name="video_loop_hint">倒计时使用全局设置中的弹窗停留时长。</string>
+    <string name="demo_open_ear">Black open-ear buds</string>
+    <string name="themes_popup_name">Popup name</string>
+    <string name="themes_rename">✏️ Rename</string>
+    <string name="themes_section_title">Animation theme</string>
+    <string name="theme_classic_title">Classic AirPods Pro</string>
+    <string name="theme_classic_desc">Lifelike lid opening, earbuds leaving the case and a battery badge in the corner</string>
+    <string name="theme_victory_title">Open-ear earbuds</string>
+    <string name="theme_victory_desc">Looping animation on a dark background, silent</string>
+    <string name="theme_custom_title">Your own media</string>
+    <string name="theme_custom_desc">Use the button below to import an MP4 video or a high-res wallpaper</string>
+    <string name="theme_import_section_desc">Supports MP4 video (with sound), animated GIF, WebP, PNG and JPG</string>
+    <string name="btn_pick_media">🎬 Pick from the gallery</string>
+    <string name="theme_video_rules_title">🎬 Video playback &amp; dismiss rules</string>
+    <string name="video_dismiss_on_complete">Play once, then close</string>
+    <string name="video_dismiss_timer">Loop until the timer ends</string>
+    <string name="video_loop_hint">The countdown uses the duration set in Global settings.</string>
 
-    <!-- 设备管理 -->
-    <string name="devices_title">🎧 设备管理</string>
-    <string name="devices_subtitle">管理已配对的蓝牙耳机，开启弹窗响应并配置专属动效</string>
-    <string name="devices_targets_title">目标耳机响应列表</string>
-    <string name="devices_targets_desc">默认全不响应，仅对已开启的耳机触发弹窗；可为每个耳机单独定制专属内容</string>
-    <string name="btn_refresh">刷新列表</string>
+    <!-- Devices screen -->
+    <string name="devices_title">🎧 Devices</string>
+    <string name="devices_subtitle">Manage paired earbuds, enable popups and give each one its own animation</string>
+    <string name="devices_targets_title">Earbuds that trigger a popup</string>
+    <string name="devices_targets_desc">Nothing triggers by default — only the earbuds you enable. Each of them can have its own content.</string>
+    <string name="btn_refresh">Refresh</string>
 
-    <!-- 设置与权限 -->
-    <string name="settings_title">⚙️ 设置与权限</string>
-    <string name="settings_subtitle">监听服务、系统权限与版本更新</string>
-    <string name="settings_perms_title">🛡️ 系统必要权限</string>
-    <string name="settings_perms_desc">请确保开启以下必要权限，以保证在锁屏、桌面或应用内均可正常弹出</string>
-    <string name="perm_media_title">相册与多媒体访问权限</string>
-    <string name="perm_media_desc">用于导入本地 MP4 视频与壁纸图片</string>
-    <string name="perm_oem_title">锁屏显示与后台弹出权限</string>
-    <string name="perm_oem_desc">小米/OPPO/vivo 等系统在锁屏与后台展示弹窗必需</string>
-    <string name="settings_bg_title">💡 后台常驻运行建议</string>
-    <string name="settings_bg_body">国内主流手机系统（小米 HyperOS / 华为 HarmonyOS / OPPO ColorOS / vivo OriginOS）建议在系统「电池与性能」中将 PK Bluetooth 设置为「无限制 / 允许完全后台行为」，并在多任务后台中锁定本应用，以防后台监听进程被系统清理。</string>
+    <!-- Settings screen -->
+    <string name="settings_title">⚙️ Settings &amp; permissions</string>
+    <string name="settings_subtitle">Monitor service, system permissions and updates</string>
+    <string name="settings_perms_title">🛡️ Required permissions</string>
+    <string name="settings_perms_desc">Enable these permissions so the popup can appear on the lock screen, the home screen or in any app</string>
+    <string name="perm_media_title">Photos &amp; media access</string>
+    <string name="perm_media_desc">Used to import local MP4 videos and images</string>
+    <string name="perm_oem_title">Lock-screen &amp; background popups</string>
+    <string name="perm_oem_desc">Required on Xiaomi/OPPO/vivo builds to show popups on the lock screen and in the background</string>
+    <string name="settings_bg_title">💡 Keeping the service alive</string>
+    <string name="settings_bg_body">On Chinese Android builds (Xiaomi HyperOS, Huawei HarmonyOS, OPPO ColorOS, vivo OriginOS), set PK Bluetooth to “No restrictions” under Battery and lock it in the recent-apps screen so the system does not kill the monitoring service.</string>
 
-    <!-- 应用内更新 -->
-    <string name="update_title">🔄 应用更新</string>
-    <string name="update_check">检查更新</string>
-    <string name="update_current_version">当前版本：%1$s</string>
-    <string name="update_checking">正在检查…</string>
-    <string name="update_check_failed">无法检查更新，请稍后再试</string>
-    <string name="update_up_to_date">已是最新版本（%1$s）</string>
-    <string name="update_available_title">有新版本可用</string>
-    <string name="update_available_message">版本 %1$s 已发布（当前 %2$s）。现在打开下载吗？</string>
-    <string name="update_open_page">下载</string>
-    <string name="update_browser_opened">已在浏览器中打开下载。下载完成后，请打开 APK 文件进行安装。</string>
-    <string name="update_open_failed">无法打开下载链接</string>
-    <string name="update_later">稍后</string>
-    <string name="support_kofi">通过 Ko-fi 支持</string>
-    <string name="support_kofi_open_failed">无法打开 Ko-fi</string>
-    <string name="update_download_failed">下载失败，请检查网络</string>
+    <!-- App updates -->
+    <string name="update_title">🔄 App updates</string>
+    <string name="update_check">Check</string>
+    <string name="update_current_version">Current version: %1$s</string>
+    <string name="update_checking">Checking…</string>
+    <string name="update_check_failed">Could not check for updates, try again later</string>
+    <string name="update_up_to_date">Up to date (%1$s)</string>
+    <string name="update_available_title">Update available</string>
+    <string name="update_available_message">Version %1$s is out (you have %2$s). Open its download?</string>
+    <string name="update_open_page">Download</string>
+    <string name="update_browser_opened">Download opened in your browser. Open the downloaded APK to install it.</string>
+    <string name="update_open_failed">Could not open the download</string>
+    <string name="update_later">Later</string>
+    <string name="support_kofi">Support on Ko-fi</string>
+    <string name="support_kofi_open_failed">Could not open Ko-fi</string>
+    <string name="update_download_failed">Download failed, check your connection</string>
 
-    <!-- 弹窗无障碍描述 -->
-    <string name="popup_desc_background">自定义背景图</string>
-    <string name="popup_desc_drag">下拉收起</string>
-    <string name="popup_desc_battery">电量</string>
-    <string name="popup_desc_charging">充电中</string>
+    <!-- Popup accessibility -->
+    <string name="popup_desc_background">Custom background image</string>
+    <string name="popup_desc_drag">Drag to dismiss</string>
+    <string name="popup_desc_battery">Battery level</string>
+    <string name="popup_desc_charging">Charging</string>
 </resources>

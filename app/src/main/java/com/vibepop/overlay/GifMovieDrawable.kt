@@ -11,8 +11,8 @@ import android.os.SystemClock
 import kotlin.math.min
 
 /**
- * 基于 android.graphics.Movie 的 GIF 帧动画 Drawable。
- * Android 8.0/8.1 (API 26-27) 无 AnimatedImageDrawable，以此兜底；28+ 优先走 ImageDecoder
+ * GIF frame animation Drawable backed by android.graphics.Movie.
+ * Fallback for Android 8.0/8.1 (API 26-27); API 28+ prefers ImageDecoder.
  */
 class GifMovieDrawable(private val movie: Movie) : Drawable() {
 
@@ -31,7 +31,7 @@ class GifMovieDrawable(private val movie: Movie) : Drawable() {
         val relativeTime = if (duration > 0) ((now - startTime) % duration).toInt() else 0
         movie.setTime(relativeTime)
 
-        // 等比缩放居中绘制 (Center Crop 风格)
+        // Center-crop the frame.
         val scale = min(
             bounds.width().toFloat() / movieWidth,
             bounds.height().toFloat() / movieHeight
@@ -45,16 +45,16 @@ class GifMovieDrawable(private val movie: Movie) : Drawable() {
         movie.draw(canvas, 0f, 0f)
         canvas.restore()
 
-        // 持续刷新下一帧
+        // Keep refreshing the next frame.
         invalidateSelf()
     }
 
     override fun setAlpha(alpha: Int) {
-        // Movie 不支持透明度设置，忽略
+        // Movie does not support alpha; ignored.
     }
 
     override fun setColorFilter(colorFilter: ColorFilter?) {
-        // Movie 不支持颜色滤镜，忽略
+        // Movie does not support color filters; ignored.
     }
 
     override fun getOpacity(): Int = PixelFormat.TRANSLUCENT

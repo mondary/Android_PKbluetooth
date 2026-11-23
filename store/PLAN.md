@@ -1,7 +1,7 @@
 # PK Bluetooth — page de présentation
 
 - Public : personnes utilisant des appareils Bluetooth avec Android 8 ou supérieur.
-- Direction : bleu électrique, fond nuit, typographie éditoriale et icône Android réelle.
+- Direction : bleu électrique, fond nuit, motif Bluetooth répétable fourni par l’utilisateur, typographie éditoriale et icône Android réelle.
 - Parcours : promesse et téléchargement → personnalisation par appareil → batterie et confidentialité → installation et soutien.
 - Visuels : les quatre animations incluses dans l’app sont présentées dans des popups web reconstitués d’après `layout_headset_popup.xml` (nom, état et batterie). Les données sont fictives ; les trois styles BudPop restent des schémas explicitement illustratifs.
 - Langues : français et anglais ; détection automatique et sélection manuelle persistée si possible.

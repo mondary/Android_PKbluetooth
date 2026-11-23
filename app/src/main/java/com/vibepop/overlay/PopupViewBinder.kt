@@ -34,7 +34,7 @@ import java.io.FileInputStream
 import java.util.concurrent.Executors
 
 /**
- * 负责弹窗视图的数据绑定、全格式多媒体 (MP4视频/GIF/图片/Lottie) 加载与电量渲染
+ * Binds popup data, loads media (MP4, GIF, image, Lottie) and renders the battery badge.
  */
 class PopupViewBinder(
     private val rootView: View,
@@ -45,10 +45,10 @@ class PopupViewBinder(
     companion object {
         private const val TAG = "PopupViewBinder"
 
-        /** 图片/GIF 解码线程池：避免大图解析阻塞主线程 */
+        /** Decode images and GIFs off the main thread. */
         private val imageDecodeExecutor = Executors.newSingleThreadExecutor()
 
-        /** 采样解码目标边长：预览弹窗无需原图分辨率，控制内存占用 */
+        /** Sampled decode target; the popup does not need the original resolution. */
         private const val SAMPLE_TARGET_SIZE = 1600
     }
 
@@ -65,7 +65,7 @@ class PopupViewBinder(
 
     private val mainPostHandler = Handler(Looper.getMainLooper())
 
-    /** 最近一次绑定的充电状态：电量刷新时沿用，避免误清充电图标 */
+    /** Keep the last charging state when the battery level refreshes. */
     private var lastIsCharging = false
 
     @Volatile
@@ -74,7 +74,7 @@ class PopupViewBinder(
     fun bind(deviceState: DeviceBatteryState) {
         val context = rootView.context
 
-        // 设备名称与连接状态 (优先展示用户设置的专属名称，未设置时展示当前连接的真实蓝牙设备名称)
+        // Prefer the custom name; otherwise show the connected device name.
         val displayName = when {
             config.customDeviceName.isNotBlank() -> config.customDeviceName
             deviceState.deviceName.isNotBlank() -> deviceState.deviceName
@@ -83,17 +83,16 @@ class PopupViewBinder(
         tvDeviceName.text = displayName
         tvConnectionStatus.text = context.getString(R.string.status_connected_text)
 
-        // 绑定右上角单路真实电量
+        // Bind the reported battery level.
         lastIsCharging = deviceState.isCharging
         bindSingleBattery(deviceState.batteryLevel, deviceState.isCharging)
 
-        // 动效/多媒体选型与加载
+        // Select and load the configured media.
         setupMedia()
     }
 
     /**
-     * 弹窗显示期间收到电量广播时，仅刷新电量徽标，不重新加载媒体；
-     * 充电状态沿用最近一次已知值，不被默认值覆盖
+     * Refresh only the battery badge when a reading arrives; keep the known charging state.
      */
     fun updateBattery(batteryLevel: Int) {
         bindSingleBattery(batteryLevel, lastIsCharging)
@@ -109,14 +108,14 @@ class PopupViewBinder(
                 rootView.findViewById<View>(R.id.budFlightView).visibility = View.VISIBLE
                 return
             }
-            // 1. 如果选中了内置预设视频特效 "great_victory" (伟大胜利)
+            // 1. Built-in "great_victory" video preset.
             if (config.animationTheme == "great_victory") {
                 viewGradientOverlay?.visibility = View.GONE
                 playPresetVideo(R.raw.video_great_victory)
                 return
             }
 
-            // 2. 如果用户导入了本地媒体文件 (视频 / 图片 / Lottie)
+            // 2. Imported local media (video, image or Lottie).
             if (!config.customMediaPath.isNullOrBlank()) {
                 val file = File(config.customMediaPath)
                 if (file.exists()) {
@@ -140,7 +139,7 @@ class PopupViewBinder(
                 }
             }
 
-            // 3. 经典 AirPods 拟真 Lottie 动画加载
+            // 3. Classic AirPods Lottie animation.
             viewGradientOverlay?.visibility = View.VISIBLE
             videoView.visibility = View.GONE
             ivCustomImage.visibility = View.GONE
@@ -179,8 +178,7 @@ class PopupViewBinder(
     }
 
     /**
-     * 绑定视频播放回调：满铺裁剪由 FillVideoView 在测量期完成，
-     * 此处仅负责循环模式、音量与外放路由、播放完消退与错误降级
+     * Bind video callbacks: looping, volume, speaker routing, completion and error fallback.
      */
     private fun bindVideoListeners() {
         val isOnComplete = config.videoDismissMode == "on_complete"
@@ -188,8 +186,8 @@ class PopupViewBinder(
         videoView.onVideoPreparedExtra = prepared@{ mp ->
             if (released) return@prepared
             try {
-                mp.isLooping = !isOnComplete // 播放完消退模式下不循环；定时消退模式下循环播放
-                mp.setVolume(1.0f, 1.0f)     // 开启视频震撼原生音效
+                mp.isLooping = !isOnComplete // Loop only in timer mode.
+                mp.setVolume(1.0f, 1.0f)     // Play the video soundtrack.
                 if (config.isForceSpeakerphone) {
                     routeAudioToSpeaker(mp)
                 }
@@ -255,7 +253,7 @@ class PopupViewBinder(
             // ignore
         }
 
-        // 恢复系统默认音频路由
+        // Restore the default audio route.
         try {
             val context = rootView.context
             val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager
@@ -271,8 +269,7 @@ class PopupViewBinder(
     }
 
     /**
-     * 加载图片类媒体：GIF 走动画渲染 (28+ ImageDecoder / 26-27 Movie 兜底)，
-     * 静态图片在后台线程采样解码并按 EXIF 旋转，避免主线程 ANR 与大图 OOM
+     * Decode GIFs with ImageDecoder or Movie, and sampled still images with EXIF rotation.
      */
     private fun showImage(file: File) {
         lottieView.visibility = View.GONE
@@ -310,7 +307,7 @@ class PopupViewBinder(
                         try {
                             drawable.start()
                         } catch (e: Exception) {
-                            // 动画已启动或尚未挂载时忽略
+                            // Ignore if already started or not attached.
                         }
                     }
                 } else {
@@ -321,7 +318,7 @@ class PopupViewBinder(
     }
 
     /**
-     * GIF 帧动画解码：28+ 使用系统 ImageDecoder (AnimatedImageDrawable)，26/27 回退 Movie 自绘
+     * Decode GIFs with ImageDecoder on API 28+, falling back to Movie on API 26-27.
      */
     private fun decodeGifDrawable(bytes: ByteArray): Drawable? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -337,7 +334,7 @@ class PopupViewBinder(
     }
 
     /**
-     * 后台线程采样解码静态图片，并按 EXIF 方向旋转
+     * Sample and decode a still image off the main thread, applying EXIF rotation.
      */
     private fun decodeSampledBitmap(file: File): Bitmap? {
         return try {
@@ -424,7 +421,7 @@ class PopupViewBinder(
         tvBatteryLevel.text = "$batteryPercent%"
         ivBatteryCharging.visibility = if (isCharging) View.VISIBLE else View.GONE
 
-        // 根据电量与充电状态动态着色
+        // Color the badge by level and charging state.
         val colorRes = when {
             isCharging -> R.color.battery_charging_icon
             batteryPercent <= 20 -> R.color.battery_red

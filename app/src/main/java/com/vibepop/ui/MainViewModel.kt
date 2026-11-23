@@ -158,14 +158,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
-     * 读取指定耳机的专属弹窗配置
+     * Read the popup configuration for a device.
      */
     fun getDevicePopupConfig(address: String): PopupConfig {
         return repository.getDevicePopupConfig(address)
     }
 
     /**
-     * 保存指定耳机的专属弹窗配置并刷新列表
+     * Save a device-specific configuration and refresh the list.
      */
     fun saveDevicePopupConfig(context: Context, address: String, config: PopupConfig) {
         repository.saveDevicePopupConfig(address, config)
@@ -173,7 +173,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
-     * 为指定耳机导入专属相册媒体
+     * Import gallery media for a device.
      */
     fun importDeviceMedia(context: Context, address: String, uri: Uri): Pair<Boolean, String> {
         return try {
@@ -209,7 +209,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
-     * 导入本地全局媒体（MP4/WebM 视频 / GIF 动图 / WebP / PNG / JPG / JSON 矢量）
+     * Import global media (MP4/WebM, GIF, WebP, PNG, JPG or Lottie JSON).
      */
     fun importCustomMedia(context: Context, uri: Uri): Pair<Boolean, String> {
         return try {
@@ -252,7 +252,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
-     * 应用内置演示视觉（res/raw）：复制到应用私有目录后作为自定义媒体使用
+     * Copy a bundled visual into private storage and use it as custom media.
      */
     fun applyBundledDemo(context: Context, address: String?, rawResId: Int, fileName: String, type: String): Boolean {
         return try {
@@ -343,14 +343,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
-     * 预览指定配置（用于「动效工坊」里每个主题的试听按钮），不写回任何偏好
+     * Preview a configuration without saving any preference.
      */
     fun previewPopup(context: Context, config: PopupConfig, deviceState: DeviceBatteryState) {
         PopupWindowManager.showPopup(context, deviceState, config)
     }
 
     /**
-     * 弹窗响应策略变更（默认全不响应）一次性提示（供 MainActivity 消费）
+     * One-time target-policy notice consumed by MainActivity.
      */
     fun consumeTargetPolicyNotice(): Boolean {
         return repository.consumeTargetPolicyNotice()
@@ -360,8 +360,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         private val IMAGE_EXTENSIONS = setOf("gif", "png", "jpg", "jpeg", "webp", "bmp", "heic", "heif")
 
         /**
-         * 根据 MIME 类型与 URI 路径推导目标文件扩展名，
-         * 尽量保留原始图片扩展名，避免 JPG/WebP 内容被误存为 .png
+         * Derive the destination extension from MIME type and URI path, preserving image formats.
          */
         private fun resolveMediaExtension(mimeType: String, uri: Uri, type: String): String = when (type) {
             "video" -> if (mimeType.contains("webm") || uri.path?.lowercase()?.endsWith(".webm") == true) ".webm" else ".mp4"
@@ -384,9 +383,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 }
 
 /**
- * 根据 MIME 类型与 URI 路径识别媒体类别。
- * 仅 MP4/WebM 视为视频；MKV/AVI/MOV 等 MediaPlayer 无法播放的容器返回 "unsupported"，
- * 由调用方拒绝导入，避免改名成 .mp4 后播放静默失败
+ * Detect the media category from MIME type and URI path. Only MP4/WebM count as video;
+ * unsupported containers are rejected so they cannot fail silently after renaming.
  */
 internal fun detectMediaType(mimeTypeRaw: String?, path: String?): String {
     val mime = mimeTypeRaw?.lowercase() ?: ""

@@ -7,7 +7,7 @@ import com.vibepop.data.repository.PreferencesRepository
 import com.vibepop.service.HeadsetMonitorService
 
 /**
- * 开机自启监听
+ * Restart the monitoring service after boot.
  */
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {

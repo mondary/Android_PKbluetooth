@@ -13,7 +13,7 @@ import kotlin.math.abs
 import kotlin.math.max
 
 /**
- * 支持下拉拖拽与弹性回弹/快速下甩消除的手势监听器
+ * Swipe-down dismissal with elastic rebound and a fast fling to close.
  */
 class SlideDismissTouchListener(
     private val targetView: View,
@@ -49,13 +49,13 @@ class SlideDismissTouchListener(
 
                 if (isDragging) {
                     if (deltaY > 0) {
-                        // 向下拖动，线性位移
+                        // Follow the finger downwards.
                         targetView.translationY = deltaY
-                        // 随着下滑轻微渐隐
+                        // Fade slightly as the card slides down.
                         val progress = 1f - (deltaY / (targetView.height * 1.2f)).coerceIn(0f, 0.7f)
                         targetView.alpha = progress
                     } else {
-                        // 向上拖动做阻尼效果
+                        // Resist upward movement.
                         val dampedDelta = -((-deltaY).coerceAtMost(60f) * 0.3f)
                         targetView.translationY = dampedDelta
                     }
@@ -81,7 +81,7 @@ class SlideDismissTouchListener(
                     recycleVelocityTracker()
                     return true
                 } else {
-                    // 没有拖动，属于纯点击事件，执行普通点击响应（例如点击内部按钮）
+                    // No drag: keep normal click handling for inner buttons.
                     recycleVelocityTracker()
                     v.performClick()
                 }
@@ -91,7 +91,7 @@ class SlideDismissTouchListener(
     }
 
     /**
-     * 向下滑动消除动效
+     * Slide the card away to dismiss.
      */
     private fun animateDismiss(velocity: Float) {
         val remainingDistance = targetView.height - targetView.translationY
@@ -111,7 +111,7 @@ class SlideDismissTouchListener(
     }
 
     /**
-     * 未达阈值时回弹动效 (Overshoot 拟真弹簧质感)
+     * Spring back when the drag stays below the threshold.
      */
     private fun animateBounceBack() {
         ObjectAnimator.ofFloat(targetView, View.TRANSLATION_Y, 0f).apply {

@@ -6,7 +6,7 @@ Historique de Android_PKbluetooth et de sa base VibePop.
 
 ## TODO — Roadmap
 
-Statut : `2026.11.14` — page promotionnelle et aperçus de popups
+Statut : `2026.11.16` — dépôt entièrement francophone et anglophone
 
 - [x] Mettre le média actif au premier plan du drawer
 - [x] Restaurer le choix lecture unique / boucle pour les vidéos
@@ -21,6 +21,17 @@ Statut : `2026.11.14` — page promotionnelle et aperçus de popups
 ---
 
 ## Releases
+
+## [2026.11.16] - 2026-11-23
+
+### Changed
+- Suppression de la documentation, des ressources et des commentaires chinois ; l’anglais devient la langue par défaut du projet.
+- L’APK ne contient plus que les ressources anglaises et françaises, y compris celles des dépendances.
+
+## [2026.11.15] - 2026-11-23
+
+### Changed
+- Ajout du motif Bluetooth répétable fourni pour le fond de la page promotionnelle.
 
 ## [2026.11.14] - 2026-11-23
 
@@ -81,7 +92,7 @@ Statut : `2026.11.14` — page promotionnelle et aperçus de popups
 
 - Publication de l'APK signé et du manifeste de mise à jour à URL stable ; vérification intégrée, téléchargement dans le navigateur et confirmation par l'installeur Android.
 - Conservation de la clé de signature et workflow GitHub Actions pour publier les versions suivantes sans casser les mises à jour.
-- README anglais/français/chinois synchronisés avec le canal public.
+- README anglais/français synchronisés avec le canal public.
 
 ### [2026.11.4] - 2026-11-23
 
@@ -93,7 +104,7 @@ Statut : `2026.11.14` — page promotionnelle et aperçus de popups
 - Catalogue BudPop complet : trois styles, huit familles illustrées et rendu générique, détection ou choix manuel pour chaque appareil.
 - Partage local par navigateur et entre installations PKbluetooth : découverte DNS-SD, invitation temporaire, authentification mutuelle TLS, fichiers et texte. Boîte de réception privée et partage Android.
 - Lecture batterie GATT, widget des quatre derniers appareils, historique par appareil et courbe sur 24 h.
-- Documentation indépendante en anglais, français et chinois ; licences disponibles hors ligne.
+- Documentation indépendante en anglais et en français ; licences disponibles hors ligne.
 - Retrait des workflows de publication hérités du canal VibePop : aucun canal PKbluetooth n'existe encore.
 - Suite d'intégration instrumentée (appairage, révocations, page navigateur) exécutée et validée sur émulateur.
 

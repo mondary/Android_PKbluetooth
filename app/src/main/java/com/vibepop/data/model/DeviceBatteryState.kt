@@ -1,13 +1,13 @@
 package com.vibepop.data.model
 
 /**
- * 蓝牙耳机真实电量与连接状态模型
+ * Bluetooth device connection and reported battery state.
  */
 data class DeviceBatteryState(
     val deviceName: String = "",
     val deviceAddress: String = "",
     val isConnected: Boolean = true,
-    val batteryLevel: Int = -1,          // 0~100, -1 代表未知或未上报
+    val batteryLevel: Int = -1,          // 0..100; -1 means unknown or not reported.
     val isCharging: Boolean = false
 ) : java.io.Serializable {
     companion object {

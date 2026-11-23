@@ -2,14 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- 悬浮窗权限 -->
+    <!-- Display over other apps -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-    <!-- 前台服务权限 (含 Android 14+ connectedDevice 类别) -->
+    <!-- Foreground service, including the Android 14+ connected-device type -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
 
-    <!-- 蓝牙监听与连接权限 -->
+    <!-- Bluetooth monitoring and connection permissions -->
     <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
@@ -17,25 +17,25 @@
         android:usesPermissionFlags="neverForLocation"
         tools:targetApi="s" />
 
-    <!-- Android 13+ 相册与多媒体读取权限 -->
+    <!-- Media access on Android 13+ -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-    <!-- Android 12 及以下存储读取权限 -->
+    <!-- Storage access on Android 12 and earlier -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
 
-    <!-- Android 13+ 通知权限 -->
+    <!-- Notification permission on Android 13+ -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-    <!-- 触觉反馈 -->
+    <!-- Haptic feedback -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
-    <!-- 检查更新并在浏览器中打开官方 APK 下载链接 -->
+    <!-- Check updates and open the official APK download -->
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- 唤醒屏幕以在锁屏/熄屏时展示弹窗 -->
+    <!-- Wake the screen to display a popup -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <!-- 开机自启 -->
+    <!-- Restart monitoring after boot -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
@@ -75,7 +75,7 @@
             </intent-filter>
         </activity>
 
-        <!-- 锁屏与熄屏穿透弹窗 Activity -->
+        <!-- Popup activity for the lock screen -->
         <activity
             android:name=".ui.PopupActivity"
             android:exported="false"
@@ -86,14 +86,14 @@
             android:turnScreenOn="true"
             android:theme="@style/Theme.VibePop.Transparent" />
 
-        <!-- 蓝牙监听与保活前台服务 -->
+        <!-- Bluetooth monitoring foreground service -->
         <service
             android:name=".service.HeadsetMonitorService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="connectedDevice" />
 
-        <!-- 蓝牙广播监听器 (exported=false：仅接收系统广播，防止其他应用伪造广播触发弹窗) -->
+        <!-- Unexported receiver prevents other apps from forging Bluetooth broadcasts -->
         <receiver
             android:name=".receiver.HeadsetBroadcastReceiver"
             android:enabled="true"
@@ -107,7 +107,7 @@
             </intent-filter>
         </receiver>
 
-        <!-- 开机自启广播 -->
+        <!-- Boot receiver -->
         <receiver
             android:name=".receiver.BootReceiver"
             android:enabled="true"

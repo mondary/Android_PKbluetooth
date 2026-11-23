@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <!-- 页面标题 -->
+        <!-- Page title -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 后台监听服务 -->
+        <!-- Background monitoring service -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 权限配置中心卡片 -->
+        <!-- Permissions -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -205,7 +205,7 @@
                     android:textColor="@color/text_secondary"
                     android:textSize="11sp" />
 
-                <!-- 悬浮窗权限 -->
+                <!-- Display-over-apps permission -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -253,7 +253,7 @@
                     android:layout_marginTop="10dp"
                     android:background="@color/card_stroke" />
 
-                <!-- 蓝牙连接权限 -->
+                <!-- Bluetooth permission -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -301,7 +301,7 @@
                     android:layout_marginTop="10dp"
                     android:background="@color/card_stroke" />
 
-                <!-- 通知权限 -->
+                <!-- Notification permission -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -349,7 +349,7 @@
                     android:layout_marginTop="10dp"
                     android:background="@color/card_stroke" />
 
-                <!-- 相册/媒体访问权限 -->
+                <!-- Media access permission -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -397,7 +397,7 @@
                     android:layout_marginTop="10dp"
                     android:background="@color/card_stroke" />
 
-                <!-- 锁屏显示与后台弹出权限 (厂商专属) -->
+                <!-- Manufacturer-specific lock-screen and background permissions -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -442,7 +442,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 应用更新卡片 -->
+        <!-- App updates -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -503,7 +503,7 @@
             android:textSize="13sp"
             app:cornerRadius="12dp" />
 
-        <!-- 后台保活提示卡片 -->
+        <!-- Background service guidance -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -540,7 +540,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 页脚： crédits et licences -->
+        <!-- Footer: credits and licences -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

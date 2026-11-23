@@ -18,7 +18,7 @@ import com.vibepop.overlay.PopupMetrics
 import com.vibepop.overlay.PopupViewBinder
 
 /**
- * 专用于系统锁屏、熄屏或无悬浮窗权限场景下的穿透式弹窗 Activity
+ * Popup activity for the lock screen, a sleeping display, or missing overlay permission.
  */
 class PopupActivity : AppCompatActivity() {
 
@@ -32,7 +32,7 @@ class PopupActivity : AppCompatActivity() {
         private var currentInstance: PopupActivity? = null
 
         /**
-         * 锁屏穿透弹窗是否正在展示
+         * Whether the lock-screen popup is showing.
          */
         val isActivityRunning: Boolean
             get() = currentInstance != null
@@ -43,7 +43,7 @@ class PopupActivity : AppCompatActivity() {
             config: PopupConfig = PopupConfig()
         ) {
             try {
-                // 1. 熄屏唤醒：点亮屏幕
+                // 1. Wake the display.
                 val pm = context.getSystemService(Context.POWER_SERVICE) as? PowerManager
                 @Suppress("DEPRECATION")
                 val wakeLock = pm?.newWakeLock(
@@ -54,7 +54,7 @@ class PopupActivity : AppCompatActivity() {
                 )
                 wakeLock?.acquire(3000)
 
-                // 2. 启动锁屏穿透 Activity
+                // 2. Start the lock-screen popup activity.
                 val intent = Intent(context, PopupActivity::class.java).apply {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
                     putExtra(EXTRA_DEVICE_STATE, deviceState)
@@ -67,7 +67,7 @@ class PopupActivity : AppCompatActivity() {
         }
 
         /**
-         * 联动关闭正在展示的锁屏穿透弹窗 (例如耳机断开或新弹窗替换旧弹窗时)
+         * Dismiss the lock-screen popup when the device disconnects or a new popup replaces it.
          */
         fun dismissIfShowing() {
             currentInstance?.let { instance ->
@@ -76,7 +76,7 @@ class PopupActivity : AppCompatActivity() {
         }
 
         /**
-         * 锁屏穿透弹窗展示期间刷新对应耳机的电量徽标
+         * Refresh the battery badge while the lock-screen popup is showing.
          */
         fun updateBatteryIfShowing(deviceAddress: String, batteryLevel: Int) {
             currentInstance?.let { instance ->
@@ -119,13 +119,13 @@ class PopupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         currentInstance = this
 
-        // 1. 穿透锁屏与唤醒屏幕标志
+        // 1. Show over the lock screen and wake the display.
         setupLockScreenFlags()
 
         binding = ActivityPopupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 2. 提取传递的电量状态与配置
+        // 2. Read the device state and configuration.
         val deviceState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getSerializableExtra(EXTRA_DEVICE_STATE, DeviceBatteryState::class.java)
         } else {
@@ -142,19 +142,19 @@ class PopupActivity : AppCompatActivity() {
         currentDeviceAddress = deviceState.deviceAddress
         if (showPanel(config, deviceState)) return
 
-        // 3. 计算 40% 屏幕高度
+        // 3. Use 40% of the screen height.
         val cardView = binding.layoutPopup.cardPopup
         cardView.layoutParams = cardView.layoutParams.apply {
             height = PopupMetrics.targetPopupHeight(this@PopupActivity)
         }
 
-        // 4. 绑定多媒体与电量
+        // 4. Bind media and battery state.
         binder = PopupViewBinder(binding.layoutPopup.root, config) {
             dismiss()
         }
         binder?.bind(deviceState)
 
-        // 5. 下拉手势与自动消退统一控制器
+        // 5. Attach swipe-to-dismiss and the shared auto-dismiss controller.
         interaction = PopupInteractionController(
             cardView = cardView,
             onDismiss = { dismiss() },
@@ -163,7 +163,7 @@ class PopupActivity : AppCompatActivity() {
         interaction?.attach()
         interaction?.startAutoDismiss()
 
-        // 6. 点击外部半透明背景关闭
+        // 6. Close when the translucent backdrop is tapped.
         binding.popupActivityRoot.setOnClickListener {
             dismiss()
         }
@@ -212,7 +212,7 @@ class PopupActivity : AppCompatActivity() {
     }
 
     /**
-     * 仅刷新与当前展示设备一致的弹窗电量徽标
+     * Refresh the badge only for the device currently shown.
      */
     private fun updateBattery(deviceAddress: String, batteryLevel: Int) {
         val current = currentDeviceAddress ?: return

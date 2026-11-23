@@ -22,7 +22,7 @@ import com.vibepop.ui.MainActivity
 import com.vibepop.util.PermissionHelper
 
 /**
- * 蓝牙耳机后台常驻监听服务 (前台服务，保持广播接收器活跃)
+ * Foreground Bluetooth monitor that keeps the receiver active.
  */
 class HeadsetMonitorService : Service() {
 
