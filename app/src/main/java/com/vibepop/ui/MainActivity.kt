@@ -1120,6 +1120,7 @@ class MainActivity : AppCompatActivity() {
                 .setPositiveButton(getString(R.string.update_download)) { _, _ -> downloadUpdate(info) }
                 .setNegativeButton(getString(R.string.update_later), null)
                 .show()
+            settings.tvUpdateStatus.text = getString(R.string.update_available_title)
         }
     }
 
