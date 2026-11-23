@@ -1,0 +1,85 @@
+name: FR release
+
+# Publie une release "latest" avec l'APK signé et update.json,
+# consommés par le bouton « Vérifier » de l'app (branche fr-live uniquement).
+
+on:
+  push:
+    branches: [ "fr-live" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build & publish FR APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Decode keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 --decode > app/vibepop-fr.jks
+          cp app/vibepop-fr.jks vibepop-fr.jks
+          printf "storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=vibepop-fr.jks\n" \
+            "$KEYSTORE_PASSWORD" "$KEY_PASSWORD" "$KEY_ALIAS" > keystore.properties
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build signed release APK
+        env:
+          RUN_NUMBER: ${{ github.run_number }}
+        run: ./gradlew assembleRelease -PbuildNumber="$RUN_NUMBER" --no-daemon
+
+      - name: Build update.json
+        env:
+          RUN_NUMBER: ${{ github.run_number }}
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+        run: |
+          cp app/build/outputs/apk/release/app-release.apk VibePop-fr.apk
+          python3 - <<'PY'
+          import hashlib, json, os
+          run = int(os.environ["RUN_NUMBER"])
+          with open("VibePop-fr.apk", "rb") as fh:
+              digest = hashlib.sha256(fh.read()).hexdigest()
+          data = {
+              "versionCode": 1000000 + run,
+              "versionName": f"1.1.2-fr.{run}",
+              "apkUrl": "https://github.com/mondary/vibepop/releases/download/latest/VibePop-fr.apk",
+              "sha256": digest,
+              "notes": (os.environ.get("COMMIT_MSG") or "").splitlines()[0][:200],
+          }
+          with open("update.json", "w", encoding="utf-8") as fh:
+              json.dump(data, fh, ensure_ascii=False, indent=2)
+          print(json.dumps(data, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Publish latest release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: VibePop FR — latest build
+          body: |
+            Build automatique de la branche `fr-live`.
+            L'application le détecte via `update.json`.
+          prerelease: true
+          overwrite_files: true
+          files: |
+            VibePop-fr.apk
+            update.json
