@@ -10,6 +10,11 @@ assert.equal(scripts.length, 2);
 assert.ok(fs.existsSync(path.join(root, 'store/assets/icon.png')));
 assert.ok(fs.existsSync(path.join(root, 'store/assets/bluetooth-pattern.png')));
 assert.ok(html.includes("url('assets/bluetooth-pattern.png')"));
+for (const name of ['style-minimal','style-lovely','style-fanciest']) {
+  assert.ok(fs.existsSync(path.join(root, 'store/gifs', `${name}.gif`)));
+  assert.ok(html.includes(`${name}.gif`));
+}
+
 assert.ok(html.includes('background-repeat:no-repeat,repeat'));
 assert.ok(html.includes('https://github.com/mondary/Android_PKbluetooth/releases/latest/download/Android_PKbluetooth.apk'));
 assert.ok(html.includes('https://ko-fi.com/pouark'));

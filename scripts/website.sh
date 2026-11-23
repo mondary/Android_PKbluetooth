@@ -10,4 +10,7 @@ for name in airpods_white open_ear_black shokz peugeot; do
   cp "$ROOT/store/assets/$name.mp4" "$DEST/assets/$name.mp4"
   cp "$ROOT/store/assets/$name.jpg" "$DEST/assets/$name.jpg"
 done
+for name in style-minimal style-lovely style-fanciest; do
+  cp "$ROOT/store/gifs/$name.gif" "$DEST/assets/$name.gif"
+done
 printf 'Landing PK Bluetooth : %s\n' "$DEST"

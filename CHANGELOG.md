@@ -6,7 +6,7 @@ Historique de Android_PKbluetooth et de sa base VibePop.
 
 ## TODO — Roadmap
 
-Statut : `2026.11.18` — aperçus Shokz et Open-ear
+Statut : `2026.11.19` — styles d’animation présentés
 
 - [x] Mettre le média actif au premier plan du drawer
 - [x] Restaurer le choix lecture unique / boucle pour les vidéos
@@ -21,6 +21,11 @@ Statut : `2026.11.18` — aperçus Shokz et Open-ear
 ---
 
 ## Releases
+
+## [2026.11.19] - 2026-11-23
+
+### Added
+- Aperçus animés des styles Minimal, Lovely et Fanciest sur la page promo et dans les READMEs FR/EN.
 
 ## [2026.11.18] - 2026-11-23
 

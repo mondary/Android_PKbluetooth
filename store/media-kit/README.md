@@ -13,3 +13,5 @@
 - Aucune capture d’écran réelle de l’interface de l’application n’est disponible dans le dépôt. Les popups sont des reconstitutions web, pas des captures Android. Captures et revue visuelle mobile/desktop restent à réaliser sur un environnement de test adapté.
 
 - GIFs README : `store/gifs/popup-*.gif`, générés par `python3 scripts/generate-readme-gifs.py` (Pillow + ffmpeg, polices système macOS). Ils superposent nom, état et batterie au visuel intégré.
+
+- Styles : `store/gifs/style-*.gif`, générés par `python3 scripts/generate-style-previews.py` ; reconstitutions illustratives des entrées Minimal, Lovely et Fanciest.
