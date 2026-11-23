@@ -142,6 +142,14 @@
     <string name="themes_section_hint">Animation played when the earbud connects</string>
     <string name="cd_preview_theme">Preview this animation</string>
     <string name="preview_need_media">Import a media file first</string>
+
+    <!-- Bundled demo visuals -->
+    <string name="demo_library_title">🧪 Demo visuals</string>
+    <string name="demo_library_hint">Tap one to apply it and see the popup right away</string>
+    <string name="demo_airpods_white">White AirPods</string>
+    <string name="demo_shokz">Shokz headset</string>
+    <string name="demo_peugeot">Peugeot 3008</string>
+    <string name="demo_open_ear">Black open-ear buds</string>
     <string name="themes_popup_name">Popup name</string>
     <string name="themes_rename">✏️ Rename</string>
     <string name="themes_section_title">Animation theme</string>
@@ -175,6 +183,24 @@
     <string name="perm_oem_desc">Required on Xiaomi/OPPO/vivo builds to show popups on the lock screen and in the background</string>
     <string name="settings_bg_title">💡 Keeping the service alive</string>
     <string name="settings_bg_body">On Chinese Android builds (Xiaomi HyperOS, Huawei HarmonyOS, OPPO ColorOS, vivo OriginOS), set VibePop to “No restrictions” under Battery and lock it in the recent-apps screen so the system does not kill the monitoring service.</string>
+
+    <!-- App updates -->
+    <string name="update_title">🔄 App updates</string>
+    <string name="update_check">Check</string>
+    <string name="update_current_version">Current version: %1$s</string>
+    <string name="update_checking">Checking…</string>
+    <string name="update_check_failed">Could not check for updates, try again later</string>
+    <string name="update_up_to_date">Up to date (%1$s)</string>
+    <string name="update_available_title">Update available</string>
+    <string name="update_available_message">Version %1$s is out (you have %2$s). Download it now?</string>
+    <string name="update_download">Download</string>
+    <string name="update_later">Later</string>
+    <string name="update_downloading">Downloading… %1$d%%</string>
+    <string name="update_download_failed">Download failed, check your connection</string>
+    <string name="update_checksum_failed">Downloaded file is invalid (SHA-256 mismatch)</string>
+    <string name="update_ready">Downloaded, ready to install</string>
+    <string name="update_install_permission">Allow VibePop to install unknown apps, then try again</string>
+    <string name="update_install_failed">Could not start the installer</string>
 
     <!-- Popup accessibility -->
     <string name="popup_desc_background">Custom background image</string>

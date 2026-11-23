@@ -44,13 +44,21 @@ android {
         applicationId = "com.vibepop"
         minSdk = 26
         targetSdk = 34
-        versionCode = 4
-        versionName = "1.1.2"
+        // Les builds officiels gardent la version upstream. Nos builds FR passent
+        // -PbuildNumber=<n> : 1.1.2-fr.<n> avec un versionCode toujours croissant,
+        // ce qui permet la mise à jour automatique depuis l'app.
+        val buildNumber = (project.findProperty("buildNumber") as String?)?.toIntOrNull()
+        versionCode = buildNumber?.let { 1_000_000 + it } ?: 4
+        versionName = buildNumber?.let { "1.1.2-fr.$it" } ?: "1.1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {

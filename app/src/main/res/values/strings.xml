@@ -142,6 +142,14 @@
     <string name="themes_section_hint">耳机连接时播放的动效</string>
     <string name="cd_preview_theme">预览此动效</string>
     <string name="preview_need_media">请先导入一个本地媒体文件</string>
+
+    <!-- 内置演示视觉库 -->
+    <string name="demo_library_title">🧪 内置演示视觉</string>
+    <string name="demo_library_hint">点按即应用，并立即预览弹窗效果</string>
+    <string name="demo_airpods_white">白色 AirPods</string>
+    <string name="demo_shokz">Shokz 骨传导</string>
+    <string name="demo_peugeot">Peugeot 3008</string>
+    <string name="demo_open_ear">黑色开放式耳机</string>
     <string name="themes_popup_name">弹窗显示名称</string>
     <string name="themes_rename">✏️ 重命名</string>
     <string name="themes_section_title">动效主题</string>
@@ -175,6 +183,24 @@
     <string name="perm_oem_desc">小米/OPPO/vivo 等系统在锁屏与后台展示弹窗必需</string>
     <string name="settings_bg_title">💡 后台常驻运行建议</string>
     <string name="settings_bg_body">国内主流手机系统（小米 HyperOS / 华为 HarmonyOS / OPPO ColorOS / vivo OriginOS）建议在系统「电池与性能」中将 VibePop 设置为「无限制 / 允许完全后台行为」，并在多任务后台中锁定本应用，以防后台监听进程被系统清理。</string>
+
+    <!-- 应用内更新 -->
+    <string name="update_title">🔄 应用更新</string>
+    <string name="update_check">检查更新</string>
+    <string name="update_current_version">当前版本：%1$s</string>
+    <string name="update_checking">正在检查…</string>
+    <string name="update_check_failed">无法检查更新，请稍后再试</string>
+    <string name="update_up_to_date">已是最新版本（%1$s）</string>
+    <string name="update_available_title">有新版本可用</string>
+    <string name="update_available_message">版本 %1$s 已发布（当前 %2$s）。现在下载吗？</string>
+    <string name="update_download">下载</string>
+    <string name="update_later">稍后</string>
+    <string name="update_downloading">正在下载… %1$d%%</string>
+    <string name="update_download_failed">下载失败，请检查网络</string>
+    <string name="update_checksum_failed">下载的文件无效（SHA-256 校验失败）</string>
+    <string name="update_ready">已下载，可以安装</string>
+    <string name="update_install_permission">请允许 VibePop 安装未知来源应用，然后重试</string>
+    <string name="update_install_failed">无法启动安装器</string>
 
     <!-- 弹窗无障碍描述 -->
     <string name="popup_desc_background">自定义背景图</string>

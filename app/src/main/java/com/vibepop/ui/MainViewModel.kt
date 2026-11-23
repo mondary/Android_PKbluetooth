@@ -251,6 +251,51 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    /**
+     * 应用内置演示视觉（res/raw）：复制到应用私有目录后作为自定义媒体使用
+     */
+    fun applyBundledDemo(context: Context, address: String?, rawResId: Int, fileName: String, type: String): Boolean {
+        return try {
+            val suffix = address?.let { "_" + it.replace(":", "_").uppercase() } ?: ""
+            val destFile = File(context.filesDir, "demo_${fileName}${suffix}.gif")
+            context.resources.openRawResource(rawResId).use { input ->
+                FileOutputStream(destFile).use { output -> input.copyTo(output) }
+            }
+
+            if (address.isNullOrBlank()) {
+                repository.saveCustomMedia(destFile.absolutePath, type, 0f, 0f, 1f, 1f)
+                repository.saveAnimationTheme("custom_media")
+                _popupConfig.value = _popupConfig.value?.copy(
+                    animationTheme = "custom_media",
+                    customMediaPath = destFile.absolutePath,
+                    customMediaType = type,
+                    cropLeft = 0f,
+                    cropTop = 0f,
+                    cropRight = 1f,
+                    cropBottom = 1f
+                )
+            } else {
+                val current = repository.getDevicePopupConfig(address)
+                repository.saveDevicePopupConfig(
+                    address,
+                    current.copy(
+                        animationTheme = "custom_media",
+                        customMediaPath = destFile.absolutePath,
+                        customMediaType = type,
+                        cropLeft = 0f,
+                        cropTop = 0f,
+                        cropRight = 1f,
+                        cropBottom = 1f
+                    )
+                )
+                refreshBondedDevices(context)
+            }
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
     fun toggleTargetDevice(address: String) {
         val currentTargets = (_popupConfig.value?.targetDeviceAddresses ?: emptySet()).toMutableSet()
         if (currentTargets.contains(address)) {

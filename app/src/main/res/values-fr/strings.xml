@@ -142,6 +142,14 @@
     <string name="themes_section_hint">Animation jouée à la connexion de l’écouteur</string>
     <string name="cd_preview_theme">Aperçu de cette animation</string>
     <string name="preview_need_media">Importez d’abord un média</string>
+
+    <!-- Bibliothèque de démos -->
+    <string name="demo_library_title">🧪 Visuels de démo</string>
+    <string name="demo_library_hint">Touchez pour appliquer et voir le rendu tout de suite</string>
+    <string name="demo_airpods_white">AirPods blancs</string>
+    <string name="demo_shokz">Shokz</string>
+    <string name="demo_peugeot">Peugeot 3008</string>
+    <string name="demo_open_ear">Open-ear noirs</string>
     <string name="themes_popup_name">Nom du popup</string>
     <string name="themes_rename">✏️ Renommer</string>
     <string name="themes_section_title">Thème d’animation</string>
@@ -175,6 +183,24 @@
     <string name="perm_oem_desc">Requis sur Xiaomi/OPPO/vivo pour afficher le popup sur l’écran verrouillé et en arrière-plan</string>
     <string name="settings_bg_title">💡 Garder le service actif</string>
     <string name="settings_bg_body">Sur les surcouches Android chinoises (Xiaomi HyperOS, Huawei HarmonyOS, OPPO ColorOS, vivo OriginOS), réglez VibePop sur « Aucune restriction » dans Batterie et verrouillez l’app dans les tâches récentes pour que le système ne tue pas le service de surveillance.</string>
+
+    <!-- Mises à jour de l’app -->
+    <string name="update_title">🔄 Mises à jour</string>
+    <string name="update_check">Vérifier</string>
+    <string name="update_current_version">Version actuelle : %1$s</string>
+    <string name="update_checking">Vérification…</string>
+    <string name="update_check_failed">Impossible de vérifier, réessayez plus tard</string>
+    <string name="update_up_to_date">À jour (%1$s)</string>
+    <string name="update_available_title">Mise à jour disponible</string>
+    <string name="update_available_message">La version %1$s est disponible (vous avez %2$s). La télécharger maintenant ?</string>
+    <string name="update_download">Télécharger</string>
+    <string name="update_later">Plus tard</string>
+    <string name="update_downloading">Téléchargement… %1$d%%</string>
+    <string name="update_download_failed">Échec du téléchargement, vérifiez la connexion</string>
+    <string name="update_checksum_failed">Fichier téléchargé invalide (SHA-256)</string>
+    <string name="update_ready">Téléchargé, prêt à installer</string>
+    <string name="update_install_permission">Autorisez VibePop à installer des applis inconnues, puis réessayez</string>
+    <string name="update_install_failed">Impossible de lancer l’installateur</string>
 
     <!-- Accessibilité du popup -->
     <string name="popup_desc_background">Image d’arrière-plan personnalisée</string>

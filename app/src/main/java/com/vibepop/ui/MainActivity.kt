@@ -18,10 +18,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.vibepop.R
+import com.vibepop.BuildConfig
 import com.vibepop.data.model.DeviceBatteryState
 import com.vibepop.data.model.PopupConfig
 import com.vibepop.databinding.ActivityMainBinding
 import com.vibepop.service.HeadsetMonitorService
+import com.vibepop.update.UpdateChecker
 import com.vibepop.util.MediaThumbnailLoader
 import com.vibepop.util.PermissionHelper
 import kotlinx.coroutines.Dispatchers
@@ -336,6 +338,107 @@ class MainActivity : AppCompatActivity() {
 
         // 即使暂时没有可用的已配对设备，也要让「全局默认」这一项可见
         setupThemesDropdown(bondedDeviceItems)
+
+        // 内置演示视觉库
+        buildDemoLibrary()
+    }
+
+    /** 内置演示视觉：res/raw 里的 GIF，点按即应用为当前目标的自定义媒体 */
+    private data class DemoVisual(
+        val labelRes: Int,
+        val rawRes: Int,
+        val fileName: String
+    )
+
+    private val demoVisuals = listOf(
+        DemoVisual(R.string.demo_airpods_white, R.raw.demo_airpods_white, "airpods_white"),
+        DemoVisual(R.string.demo_open_ear, R.raw.demo_open_ear_black, "open_ear_black"),
+        DemoVisual(R.string.demo_shokz, R.raw.demo_shokz, "shokz"),
+        DemoVisual(R.string.demo_peugeot, R.raw.demo_peugeot, "peugeot")
+    )
+
+    private fun buildDemoLibrary() {
+        val container = binding.tabThemesLayout.layoutDemoLibrary
+        if (container.childCount > 0) return
+
+        val density = resources.displayMetrics.density
+        val size = (88 * density).toInt()
+        val gap = (12 * density).toInt()
+
+        for (demo in demoVisuals) {
+            val item = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                gravity = android.view.Gravity.CENTER_HORIZONTAL
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { marginEnd = gap }
+                isClickable = true
+                isFocusable = true
+                contentDescription = getString(demo.labelRes)
+                setOnClickListener { applyDemoVisual(demo) }
+            }
+
+            val preview = ImageView(this).apply {
+                layoutParams = LinearLayout.LayoutParams(size, size)
+                scaleType = ImageView.ScaleType.CENTER_CROP
+                setBackgroundResource(R.drawable.bg_media_thumb)
+                clipToOutline = true
+                setImageBitmap(decodeDemoThumbnail(demo.rawRes, size))
+            }
+
+            val label = TextView(this).apply {
+                text = getString(demo.labelRes)
+                setTextColor(ContextCompat.getColor(this@MainActivity, R.color.text_secondary))
+                textSize = 10f
+                gravity = android.view.Gravity.CENTER
+                maxLines = 2
+                layoutParams = LinearLayout.LayoutParams(
+                    size,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { topMargin = (6 * density).toInt() }
+            }
+
+            item.addView(preview)
+            item.addView(label)
+            container.addView(item)
+        }
+    }
+
+    private fun decodeDemoThumbnail(rawRes: Int, targetPx: Int): android.graphics.Bitmap? {
+        return try {
+            val bounds = android.graphics.BitmapFactory.Options().apply { inJustDecodeBounds = true }
+            android.graphics.BitmapFactory.decodeResource(resources, rawRes, bounds)
+            val shortest = minOf(bounds.outWidth, bounds.outHeight)
+            var sample = 1
+            while (shortest / (sample * 2) >= targetPx) {
+                sample *= 2
+            }
+            android.graphics.BitmapFactory.decodeResource(
+                resources,
+                rawRes,
+                android.graphics.BitmapFactory.Options().apply { inSampleSize = sample }
+            )
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun applyDemoVisual(demo: DemoVisual) {
+        val address = currentThemeTargetAddress
+        val applied = viewModel.applyBundledDemo(
+            applicationContext,
+            address,
+            demo.rawRes,
+            demo.fileName,
+            "image"
+        )
+        if (!applied) {
+            Toast.makeText(this, getString(R.string.import_failed), Toast.LENGTH_SHORT).show()
+            return
+        }
+        loadThemeTargetUI(address)
+        previewTheme("custom_media")
     }
 
     private fun showRenameDialog() {
@@ -610,6 +713,10 @@ class MainActivity : AppCompatActivity() {
         settings.btnOpenOemSettings.setOnClickListener {
             PermissionHelper.openAppDetailsOrOemSettings(this)
         }
+
+        // 应用内更新
+        settings.tvUpdateStatus.text = getString(R.string.update_current_version, BuildConfig.VERSION_NAME)
+        settings.btnCheckUpdate.setOnClickListener { checkForUpdates() }
     }
 
     /**
@@ -983,6 +1090,107 @@ class MainActivity : AppCompatActivity() {
         themes.ivCustomMediaThumb.setImageDrawable(null)
         themes.ivCustomMediaThumb.visibility = View.GONE
         themes.ivCustomMediaIcon.visibility = View.VISIBLE
+    }
+
+    /**
+     * 检查 GitHub 上的最新版本，有新版本时提示下载
+     */
+    private fun checkForUpdates() {
+        val settings = binding.tabSettingsLayout
+        settings.btnCheckUpdate.isEnabled = false
+        settings.pbUpdate.visibility = View.GONE
+        settings.tvUpdateStatus.text = getString(R.string.update_checking)
+
+        lifecycleScope.launch {
+            val info = withContext(Dispatchers.IO) { UpdateChecker.fetchLatest() }
+            settings.btnCheckUpdate.isEnabled = true
+
+            if (info == null) {
+                settings.tvUpdateStatus.text = getString(R.string.update_check_failed)
+                return@launch
+            }
+            if (info.versionCode <= BuildConfig.VERSION_CODE) {
+                settings.tvUpdateStatus.text = getString(R.string.update_up_to_date, info.versionName)
+                return@launch
+            }
+
+            com.google.android.material.dialog.MaterialAlertDialogBuilder(this@MainActivity)
+                .setTitle(getString(R.string.update_available_title))
+                .setMessage(getString(R.string.update_available_message, info.versionName, BuildConfig.VERSION_NAME))
+                .setPositiveButton(getString(R.string.update_download)) { _, _ -> downloadUpdate(info) }
+                .setNegativeButton(getString(R.string.update_later), null)
+                .show()
+        }
+    }
+
+    private fun downloadUpdate(info: UpdateChecker.UpdateInfo) {
+        val settings = binding.tabSettingsLayout
+        settings.btnCheckUpdate.isEnabled = false
+        settings.pbUpdate.visibility = View.VISIBLE
+        settings.pbUpdate.progress = 0
+        settings.tvUpdateStatus.text = getString(R.string.update_downloading, 0)
+
+        lifecycleScope.launch {
+            val target = java.io.File(cacheDir, "updates/VibePop-fr-${info.versionCode}.apk")
+            val downloaded = withContext(Dispatchers.IO) {
+                UpdateChecker.downloadApk(info.apkUrl, target) { percent ->
+                    runOnUiThread {
+                        settings.pbUpdate.progress = percent
+                        settings.tvUpdateStatus.text = getString(R.string.update_downloading, percent)
+                    }
+                }
+            }
+
+            settings.pbUpdate.visibility = View.GONE
+            settings.btnCheckUpdate.isEnabled = true
+
+            if (!downloaded) {
+                settings.tvUpdateStatus.text = getString(R.string.update_download_failed)
+                return@launch
+            }
+
+            val digest = withContext(Dispatchers.IO) { UpdateChecker.sha256(target) }
+            if (info.sha256.isNotBlank() && !info.sha256.equals(digest, ignoreCase = true)) {
+                target.delete()
+                settings.tvUpdateStatus.text = getString(R.string.update_checksum_failed)
+                return@launch
+            }
+
+            settings.tvUpdateStatus.text = getString(R.string.update_ready)
+            installUpdate(target)
+        }
+    }
+
+    private fun installUpdate(file: java.io.File) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !packageManager.canRequestPackageInstalls()) {
+            Toast.makeText(this, getString(R.string.update_install_permission), Toast.LENGTH_LONG).show()
+            try {
+                startActivity(
+                    Intent(
+                        android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                        android.net.Uri.parse("package:$packageName")
+                    )
+                )
+            } catch (e: Exception) {
+                // 某些系统没有该设置页，忽略
+            }
+            return
+        }
+
+        try {
+            val uri = androidx.core.content.FileProvider.getUriForFile(
+                this,
+                "$packageName.fileprovider",
+                file
+            )
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, "application/vnd.android.package-archive")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(this, getString(R.string.update_install_failed), Toast.LENGTH_LONG).show()
+        }
     }
 }
 
