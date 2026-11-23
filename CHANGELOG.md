@@ -1,6 +1,6 @@
 # Changelog
 
-Historique des modifications de la branche française `fr-live`.
+Historique de PKbluetooth et de sa base VibePop.
 
 ---
 
@@ -14,6 +14,28 @@ Statut : `2026.11.1` — simplification de la configuration des médias
 ---
 
 ## Releases
+
+### [2026.11.3] - 2026-11-23
+
+- Catalogue BudPop complet : trois styles, huit familles illustrées et rendu générique, détection ou choix manuel pour chaque appareil.
+- Partage local par navigateur et entre installations PKbluetooth : découverte DNS-SD, invitation temporaire, authentification mutuelle TLS, fichiers et texte. Boîte de réception privée et partage Android.
+- Lecture batterie GATT, widget des quatre derniers appareils, historique par appareil et courbe sur 24 h.
+- Documentation indépendante en anglais, français et chinois ; licences disponibles hors ligne.
+- Retrait des workflows de publication hérités du canal VibePop : aucun canal PKbluetooth n'existe encore.
+- Suite d'intégration instrumentée (appairage, révocations, page navigateur) exécutée et validée sur émulateur.
+
+### [2026.11.2] - 2026-11-23
+
+#### Changed
+- Attribution d’un identifiant Android distinct pour permettre la cohabitation avec VibePop.
+- Désactivation du flux de mises à jour hérité en attendant un canal PKbluetooth.
+- Nom d’application PKbluetooth et désactivation de la publication automatique héritée.
+
+#### Added
+- Historique local des niveaux de batterie reçus, conservation 30 jours et partage texte via Android.
+- Animation d’écouteurs adaptée de la trajectoire BudPop, sélectionnable par appareil.
+- Partage d’un fichier au moyen du sélecteur et du menu de partage Android.
+- Crédits des trois projets et notice de licence BudPop dans les réglages.
 
 ### [2026.11.1] - 2026-11-23
 

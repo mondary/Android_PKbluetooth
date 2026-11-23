@@ -23,6 +23,7 @@ import com.vibepop.R
 import com.vibepop.BuildConfig
 import com.vibepop.data.model.DeviceBatteryState
 import com.vibepop.data.model.PopupConfig
+import com.vibepop.data.repository.BatteryHistory
 import com.vibepop.databinding.ActivityMainBinding
 import com.vibepop.databinding.LayoutTabThemesBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -83,6 +84,16 @@ class MainActivity : AppCompatActivity() {
     private val fallbackPickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
             handleMediaPicked(uri)
+        }
+    }
+
+    private val shareFilePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) {
+            val mime = contentResolver.getType(uri) ?: "application/octet-stream"
+            val send = Intent(Intent.ACTION_SEND).setType(mime)
+                .putExtra(Intent.EXTRA_STREAM, uri)
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            startActivity(Intent.createChooser(send, getString(R.string.share_file)))
         }
     }
 
@@ -241,6 +252,8 @@ class MainActivity : AppCompatActivity() {
     private fun openDetail(address: String?) {
         ensureDetailSheet()
         currentThemeTargetAddress = address
+        detail.btnDeviceHistory.visibility = if (address == null) View.GONE else View.VISIBLE
+        detail.btnDeviceHistory.setOnClickListener { showBatteryHistory(address) }
 
         detail.tvDetailTitle.text = if (address == null) {
             getString(R.string.theme_target_global_plain)
@@ -308,6 +321,23 @@ class MainActivity : AppCompatActivity() {
 
         // Aperçu de la cible courante
         themes.btnTestPopup.setOnClickListener { previewCurrentTarget() }
+        themes.btnBudFlight.setOnClickListener {
+            val styles = app.budpop.core.Style.entries
+            val kinds = app.budpop.core.Kind.entries
+            androidx.appcompat.app.AlertDialog.Builder(this).setTitle(R.string.bud_style)
+                .setItems(styles.map { it.label }.toTypedArray()) { _, which ->
+                    androidx.appcompat.app.AlertDialog.Builder(this).setTitle(R.string.bud_kind)
+                        .setItems((listOf(getString(R.string.bud_auto)) + kinds.map { it.label }).toTypedArray()) { _, index ->
+                            val address = currentThemeTargetAddress
+                            val theme = "budpop:${styles[which].key}:${kinds.getOrNull(index - 1)?.key ?: "auto"}"
+                            if (address == null) viewModel.updateAnimationTheme(theme)
+                            else viewModel.saveDevicePopupConfig(this, address, viewModel.getDevicePopupConfig(address)
+                                .copy(animationTheme = theme, customMediaPath = null, customMediaType = "preset"))
+                            loadThemeTargetUI(address)
+                            previewCurrentTarget()
+                        }.show()
+                }.show()
+        }
 
         // Sélection d'un média : la carte entière et son action ouvrent le sélecteur.
         themes.cardCurrentMedia.setOnClickListener { requestMediaAndPick() }
@@ -608,6 +638,17 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setupSettingsTab() {
         val settings = binding.tabSettingsLayout
+        settings.btnBatteryHistory.setOnClickListener { showBatteryHistory() }
+        settings.btnShareFile.setOnClickListener { shareFilePicker.launch("*/*") }
+        settings.btnLanShare.setOnClickListener { startActivity(Intent(this, com.vibepop.share.ShareActivity::class.java)) }
+        settings.btnCredits.setOnClickListener {
+            val license = listOf(R.raw.budpop_license, R.raw.vibepop_license, R.raw.btmanage_license)
+                .joinToString("\n\n") { resources.openRawResource(it).bufferedReader().use { reader -> reader.readText() } }
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle(R.string.credits_title)
+                .setMessage(getString(R.string.credits_body) + "\n\n" + license)
+                .setPositiveButton(android.R.string.ok, null).show()
+        }
 
         settings.btnGrantOverlay.setOnClickListener {
             PermissionHelper.requestOverlayPermission(this)
@@ -647,8 +688,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 应用内更新
-        settings.tvUpdateStatus.text = getString(R.string.update_current_version, BuildConfig.VERSION_NAME)
-        settings.btnCheckUpdate.setOnClickListener { checkForUpdates() }
+        settings.tvUpdateStatus.text = getString(R.string.updates_unavailable)
+        settings.btnCheckUpdate.isEnabled = false
         settings.btnSupportKoFi.setOnClickListener {
             try {
                 startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse("https://ko-fi.com/pouark")))
@@ -656,6 +697,35 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.support_kofi_open_failed), Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun showBatteryHistory(address: String? = null) = lifecycleScope.launch {
+        val since = System.currentTimeMillis() - 86_400_000L
+        val (rows, points) = withContext(Dispatchers.IO) { BatteryHistory(this@MainActivity).use {
+            it.recent(address) to (address?.let { a -> it.day(a,since) } ?: emptyList())
+        } }
+        val date = java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.SHORT, java.text.DateFormat.SHORT)
+        val text = if (rows.isEmpty()) getString(R.string.history_empty) else rows.joinToString("\n") {
+            "${date.format(java.util.Date(it.timestamp))} · ${it.name} · ${it.level}%"
+        }
+        val body = LinearLayout(this@MainActivity).apply {
+            orientation = LinearLayout.VERTICAL
+            val pad = (16 * resources.displayMetrics.density).toInt(); setPadding(pad,0,pad,pad)
+            if (address != null && points.isNotEmpty()) {
+                addView(TextView(context).apply { setText(R.string.chart_24h) })
+                addView(BatteryPlot(context,since,points), -1, 8*pad)
+            }
+            addView(TextView(context).apply { this.text = text; setTextIsSelectable(true) })
+        }
+        androidx.appcompat.app.AlertDialog.Builder(this@MainActivity)
+            .setTitle(rows.firstOrNull()?.name?.takeIf { address != null } ?: getString(R.string.history_title))
+            .setView(android.widget.ScrollView(this@MainActivity).apply { addView(body) })
+            .setPositiveButton(android.R.string.ok, null)
+            .setNeutralButton(R.string.history_share) { _, _ ->
+                val share = Intent(Intent.ACTION_SEND).setType("text/plain")
+                    .putExtra(Intent.EXTRA_TEXT, text)
+                startActivity(Intent.createChooser(share, getString(R.string.history_share)))
+            }.show()
     }
 
     /**
@@ -802,6 +872,8 @@ class MainActivity : AppCompatActivity() {
                 getString(R.string.media_active_hint_no_file, typeDesc)
             theme == "great_victory" ->
                 getString(R.string.media_legacy_preset, getString(R.string.dash_theme_great_victory))
+            theme == "bud_flight" -> getString(R.string.bud_flight)
+            com.vibepop.overlay.BudPanel.matches(theme) -> com.vibepop.overlay.BudPanel.label(theme)
             else -> getString(R.string.media_default_active)
         }
 
@@ -943,6 +1015,8 @@ class MainActivity : AppCompatActivity() {
     /** Affiche la vignette du visuel lié à une cible (vidéo, GIF, image), ou une icône */
     private fun applyTargetThumb(iv: ImageView, theme: String, mediaType: String?, mediaPath: String?) {
         when {
+            com.vibepop.overlay.BudPanel.matches(theme) -> showThumbIcon(iv,
+                app.budpop.core.Kind.of(theme.substringAfterLast(':'))?.icon ?: R.drawable.ic_bluetooth)
             theme == "great_victory" -> loadRawVideoThumb(iv, R.raw.video_great_victory)
             theme == "custom_media" && !mediaPath.isNullOrBlank() && mediaType == "lottie" ->
                 showThumbIcon(iv, R.drawable.ic_nav_palette)
@@ -1015,9 +1089,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun themeLabel(theme: String): String = when (theme) {
+        "bud_flight" -> getString(R.string.bud_flight)
         "great_victory" -> getString(R.string.dash_theme_great_victory)
         "custom_media" -> getString(R.string.dash_theme_custom)
-        else -> getString(R.string.dash_theme_classic)
+        else -> if (com.vibepop.overlay.BudPanel.matches(theme)) com.vibepop.overlay.BudPanel.label(theme) else getString(R.string.dash_theme_classic)
     }
 
     /** 预览当前目标的完整配置（不修改任何偏好） */

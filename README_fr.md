@@ -1,0 +1,57 @@
+# PKbluetooth
+
+> Application Android qui affiche un popup personnalisé quand un appareil Bluetooth se connecte, enregistre ses niveaux de batterie réels et échange des fichiers entre vos appareils.
+> Construite sur [VibePop](https://github.com/daloyanf/vibepop), avec des styles de popup adaptés de [BudPop](https://github.com/AweSanjam/BudPop) et des fonctions batterie/partage inspirées de [btManage](https://github.com/fhnb16/btManage-android). Voir [les notices](THIRD_PARTY_NOTICES.md).
+
+![Icône](icon.png)
+
+[🇬🇧 English](README.md) · [🇫🇷 Français](README_fr.md) · [🇨🇳 中文](README_zh.md)
+
+PKbluetooth est une application indépendante (`design.mondary.pkbluetooth`) : elle s'installe à côté de VibePop, et aucune des deux ne met l'autre à jour. Le popup apparaît à la connexion d'un appareil listé en liste blanche, y compris sur l'écran de verrouillé ; chaque appareil peut avoir son média, son nom et sa durée.
+
+## Popup et médias
+
+- Le drawer centre le média actif ; remplacez-le depuis le sélecteur Android, ou gardez un visuel intégré.
+- Les vidéos se lisent une fois puis ferment le popup, ou bouclent jusqu'à la fin du compte à rebours.
+- Trois styles de carte BudPop — minimal, lovely, fanciest — avec neuf familles d'appareils (écouteurs, casques, enceintes, barres de son, claviers, souris, adaptateurs voiture, manettes, autre), dessinées à la volée en Kotlin. La famille est détectée depuis l'appareil, ou forcée par appareil.
+- Tout se prévisualise : le bouton de test rejoue la configuration exacte de la cible courante.
+
+## Batterie
+
+- Seuls les niveaux réellement transmis par l'appareil sont enregistrés, dans une base SQLite locale, dédoublonnés, conservés 30 jours.
+- L'historique liste les 500 dernières mesures, par appareil ou globalement, avec une courbe sur 24 heures ; il se partage en texte.
+- Les appareils qui ne remontent rien via Android sont lus via le service GATT Batterie standard (et les bracelets Huami via leur caractéristique propre).
+- Un widget d'écran d'accueil affiche le dernier niveau de quatre appareils.
+
+## Partage
+
+- **Partage navigateur** : une page servie sur le réseau local ; tout appareil disposant du lien peut récupérer les fichiers proposés et renvoyer fichiers ou texte. HTTP en clair sur un réseau de confiance, protégé par une clé aléatoire, révoquée à l'arrêt.
+- **PKbluetooth vers PKbluetooth** : deux installations se découvrent sur le réseau local, s'appairent une fois par un code à six chiffres, puis échangent fichiers et texte dans les deux sens. Chaque connexion est authentifiée mutuellement par une clé propre à l'installation qui ne quitte jamais le Keystore Android ; un pair oublié ne peut plus se reconnecter.
+- Les éléments reçus arrivent dans une boîte de réception privée, ouverts ou transférés via le menu de partage Android.
+
+## Build et tests
+
+JDK 17 et un SDK Android.
+
+```bash
+./gradlew test assembleDebug
+```
+
+Aucun canal de diffusion n'existe encore ; la vérification de mises à jour est désactivée dans l'application en attendant. Les vérifications de partage de bout en bout s'exécutent sur un appareil ou un émulateur :
+
+```bash
+./gradlew assembleDebugAndroidTest
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+adb install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+adb shell am instrument -w design.mondary.pkbluetooth.test/com.vibepop.qa.IntegrationRunner
+```
+
+Consultez le [CHANGELOG](CHANGELOG.md) pour l'historique complet et [README_zh.md](README_zh.md) pour les notes du projet amont.
+
+## Soutenir
+
+[❤️ Soutenir ce projet sur Ko-fi](https://ko-fi.com/pouark)
+
+## Licence
+
+[MIT](LICENSE)

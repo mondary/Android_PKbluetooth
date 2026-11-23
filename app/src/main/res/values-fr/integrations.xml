@@ -1,0 +1,29 @@
+<resources>
+    <string name="peer_title">Appareils PKbluetooth à proximité</string>
+    <string name="peer_hint">Ouvrez cet écran sur les deux téléphones, sur le même Wi-Fi. Sur l’un, affichez le code ; sur l’autre, choisissez son identifiant ci-dessous et saisissez le code. Les échanges de fichiers et de texte fonctionnent ensuite dans les deux sens. Quittez cet écran pour arrêter la réception.</string>
+    <string name="peer_error">Échange impossible. Vérifiez l’adresse, le code et le téléphone destinataire.</string>
+    <string name="peer_invite">Afficher le code (2 minutes)</string>
+    <string name="peer_manual">Associer par adresse</string>
+    <string name="peer_address">Adresse:port affichés sur le téléphone destinataire</string>
+    <string name="peer_code">Code affiché sur le téléphone destinataire</string>
+    <string name="peer_text">Partager du texte</string>
+    <string name="peer_forget">Oublier cet appareil</string>
+    <string name="peer_done">Terminé</string>
+    <string name="lan_share">Partage Wi-Fi</string>
+    <string name="lan_hint">Ouvrez le lien dans un navigateur sur le même réseau de confiance. Les échanges se font en HTTP. Toute personne disposant du lien peut échanger des fichiers et du texte jusqu’à l’arrêt du partage.</string>
+    <string name="lan_off">Partage arrêté</string>
+    <string name="lan_start">Démarrer le partage</string>
+    <string name="lan_stop">Arrêter le partage</string>
+    <string name="lan_link">Partager le lien</string>
+    <string name="lan_choose">Proposer des fichiers</string>
+    <string name="lan_withdraw">Retirer : %1$s</string>
+    <string name="lan_delete">Supprimer</string>
+    <string name="lan_inbox">Reçus sur ce téléphone</string>
+    <string name="lan_empty">Aucun élément reçu</string>
+    <string name="lan_no_address">Aucune adresse IPv4 locale</string>
+    <string name="lan_refresh">Actualiser la réception</string>
+    <string name="bud_style">Style du popup</string>
+    <string name="bud_kind">Animation de l’appareil</string>
+    <string name="bud_auto">Détection automatique</string>
+    <string name="chart_24h">Dernières 24 heures</string>
+</resources>

@@ -32,6 +32,7 @@ object PopupWindowManager {
 
     private var currentBinder: PopupViewBinder? = null
     private var currentDeviceAddress: String? = null
+    private var budPanel: BudPanel? = null
 
     /**
      * 显示拟真耳机弹窗
@@ -68,6 +69,31 @@ object PopupWindowManager {
         try {
             val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
             windowManager = wm
+            if (BudPanel.matches(config.animationTheme)) {
+                val wrap = WindowManager.LayoutParams.WRAP_CONTENT
+                val fill = WindowManager.LayoutParams.MATCH_PARENT
+                val params = WindowManager.LayoutParams(wrap, wrap,
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+                    PixelFormat.TRANSLUCENT)
+                val panel = BudPanel(context, config, deviceState, { full ->
+                    params.width = if (full) fill else wrap
+                    params.height = params.width
+                    popupView?.let { if (it.isAttachedToWindow) wm.updateViewLayout(it, params) }
+                }, { dismissPopup(immediate = true) })
+                budPanel = panel
+                val card = panel.card
+                params.gravity = card.gravity
+                params.y = card.offsetY
+                if (card.startsFullScreen) { params.width = fill; params.height = fill }
+                popupView = card.root
+                wm.addView(card.root, params)
+                currentDeviceAddress = deviceState.deviceAddress
+                isShowing = true
+                panel.start()
+                if (config.isVibrationEnabled) triggerHapticFeedback(context)
+                return
+            }
 
             // 2. 加载弹窗布局 (使用 ContextThemeWrapper 赋予 MaterialComponents 主题)
             val themedContext = androidx.appcompat.view.ContextThemeWrapper(context, R.style.Theme_VibePop)
@@ -168,6 +194,7 @@ object PopupWindowManager {
         if (!current.equals(deviceAddress, ignoreCase = true)) return
         try {
             currentBinder?.updateBattery(batteryLevel)
+            budPanel?.battery(batteryLevel)
         } catch (e: Exception) {
             Log.w(TAG, "Failed to update battery on showing popup: ${e.message}")
         }
@@ -180,6 +207,9 @@ object PopupWindowManager {
     fun dismissPopup(immediate: Boolean = false) {
         // 悬浮窗与锁屏穿透弹窗共用生命周期：任何关闭请求都应联动关闭 PopupActivity
         PopupActivity.dismissIfShowing()
+        if (!immediate) budPanel?.let { it.dismiss(); return }
+        budPanel?.dispose()
+        budPanel = null
 
         popupInteraction?.cancel()
         popupInteraction = null

@@ -101,6 +101,14 @@ class PopupViewBinder(
 
     private fun setupMedia() {
         try {
+            if (config.animationTheme == "bud_flight") {
+                videoView.visibility = View.GONE
+                ivCustomImage.visibility = View.GONE
+                lottieView.visibility = View.GONE
+                viewGradientOverlay?.visibility = View.VISIBLE
+                rootView.findViewById<View>(R.id.budFlightView).visibility = View.VISIBLE
+                return
+            }
             // 1. 如果选中了内置预设视频特效 "great_victory" (伟大胜利)
             if (config.animationTheme == "great_victory") {
                 viewGradientOverlay?.visibility = View.GONE

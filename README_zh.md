@@ -1,3 +1,16 @@
+# PKbluetooth（VibePop 血统）
+
+> 蓝牙设备连接时显示自定义弹窗、记录真实电量并在设备之间传输文件的 Android 应用。
+> 基于 [VibePop](https://github.com/daloyanf/vibepop) 构建，弹窗样式改编自 [BudPop](https://github.com/AweSanjam/BudPop)，电量与分享功能受 [btManage](https://github.com/fhnb16/btManage-android) 启发。详见[第三方声明](THIRD_PARTY_NOTICES.md)。
+
+![应用图标](icon.png)
+
+[🇬🇧 English](README.md) · [🇫🇷 Français](README_fr.md) · [🇨🇳 中文](README_zh.md)
+
+PKbluetooth 是独立应用（`design.mondary.pkbluetooth`）：可与 VibePop 并存安装，互不更新。除本节外，以下为上游 VibePop 项目说明。
+
+---
+
 # VibePop - 蓝牙耳机自定义拟真弹窗框架
 
 [![Version](https://img.shields.io/badge/Version-1.1.2-blue.svg)](https://github.com/daloyanf/vibepop/releases/tag/v1.1.2)

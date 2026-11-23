@@ -89,6 +89,31 @@ class PopupActivity : AppCompatActivity() {
     private var binder: PopupViewBinder? = null
     private var interaction: PopupInteractionController? = null
     private var currentDeviceAddress: String? = null
+    private var panel: com.vibepop.overlay.BudPanel? = null
+
+    private fun showPanel(config: PopupConfig, state: DeviceBatteryState): Boolean {
+        val host = binding.popupActivityRoot
+        panel?.let { it.dispose(); host.removeView(it.card.root) }
+        panel = null
+        binding.layoutPopup.root.visibility = android.view.View.VISIBLE
+        if (!com.vibepop.overlay.BudPanel.matches(config.animationTheme)) return false
+        interaction?.cancel()
+        binder?.release()
+        binder = null
+        binding.layoutPopup.root.visibility = android.view.View.GONE
+        val p = com.vibepop.overlay.BudPanel(this, config, state, { full ->
+            panel?.card?.root?.let { v -> v.layoutParams = v.layoutParams.apply {
+                width = if (full) -1 else -2; height = width
+            } }
+        }, { dismiss() })
+        panel = p
+        val card = p.card
+        val size = if (card.startsFullScreen) -1 else -2
+        host.addView(card.root, android.widget.FrameLayout.LayoutParams(size, size, card.gravity))
+        host.setOnClickListener { p.dismiss() }
+        p.start()
+        return true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,6 +140,7 @@ class PopupActivity : AppCompatActivity() {
             intent.getSerializableExtra(EXTRA_POPUP_CONFIG) as? PopupConfig
         } ?: PopupConfig()
         currentDeviceAddress = deviceState.deviceAddress
+        if (showPanel(config, deviceState)) return
 
         // 3. 计算 40% 屏幕高度
         val cardView = binding.layoutPopup.cardPopup
@@ -161,6 +187,8 @@ class PopupActivity : AppCompatActivity() {
             intent.getSerializableExtra(EXTRA_POPUP_CONFIG) as? PopupConfig
         } ?: PopupConfig()
         currentDeviceAddress = deviceState.deviceAddress
+        if (showPanel(config, deviceState)) return
+        binding.popupActivityRoot.setOnClickListener { dismiss() }
 
         val cardView = binding.layoutPopup.cardPopup
         cardView.layoutParams = cardView.layoutParams.apply {
@@ -190,6 +218,7 @@ class PopupActivity : AppCompatActivity() {
         val current = currentDeviceAddress ?: return
         if (current.isBlank() || !current.equals(deviceAddress, ignoreCase = true)) return
         binder?.updateBattery(batteryLevel)
+        panel?.battery(batteryLevel)
     }
 
     private fun setupLockScreenFlags() {
@@ -217,6 +246,7 @@ class PopupActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        panel?.dispose()
         super.onDestroy()
         if (currentInstance === this) {
             currentInstance = null

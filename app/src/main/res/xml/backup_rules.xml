@@ -2,4 +2,6 @@
 <!-- 云端备份排除本地偏好：避免耳机 MAC 白名单等设备敏感信息上传 -->
 <full-backup-content>
     <exclude domain="sharedpref" path="."/>
+    <exclude domain="database" path="battery_history.db"/>
+    <exclude domain="file" path="pk-inbox/"/>
 </full-backup-content>

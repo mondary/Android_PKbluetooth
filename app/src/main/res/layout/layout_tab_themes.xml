@@ -134,6 +134,13 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBudFlight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/bud_flight" />
+
         <!-- Média actuellement attribué -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardCurrentMedia"
@@ -449,5 +456,9 @@
             app:iconGravity="textStart"
             app:iconTint="#FFFFFF" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDeviceHistory" android:visibility="gone"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/history_title"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
