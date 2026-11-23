@@ -18,9 +18,11 @@ Android_PKbluetooth est une application indépendante (`design.mondary.pkbluetoo
 ## Popup et médias
 
 - Le drawer centre le média actif ; remplacez-le depuis le sélecteur Android, ou gardez un visuel intégré.
+- L’atelier sépare les onglets **Visuel** et **Animation**. Parcourez les familles BudPop et lancez leur aperçu animé dans le panneau avant de choisir.
+- Le renommage et l’historique batterie se déplient dans ce même panneau ; historique et crédits s’ouvrent aussi directement dans les réglages.
 - Les vidéos se lisent une fois puis ferment le popup, ou bouclent jusqu'à la fin du compte à rebours.
 - Trois styles de carte BudPop — minimal, lovely, fanciest — avec neuf familles d'appareils (écouteurs, casques, enceintes, barres de son, claviers, souris, adaptateurs voiture, manettes, autre), dessinées à la volée en Kotlin. La famille est détectée depuis l'appareil, ou forcée par appareil.
-- Tout se prévisualise : le bouton de test rejoue la configuration exacte de la cible courante.
+- Le bouton de test rejoue toujours la configuration exacte du popup de la cible courante.
 
 ## Batterie
 

@@ -10,6 +10,8 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -32,6 +34,13 @@ import com.vibepop.service.HeadsetMonitorService
 import com.vibepop.update.UpdateChecker
 import com.vibepop.util.MediaThumbnailLoader
 import com.vibepop.util.PermissionHelper
+import app.budpop.core.BudState
+import app.budpop.core.Kind
+import app.budpop.core.Style
+import app.budpop.popup.BareCard
+import app.budpop.popup.FlyCard
+import app.budpop.popup.PopupActions
+import app.budpop.popup.PopupView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -48,6 +57,9 @@ class MainActivity : AppCompatActivity() {
     private var bluetoothReceiverRegistered = false
     private var bondedDeviceItems = listOf<BondedDeviceItem>()
     private var customThumbKey: String? = null
+    private var animationKind = Kind.EARBUDS
+    private var animationStyle = Style.LOVELY
+    private var syncingAnimationStyle = false
 
     private val bluetoothStateReceiver = object : android.content.BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -253,7 +265,9 @@ class MainActivity : AppCompatActivity() {
         ensureDetailSheet()
         currentThemeTargetAddress = address
         detail.btnDeviceHistory.visibility = if (address == null) View.GONE else View.VISIBLE
-        detail.btnDeviceHistory.setOnClickListener { showBatteryHistory(address) }
+        detail.btnDeviceHistory.setText(R.string.detail_history_action)
+        detail.cardDeviceHistory.visibility = View.GONE
+        detail.btnDeviceHistory.setOnClickListener { toggleDeviceHistory(address) }
 
         detail.tvDetailTitle.text = if (address == null) {
             getString(R.string.theme_target_global_plain)
@@ -265,6 +279,8 @@ class MainActivity : AppCompatActivity() {
             if (address == null) View.VISIBLE else View.GONE
 
         loadThemeTargetUI(address)
+        syncAnimationBrowser(currentTargetConfig()?.animationTheme ?: "classic_airpods")
+        detail.detailTabs.getTabAt(0)?.select()
         detailSheet?.show()
     }
 
@@ -319,24 +335,32 @@ class MainActivity : AppCompatActivity() {
         // Retour depuis le drawer
         themes.btnBackToDevices.setOnClickListener { closeDetail() }
 
-        // Aperçu de la cible courante
+        themes.detailTabs.addTab(themes.detailTabs.newTab().setText(R.string.animation_tab_visual))
+        themes.detailTabs.addTab(themes.detailTabs.newTab().setText(R.string.animation_tab_motion))
+        themes.detailTabs.addOnTabSelectedListener(object : com.google.android.material.tabs.TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: com.google.android.material.tabs.TabLayout.Tab) {
+                val showVisuals = tab.position == 0
+                themes.visualContent.visibility = if (showVisuals) View.VISIBLE else View.GONE
+                themes.animationContent.visibility = if (showVisuals) View.GONE else View.VISIBLE
+            }
+
+            override fun onTabUnselected(tab: com.google.android.material.tabs.TabLayout.Tab) = Unit
+            override fun onTabReselected(tab: com.google.android.material.tabs.TabLayout.Tab) = Unit
+        })
+
+        // L’aperçu animé est intégré au panneau ; le bouton de test garde le popup réel.
         themes.btnTestPopup.setOnClickListener { previewCurrentTarget() }
-        themes.btnBudFlight.setOnClickListener {
-            val styles = app.budpop.core.Style.entries
-            val kinds = app.budpop.core.Kind.entries
-            androidx.appcompat.app.AlertDialog.Builder(this).setTitle(R.string.bud_style)
-                .setItems(styles.map { it.label }.toTypedArray()) { _, which ->
-                    androidx.appcompat.app.AlertDialog.Builder(this).setTitle(R.string.bud_kind)
-                        .setItems((listOf(getString(R.string.bud_auto)) + kinds.map { it.label }).toTypedArray()) { _, index ->
-                            val address = currentThemeTargetAddress
-                            val theme = "budpop:${styles[which].key}:${kinds.getOrNull(index - 1)?.key ?: "auto"}"
-                            if (address == null) viewModel.updateAnimationTheme(theme)
-                            else viewModel.saveDevicePopupConfig(this, address, viewModel.getDevicePopupConfig(address)
-                                .copy(animationTheme = theme, customMediaPath = null, customMediaType = "preset"))
-                            loadThemeTargetUI(address)
-                            previewCurrentTarget()
-                        }.show()
-                }.show()
+        themes.btnSaveTargetName.setOnClickListener { saveTargetName() }
+        themes.groupAnimationStyles.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (!syncingAnimationStyle && isChecked) {
+                animationStyle = when (checkedId) {
+                    R.id.btnStyleBare -> Style.BARE
+                    R.id.btnStyleFanciest -> Style.FANCIEST
+                    else -> Style.LOVELY
+                }
+                updateAnimationStyleDescription()
+                saveAnimationSelection()
+            }
         }
 
         // Sélection d'un média : la carte entière et son action ouvrent le sélecteur.
@@ -359,14 +383,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // 修改弹窗显示名称重命名
-        themes.btnRenameTargetDevice.setOnClickListener {
-            showRenameDialog()
-        }
-        themes.cardThemeDeviceName.setOnClickListener {
-            showRenameDialog()
-        }
-
         // 视频消退规则
         themes.rgVideoDismissMode.setOnCheckedChangeListener { _, checkedId ->
             val mode = if (checkedId == R.id.rbVideoOnComplete) "on_complete" else "timer"
@@ -381,6 +397,7 @@ class MainActivity : AppCompatActivity() {
 
         // Visuels livrés avec l'application
         buildIncludedVisualLibrary()
+        buildAnimationBrowser()
     }
 
     /** Visuel intégré depuis res/raw, appliqué comme média personnalisé à la cible. */
@@ -445,6 +462,185 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun buildAnimationBrowser() {
+        updateAnimationStyleDescription()
+        renderAnimationKindChoices()
+        renderBudPopPreview()
+    }
+
+    private fun syncAnimationBrowser(theme: String) {
+        val parts = theme.split(':')
+        animationStyle = Style.entries.firstOrNull { it.key == parts.getOrNull(1) } ?: Style.LOVELY
+        animationKind = Kind.of(parts.getOrNull(2)) ?: Kind.EARBUDS
+        syncingAnimationStyle = true
+        detail.groupAnimationStyles.check(
+            when (animationStyle) {
+                Style.BARE -> R.id.btnStyleBare
+                Style.FANCIEST -> R.id.btnStyleFanciest
+                else -> R.id.btnStyleLovely
+            }
+        )
+        syncingAnimationStyle = false
+        updateAnimationStyleDescription()
+        renderAnimationKindChoices()
+        renderBudPopPreview()
+    }
+
+    private fun updateAnimationStyleDescription() {
+        val description = when (animationStyle) {
+            Style.BARE -> R.string.animation_style_bare_desc
+            Style.LOVELY -> R.string.animation_style_lovely_desc
+            Style.FANCIEST -> R.string.animation_style_fanciest_desc
+        }
+        detail.tvAnimationStyleDescription.setText(description)
+    }
+
+    private fun renderAnimationKindChoices() {
+        val container = detail.layoutAnimationKinds
+        container.removeAllViews()
+        val density = resources.displayMetrics.density
+        val primary = ContextCompat.getColor(this, R.color.primary)
+        val neutralStroke = ContextCompat.getColor(this, R.color.card_stroke)
+        val cardBackground = ContextCompat.getColor(this, R.color.bg_card_dark)
+        val selectedBackground = ContextCompat.getColor(this, R.color.card_selected_bg)
+        val textColor = ContextCompat.getColor(this, R.color.text_primary)
+
+        Kind.entries.forEach { kind ->
+            val selected = kind == animationKind
+            val card = com.google.android.material.card.MaterialCardView(this).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    (108 * density).toInt(),
+                    (92 * density).toInt()
+                ).apply { marginEnd = (8 * density).toInt() }
+                radius = 14 * density
+                strokeWidth = ((if (selected) 2f else 1f) * density).toInt()
+                strokeColor = if (selected) primary else neutralStroke
+                setCardBackgroundColor(if (selected) selectedBackground else cardBackground)
+                cardElevation = 0f
+                isClickable = true
+                isFocusable = true
+                contentDescription = getString(kindNameResource(kind))
+                setOnClickListener {
+                    animationKind = kind
+                    saveAnimationSelection()
+                }
+            }
+            val content = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                gravity = android.view.Gravity.CENTER
+                setPadding((8 * density).toInt(), (8 * density).toInt(), (8 * density).toInt(), (8 * density).toInt())
+            }
+            val icon = ImageView(this).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    (30 * density).toInt(),
+                    (30 * density).toInt()
+                )
+                setImageResource(kind.icon)
+                imageTintList = android.content.res.ColorStateList.valueOf(
+                    if (selected) primary else textColor
+                )
+                contentDescription = null
+            }
+            val label = TextView(this).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { topMargin = (6 * density).toInt() }
+                setText(kindNameResource(kind))
+                setTextColor(textColor)
+                textSize = 11f
+                gravity = android.view.Gravity.CENTER
+                maxLines = 2
+            }
+            content.addView(icon)
+            content.addView(label)
+            card.addView(content)
+            container.addView(card)
+        }
+    }
+
+    private fun renderBudPopPreview() {
+        val host = detail.animationPreviewHost
+        host.removeAllViews()
+        val actions = object : PopupActions {
+            override fun close() = Unit
+            override fun touched() = Unit
+            override fun fullScreen(on: Boolean) = Unit
+        }
+        val popup: PopupView = when (animationStyle) {
+            Style.BARE -> BareCard(this, actions, animationKind)
+            Style.FANCIEST -> FlyCard(this, actions, mini = false, kind = animationKind)
+            else -> FlyCard(this, actions, mini = true, kind = animationKind)
+        }
+        val targetName = currentTargetConfig()?.customDeviceName?.takeIf { it.isNotBlank() }
+            ?: currentThemeTargetAddress?.let { address ->
+                bondedDeviceItems.firstOrNull { it.address == address }?.name
+            }
+            ?: getString(R.string.device_name_fallback)
+        popup.bind(BudState(name = targetName, battery = 82, connected = true, kind = animationKind))
+        host.addView(
+            popup.root,
+            FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        )
+        popup.root.post {
+            if (popup.root.isAttachedToWindow) popup.enter()
+        }
+        detail.tvAnimationPreviewCaption.text = getString(
+            R.string.animation_preview_caption,
+            getString(kindNameResource(animationKind)),
+            getString(kindDescriptionResource(animationKind))
+        )
+    }
+
+    private fun saveAnimationSelection() {
+        val theme = "budpop:${animationStyle.key}:${animationKind.key}"
+        val address = currentThemeTargetAddress
+        if (address == null) {
+            viewModel.updateAnimationTheme(theme)
+        } else {
+            val config = viewModel.getDevicePopupConfig(address)
+            viewModel.saveDevicePopupConfig(
+                this,
+                address,
+                config.copy(
+                    animationTheme = theme,
+                    customMediaPath = null,
+                    customMediaType = "preset"
+                )
+            )
+        }
+        loadThemeTargetUI(address)
+        renderAnimationKindChoices()
+        renderBudPopPreview()
+    }
+
+    private fun kindNameResource(kind: Kind): Int = when (kind) {
+        Kind.EARBUDS -> R.string.bud_kind_earbuds
+        Kind.HEADPHONES -> R.string.bud_kind_headphones
+        Kind.SPEAKER -> R.string.bud_kind_speaker
+        Kind.SOUNDBAR -> R.string.bud_kind_soundbar
+        Kind.KEYBOARD -> R.string.bud_kind_keyboard
+        Kind.MOUSE -> R.string.bud_kind_mouse
+        Kind.CAR -> R.string.bud_kind_car
+        Kind.GAMEPAD -> R.string.bud_kind_gamepad
+        Kind.OTHER -> R.string.bud_kind_other
+    }
+
+    private fun kindDescriptionResource(kind: Kind): Int = when (kind) {
+        Kind.EARBUDS -> R.string.bud_kind_desc_earbuds
+        Kind.HEADPHONES -> R.string.bud_kind_desc_headphones
+        Kind.SPEAKER -> R.string.bud_kind_desc_speaker
+        Kind.SOUNDBAR -> R.string.bud_kind_desc_soundbar
+        Kind.KEYBOARD -> R.string.bud_kind_desc_keyboard
+        Kind.MOUSE -> R.string.bud_kind_desc_mouse
+        Kind.CAR -> R.string.bud_kind_desc_car
+        Kind.GAMEPAD -> R.string.bud_kind_desc_gamepad
+        Kind.OTHER -> R.string.bud_kind_desc_other
+    }
+
     private fun decodeIncludedThumbnail(rawRes: Int, targetPx: Int): android.graphics.Bitmap? {
         return try {
             val bounds = android.graphics.BitmapFactory.Options().apply { inJustDecodeBounds = true }
@@ -481,65 +677,22 @@ class MainActivity : AppCompatActivity() {
         previewCurrentTarget()
     }
 
-    private fun showRenameDialog() {
+    private fun saveTargetName() {
         val address = currentThemeTargetAddress
-        val currentName = if (address == null) {
-            viewModel.popupConfig.value?.customDeviceName ?: ""
+        val newName = detail.etTargetName.text?.toString()?.trim().orEmpty()
+        if (address == null) {
+            viewModel.updateDeviceName(newName)
         } else {
-            viewModel.getDevicePopupConfig(address).customDeviceName
+            val config = viewModel.getDevicePopupConfig(address)
+            viewModel.saveDevicePopupConfig(this, address, config.copy(customDeviceName = newName))
         }
-
-        val inputEditText = com.google.android.material.textfield.TextInputEditText(this).apply {
-            setText(currentName)
-            if (currentName.isNotEmpty()) {
-                setSelection(currentName.length)
-            }
-            setTextColor(ContextCompat.getColor(this@MainActivity, R.color.text_primary))
-            textSize = 15f
-            isSingleLine = true
-        }
-
-        val inputLayout = com.google.android.material.textfield.TextInputLayout(
+        detail.etTargetName.clearFocus()
+        Toast.makeText(
             this,
-            null,
-            com.google.android.material.R.attr.textInputOutlinedStyle
-        ).apply {
-            hint = getString(R.string.rename_dialog_hint)
-            boxStrokeColor = ContextCompat.getColor(this@MainActivity, R.color.primary)
-            setPadding(
-                (20 * resources.displayMetrics.density).toInt(),
-                (12 * resources.displayMetrics.density).toInt(),
-                (20 * resources.displayMetrics.density).toInt(),
-                (4 * resources.displayMetrics.density).toInt()
-            )
-            addView(inputEditText)
-        }
-
-        val targetTitle = if (address == null) getString(R.string.rename_global_default) else {
-            bondedDeviceItems.firstOrNull { it.address == address }?.name ?: getString(R.string.rename_target_fallback)
-        }
-
-        com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
-            .setTitle(getString(R.string.rename_dialog_title))
-            .setMessage(getString(R.string.rename_dialog_message, targetTitle))
-            .setView(inputLayout)
-            .setPositiveButton(getString(R.string.btn_confirm)) { _, _ ->
-                val newName = inputEditText.text?.toString()?.trim() ?: ""
-                if (address == null) {
-                    viewModel.updateDeviceName(newName)
-                } else {
-                    val devConfig = viewModel.getDevicePopupConfig(address)
-                    viewModel.saveDevicePopupConfig(this, address, devConfig.copy(customDeviceName = newName))
-                }
-                detail.tvCurrentTargetDeviceName.text = if (newName.isNotBlank()) newName else getString(R.string.name_empty_placeholder)
-                Toast.makeText(
-                    this,
-                    if (newName.isNotBlank()) getString(R.string.rename_updated_toast, newName) else getString(R.string.rename_cleared_toast),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            .setNegativeButton(getString(R.string.btn_cancel), null)
-            .show()
+            if (newName.isNotBlank()) getString(R.string.rename_updated_toast, newName)
+            else getString(R.string.rename_cleared_toast),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun loadThemeTargetUI(targetAddress: String?) {
@@ -550,8 +703,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         val themes = detail
-        val currentName = if (config.customDeviceName.isNotBlank()) config.customDeviceName else getString(R.string.name_empty_placeholder)
-        themes.tvCurrentTargetDeviceName.text = currentName
+        val originalName = targetAddress?.let { address ->
+            bondedDeviceItems.firstOrNull { it.address == address }?.name
+        } ?: getString(R.string.rename_global_default)
+        themes.tvCurrentTargetDeviceName.text = originalName
+        themes.etTargetName.setText(config.customDeviceName)
 
         // Appareil personnalisable mais popup désactivé : on le dit clairement
         val targetEnabled = targetAddress?.let { address ->
@@ -638,16 +794,35 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setupSettingsTab() {
         val settings = binding.tabSettingsLayout
-        settings.btnBatteryHistory.setOnClickListener { showBatteryHistory() }
-        settings.btnShareFile.setOnClickListener { shareFilePicker.launch("*/*") }
-        settings.btnLanShare.setOnClickListener { startActivity(Intent(this, com.vibepop.share.ShareActivity::class.java)) }
-        settings.btnCredits.setOnClickListener {
-            val license = listOf(R.raw.budpop_license, R.raw.vibepop_license, R.raw.btmanage_license)
-                .joinToString("\n\n") { resources.openRawResource(it).bufferedReader().use { reader -> reader.readText() } }
-            androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle(R.string.credits_title)
-                .setMessage(getString(R.string.credits_body) + "\n\n" + license)
-                .setPositiveButton(android.R.string.ok, null).show()
+        settings.rowBatteryHistory.setOnClickListener {
+            val expand = settings.settingsHistoryContent.visibility != View.VISIBLE
+            settings.settingsHistoryContent.visibility = if (expand) View.VISIBLE else View.GONE
+            if (expand) {
+                loadBatteryHistory(
+                    address = null,
+                    summary = settings.tvSettingsHistoryContent,
+                    chartHost = settings.settingsHistoryChartHost,
+                    shareButton = settings.btnShareSettingsHistory
+                )
+            }
+        }
+        settings.rowShareFile.setOnClickListener { shareFilePicker.launch("*/*") }
+        settings.rowLanShare.setOnClickListener {
+            startActivity(Intent(this, com.vibepop.share.ShareActivity::class.java))
+        }
+        settings.rowCredits.setOnClickListener {
+            val expand = settings.settingsCreditsContent.visibility != View.VISIBLE
+            settings.settingsCreditsContent.visibility = if (expand) View.VISIBLE else View.GONE
+            if (expand && settings.tvCreditsLicenses.text.isNullOrBlank()) {
+                settings.tvCreditsBody.text = getString(R.string.credits_body)
+                settings.tvCreditsLicenses.text = listOf(
+                    R.raw.budpop_license,
+                    R.raw.vibepop_license,
+                    R.raw.btmanage_license
+                ).joinToString("\n\n") { raw ->
+                    resources.openRawResource(raw).bufferedReader().use { it.readText() }
+                }
+            }
         }
 
         settings.btnGrantOverlay.setOnClickListener {
@@ -700,33 +875,71 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showBatteryHistory(address: String? = null) = lifecycleScope.launch {
+    private fun toggleDeviceHistory(address: String?) {
+        val expand = detail.cardDeviceHistory.visibility != View.VISIBLE
+        detail.cardDeviceHistory.visibility = if (expand) View.VISIBLE else View.GONE
+        detail.btnDeviceHistory.setText(
+            if (expand) R.string.history_hide_action else R.string.detail_history_action
+        )
+        if (expand) {
+            loadBatteryHistory(
+                address = address,
+                summary = detail.tvDeviceHistoryContent,
+                chartHost = detail.deviceHistoryChartHost,
+                shareButton = detail.btnShareDeviceHistory
+            )
+        }
+    }
+
+    private fun loadBatteryHistory(
+        address: String?,
+        summary: TextView,
+        chartHost: FrameLayout,
+        shareButton: com.google.android.material.button.MaterialButton
+    ) = lifecycleScope.launch {
         val since = System.currentTimeMillis() - 86_400_000L
         val (rows, points) = withContext(Dispatchers.IO) { BatteryHistory(this@MainActivity).use {
-            it.recent(address) to (address?.let { a -> it.day(a,since) } ?: emptyList())
+            it.recent(address) to (address?.let { a -> it.day(a, since) } ?: emptyList())
         } }
         val date = java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.SHORT, java.text.DateFormat.SHORT)
-        val text = if (rows.isEmpty()) getString(R.string.history_empty) else rows.joinToString("\n") {
+        val shareText = if (rows.isEmpty()) getString(R.string.history_empty) else rows.joinToString("\n") {
             "${date.format(java.util.Date(it.timestamp))} · ${it.name} · ${it.level}%"
         }
-        val body = LinearLayout(this@MainActivity).apply {
-            orientation = LinearLayout.VERTICAL
-            val pad = (16 * resources.displayMetrics.density).toInt(); setPadding(pad,0,pad,pad)
-            if (address != null && points.isNotEmpty()) {
-                addView(TextView(context).apply { setText(R.string.chart_24h) })
-                addView(BatteryPlot(context,since,points), -1, 8*pad)
+        val visibleRows = rows.take(12)
+        val visibleText = if (rows.isEmpty()) {
+            getString(R.string.history_empty)
+        } else {
+            buildString {
+                if (rows.size > visibleRows.size) {
+                    append(getString(R.string.history_shown_count, visibleRows.size, rows.size))
+                    append("\n\n")
+                }
+                append(visibleRows.joinToString("\n") {
+                    "${date.format(java.util.Date(it.timestamp))} · ${it.name} · ${it.level}%"
+                })
             }
-            addView(TextView(context).apply { this.text = text; setTextIsSelectable(true) })
         }
-        androidx.appcompat.app.AlertDialog.Builder(this@MainActivity)
-            .setTitle(rows.firstOrNull()?.name?.takeIf { address != null } ?: getString(R.string.history_title))
-            .setView(android.widget.ScrollView(this@MainActivity).apply { addView(body) })
-            .setPositiveButton(android.R.string.ok, null)
-            .setNeutralButton(R.string.history_share) { _, _ ->
-                val share = Intent(Intent.ACTION_SEND).setType("text/plain")
-                    .putExtra(Intent.EXTRA_TEXT, text)
-                startActivity(Intent.createChooser(share, getString(R.string.history_share)))
-            }.show()
+        summary.text = visibleText
+        chartHost.removeAllViews()
+        chartHost.visibility = if (address != null && points.isNotEmpty()) View.VISIBLE else View.GONE
+        if (address != null && points.isNotEmpty()) {
+            chartHost.addView(
+                BatteryPlot(this@MainActivity, since, points),
+                FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+            )
+        }
+        shareButton.isEnabled = rows.isNotEmpty()
+        shareButton.setOnClickListener {
+            if (rows.isNotEmpty()) {
+                val send = Intent(Intent.ACTION_SEND)
+                    .setType("text/plain")
+                    .putExtra(Intent.EXTRA_TEXT, shareText)
+                startActivity(Intent.createChooser(send, getString(R.string.history_share)))
+            }
+        }
     }
 
     /**
