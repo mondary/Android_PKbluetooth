@@ -102,6 +102,8 @@
     <!-- 动效工坊目标切换 -->
     <string name="theme_target_global">🌐 全局默认</string>
     <string name="theme_target_device">🎧 %1$s</string>
+    <string name="theme_target_device_off">🎧 %1$s（未启用）</string>
+    <string name="theme_target_disabled_hint">该耳机的弹窗响应未开启，请到「设备管理」中启用</string>
     <string name="spinner_arrow">%1$s  ▼</string>
 
     <!-- 列表拼接分隔符 -->

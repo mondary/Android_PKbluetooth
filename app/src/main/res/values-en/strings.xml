@@ -102,6 +102,8 @@
     <!-- Theme target switcher -->
     <string name="theme_target_global">🌐 Global default</string>
     <string name="theme_target_device">🎧 %1$s</string>
+    <string name="theme_target_device_off">🎧 %1$s (off)</string>
+    <string name="theme_target_disabled_hint">Popups are off for this earbud. Enable it in the Devices tab.</string>
     <string name="spinner_arrow">%1$s  ▼</string>
 
     <!-- List separator -->

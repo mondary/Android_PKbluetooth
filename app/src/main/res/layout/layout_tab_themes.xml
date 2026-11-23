@@ -54,6 +54,17 @@
             android:paddingEnd="12dp"
             android:spinnerMode="dropdown" />
 
+        <TextView
+            android:id="@+id/tvTargetDisabledHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/theme_target_disabled_hint"
+            android:textColor="@color/status_warning"
+            android:textSize="11sp"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
         <!-- 弹窗显示名称与重命名卡片 -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardThemeDeviceName"

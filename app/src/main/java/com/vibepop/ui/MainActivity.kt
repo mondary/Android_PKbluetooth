@@ -525,9 +525,14 @@ class MainActivity : AppCompatActivity() {
         val items = mutableListOf<ThemeTargetItem>()
         items.add(ThemeTargetItem(getString(R.string.theme_target_global), null))
         for (device in devices) {
-            if (device.isSelected) {
-                items.add(ThemeTargetItem(getString(R.string.theme_target_device, device.name), device.address))
+            // Tous les appareils appairés sont personnalisables, même si leur popup
+            // est désactivé : la configuration se fait avant l'activation.
+            val title = if (device.isSelected) {
+                getString(R.string.theme_target_device, device.name)
+            } else {
+                getString(R.string.theme_target_device_off, device.name)
             }
+            items.add(ThemeTargetItem(title, device.address))
         }
         themeTargetList = items
 
@@ -596,6 +601,12 @@ class MainActivity : AppCompatActivity() {
         val themes = binding.tabThemesLayout
         val currentName = if (config.customDeviceName.isNotBlank()) config.customDeviceName else getString(R.string.name_empty_placeholder)
         themes.tvCurrentTargetDeviceName.text = currentName
+
+        // Appareil personnalisable mais popup désactivé : on le dit clairement
+        val targetEnabled = targetAddress?.let { address ->
+            bondedDeviceItems.firstOrNull { it.address == address }?.isSelected
+        } ?: true
+        themes.tvTargetDisabledHint.visibility = if (targetEnabled) View.GONE else View.VISIBLE
 
         updateThemeCardsUI(config.animationTheme, config.customMediaType, config.customMediaPath)
         updateCustomMediaThumbnail(config.customMediaPath, config.customMediaType)

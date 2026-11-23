@@ -102,6 +102,8 @@
     <!-- Sélecteur de cible du thème -->
     <string name="theme_target_global">🌐 Global</string>
     <string name="theme_target_device">🎧 %1$s</string>
+    <string name="theme_target_device_off">🎧 %1$s (désactivé)</string>
+    <string name="theme_target_disabled_hint">Popup désactivé pour cet appareil. Activez-le dans l’onglet Appareils.</string>
     <string name="spinner_arrow">%1$s  ▼</string>
 
     <!-- Séparateur de liste -->
