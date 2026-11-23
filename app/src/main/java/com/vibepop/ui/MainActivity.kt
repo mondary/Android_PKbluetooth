@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity() {
     private var animationKind = Kind.EARBUDS
     private var animationStyle = Style.LOVELY
     private var syncingAnimationStyle = false
+    private var syncingServiceSwitch = false
 
     private val bluetoothStateReceiver = object : android.content.BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -239,8 +240,8 @@ class MainActivity : AppCompatActivity() {
      * 底部导航：Appareils / Réglages, plus la page de détail d'une cible
      */
     private fun com.google.android.material.switchmaterial.SwitchMaterial.setOnChangeListenerForService() {
-        setOnCheckedChangeListener { buttonView, isChecked ->
-            if (buttonView.isPressed) {
+        setOnCheckedChangeListener { _, isChecked ->
+            if (!syncingServiceSwitch) {
                 viewModel.setServiceEnabled(this@MainActivity, isChecked)
             }
         }
@@ -265,8 +266,8 @@ class MainActivity : AppCompatActivity() {
         ensureDetailSheet()
         currentThemeTargetAddress = address
         detail.cardDeviceData.visibility = if (address == null) View.GONE else View.VISIBLE
-        detail.deviceHistoryContent.visibility = View.GONE
-        detail.ivDeviceHistoryChevron.rotation = 0f
+        detail.deviceHistoryContent.visibility = if (address == null) View.GONE else View.VISIBLE
+        detail.ivDeviceHistoryChevron.visibility = View.GONE
 
         detail.tvDetailTitle.text = if (address == null) {
             getString(R.string.theme_target_global_plain)
@@ -278,8 +279,10 @@ class MainActivity : AppCompatActivity() {
             if (address == null) View.VISIBLE else View.GONE
 
         loadThemeTargetUI(address)
-        syncAnimationBrowser(currentTargetConfig()?.animationTheme ?: "classic_airpods")
-        detail.detailTabs.getTabAt(0)?.select()
+        val theme = currentTargetConfig()?.animationTheme ?: "classic_airpods"
+        syncAnimationBrowser(theme)
+        detail.detailTabs.getTabAt(if (com.vibepop.overlay.BudPanel.matches(theme)) 1 else 0)?.select()
+        if (address != null) loadBatteryHistory(address, detail.tvDeviceHistoryContent, detail.deviceHistoryChartHost, detail.btnShareDeviceHistory)
         detailSheet?.show()
     }
 
@@ -368,9 +371,6 @@ class MainActivity : AppCompatActivity() {
         themes.btnChooseCurrentMedia.setOnClickListener { requestMediaAndPick() }
 
         // Données et partage propres à l'appareil
-        themes.rowDeviceHistory.setOnClickListener {
-            currentThemeTargetAddress?.let { toggleDeviceHistory(it) }
-        }
         themes.rowDeviceShareFile.setOnClickListener { shareFilePicker.launch("*/*") }
         themes.rowDeviceLanShare.setOnClickListener {
             startActivity(Intent(this, com.vibepop.share.ShareActivity::class.java))
@@ -425,7 +425,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun buildIncludedVisualLibrary() {
         val container = detail.layoutMediaLibrary
-        if (container.childCount > 0) return
+        container.removeAllViews()
 
         val density = resources.displayMetrics.density
         val size = (88 * density).toInt()
@@ -445,12 +445,24 @@ class MainActivity : AppCompatActivity() {
                 setOnClickListener { applyIncludedVisual(visual) }
             }
 
+            val selected = currentTargetConfig()?.let { config ->
+                config.animationTheme == "custom_media" &&
+                    java.io.File(config.customMediaPath ?: "").name.let { it == "demo_${visual.fileName}.gif" || it.startsWith("demo_${visual.fileName}_") }
+            } == true
             val preview = ImageView(this).apply {
-                layoutParams = LinearLayout.LayoutParams(size, size)
+                layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
                 scaleType = ImageView.ScaleType.CENTER_CROP
                 setBackgroundResource(R.drawable.bg_media_thumb)
                 clipToOutline = true
                 setImageBitmap(decodeIncludedThumbnail(visual.rawRes, size))
+            }
+            val previewCard = com.google.android.material.card.MaterialCardView(this).apply {
+                layoutParams = LinearLayout.LayoutParams(size, size)
+                radius = 12 * density
+                strokeWidth = ((if (selected) 3 else 1) * density).toInt()
+                strokeColor = ContextCompat.getColor(this@MainActivity, if (selected) R.color.primary else R.color.card_stroke)
+                cardElevation = 0f
+                addView(preview)
             }
 
             val label = TextView(this).apply {
@@ -465,7 +477,7 @@ class MainActivity : AppCompatActivity() {
                 ).apply { topMargin = (6 * density).toInt() }
             }
 
-            item.addView(preview)
+            item.addView(previewCard)
             item.addView(label)
             container.addView(item)
         }
@@ -726,6 +738,13 @@ class MainActivity : AppCompatActivity() {
 
         updateCurrentMediaUI(config.animationTheme, config.customMediaType, config.customMediaPath)
         updateCustomMediaThumbnail(config.customMediaPath, config.customMediaType)
+        buildIncludedVisualLibrary()
+        val file = config.customMediaPath?.let { java.io.File(it).name }
+        val included = file != null && includedVisuals.any { file == "demo_${it.fileName}.gif" || file.startsWith("demo_${it.fileName}_") }
+        themes.tvSelectedVisual.visibility = if (config.animationTheme == "custom_media" && !file.isNullOrBlank() && !included) View.VISIBLE else View.GONE
+        if (themes.tvSelectedVisual.visibility == View.VISIBLE) {
+            themes.tvSelectedVisual.text = getString(R.string.selected_visual_file, file)
+        }
 
         if (config.videoDismissMode == "on_complete") {
             themes.rbVideoOnComplete.isChecked = true
@@ -892,6 +911,7 @@ class MainActivity : AppCompatActivity() {
         val (rows, points) = withContext(Dispatchers.IO) { BatteryHistory(this@MainActivity).use {
             it.recent(address) to (address?.let { a -> it.day(a, since) } ?: emptyList())
         } }
+        if (address != null && currentThemeTargetAddress != address) return@launch
         val date = java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.SHORT, java.text.DateFormat.SHORT)
         val shareText = if (rows.isEmpty()) getString(R.string.history_empty) else rows.joinToString("\n") {
             "${date.format(java.util.Date(it.timestamp))} · ${it.name} · ${it.level}%"
@@ -948,7 +968,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.isServiceRunning.observe(this) { running ->
             val dash = binding.tabSettingsLayout
             if (dash.switchService.isChecked != running) {
+                syncingServiceSwitch = true
                 dash.switchService.isChecked = running
+                syncingServiceSwitch = false
             }
             if (running) {
                 dash.tvServiceStatusBadge.text = getString(R.string.dash_service_running)

@@ -6,9 +6,9 @@
     <string name="history_title">Historique de batterie</string>
     <string name="history_empty">Aucune mesure de batterie reçue pour le moment.</string>
     <string name="history_share">Partager l’historique</string>
-    <string name="app_name">Android_PKbluetooth</string>
+    <string name="app_name">PK Bluetooth</string>
     <string name="update_ready_to_check">Touchez VÉRIFIER pour chercher une nouvelle version.</string>
-    <string name="updates_unavailable">Les mises à jour Android_PKbluetooth ne sont pas encore configurées.</string>
+    <string name="updates_unavailable">Les mises à jour PK Bluetooth ne sont pas encore configurées.</string>
     <string name="service_notification_title">Service de popup écouteurs actif</string>
     <string name="service_notification_desc">Surveillance de la connexion de vos écouteurs sélectionnés</string>
 
@@ -73,12 +73,12 @@
     <string name="bt_granted_on_toast">Bluetooth autorisé et activé</string>
     <string name="bt_enable_button">Activer le Bluetooth</string>
     <string name="bt_not_enabled_title">📡 Le Bluetooth est désactivé</string>
-    <string name="bt_not_enabled_message">Le Bluetooth est actuellement désactivé. Activez-le pour que VibePop affiche votre popup à la connexion des écouteurs.</string>
+    <string name="bt_not_enabled_message">Le Bluetooth est actuellement désactivé. Activez-le pour que PK Bluetooth affiche votre popup à la connexion des écouteurs.</string>
     <string name="bt_later">Plus tard</string>
 
     <!-- Changement de stratégie de réponse -->
     <string name="target_policy_notice_title">🔔 Comportement des popups mis à jour</string>
-    <string name="target_policy_notice_message">Pour plus de précision, VibePop ne réagit plus à aucun écouteur par défaut. Ouvrez Appareils pour choisir ceux qui déclenchent un popup — chacun peut avoir sa propre animation.</string>
+    <string name="target_policy_notice_message">Pour plus de précision, PK Bluetooth ne réagit plus à aucun écouteur par défaut. Ouvrez Appareils pour choisir ceux qui déclenchent un popup — chacun peut avoir sa propre animation.</string>
     <string name="target_policy_notice_go">Ouvrir Appareils</string>
     <string name="target_policy_notice_later">Compris</string>
 
@@ -110,7 +110,7 @@
 
     <!-- Sélecteur de cible du thème -->
     <string name="theme_target_global">🌐 Global</string>
-    <string name="theme_target_global_plain">Autre appareil Bluetooth</string>
+    <string name="theme_target_global_plain">Appareil par défaut</string>
     <string name="devices_paired_title">Écouteurs appairés</string>
     <string name="devices_paired_hint">Touchez un appareil pour ouvrir ses visuels, son historique et ses partages.</string>
     <string name="devices_global_summary">Par défaut · Animation : %1$s</string>
@@ -125,7 +125,7 @@
 
     <!-- Canal de notification -->
     <string name="notification_channel_name">Surveillance des écouteurs</string>
-    <string name="notification_channel_desc">Maintient le service de surveillance VibePop actif en arrière-plan</string>
+    <string name="notification_channel_desc">Maintient le service de surveillance PK Bluetooth actif en arrière-plan</string>
 
     <!-- Navigation basse -->
     <string name="nav_dashboard">Accueil</string>
@@ -163,6 +163,7 @@
     <string name="media_default_active">Animation par défaut · Touchez pour choisir votre média</string>
     <string name="media_legacy_preset">Visuel intégré actif : %1$s</string>
     <string name="media_change_action">Explorer mes fichiers</string>
+    <string name="selected_visual_file">Fichier sélectionné : %1$s</string>
     <string name="detail_original_name">Nom Bluetooth</string>
     <string name="detail_save_name">Enregistrer</string>
     <string name="detail_history_action">Historique</string>
@@ -245,7 +246,7 @@
     <string name="perm_oem_title">Écran verrouillé et arrière-plan</string>
     <string name="perm_oem_desc">Requis sur Xiaomi/OPPO/vivo pour afficher le popup sur l’écran verrouillé et en arrière-plan</string>
     <string name="settings_bg_title">💡 Garder le service actif</string>
-    <string name="settings_bg_body">Sur les surcouches Android chinoises (Xiaomi HyperOS, Huawei HarmonyOS, OPPO ColorOS, vivo OriginOS), réglez VibePop sur « Aucune restriction » dans Batterie et verrouillez l’app dans les tâches récentes pour que le système ne tue pas le service de surveillance.</string>
+    <string name="settings_bg_body">Sur les surcouches Android chinoises (Xiaomi HyperOS, Huawei HarmonyOS, OPPO ColorOS, vivo OriginOS), réglez PK Bluetooth sur « Aucune restriction » dans Batterie et verrouillez l’app dans les tâches récentes pour que le système ne tue pas le service de surveillance.</string>
 
     <!-- Mises à jour de l’app -->
     <string name="update_title">🔄 Mises à jour</string>

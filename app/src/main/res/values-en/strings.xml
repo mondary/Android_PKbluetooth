@@ -6,9 +6,9 @@
     <string name="history_title">Battery history</string>
     <string name="history_empty">No battery readings have been received yet.</string>
     <string name="history_share">Share history</string>
-    <string name="app_name">Android_PKbluetooth</string>
+    <string name="app_name">PK Bluetooth</string>
     <string name="update_ready_to_check">Tap CHECK to look for a new version.</string>
-    <string name="updates_unavailable">Updates are not configured for Android_PKbluetooth yet.</string>
+    <string name="updates_unavailable">Updates are not configured for PK Bluetooth yet.</string>
     <string name="service_notification_title">Earbud popup service running</string>
     <string name="service_notification_desc">Monitoring the connection state of your selected earbuds</string>
 
@@ -73,12 +73,12 @@
     <string name="bt_granted_on_toast">Bluetooth is allowed and on</string>
     <string name="bt_enable_button">Turn on Bluetooth</string>
     <string name="bt_not_enabled_title">📡 Bluetooth is off</string>
-    <string name="bt_not_enabled_message">Bluetooth is currently off. Turn it on so VibePop can show your popup when the earbuds connect.</string>
+    <string name="bt_not_enabled_message">Bluetooth is currently off. Turn it on so PK Bluetooth can show your popup when the earbuds connect.</string>
     <string name="bt_later">Later</string>
 
     <!-- Popup target policy notice -->
     <string name="target_policy_notice_title">🔔 Popup behaviour updated</string>
-    <string name="target_policy_notice_message">To make popups more precise, VibePop no longer responds to any earbud by default. Open Devices to pick the earbuds that should trigger a popup — each one can have its own animation.</string>
+    <string name="target_policy_notice_message">To make popups more precise, PK Bluetooth no longer responds to any earbud by default. Open Devices to pick the earbuds that should trigger a popup — each one can have its own animation.</string>
     <string name="target_policy_notice_go">Open devices</string>
     <string name="target_policy_notice_later">Got it</string>
 
@@ -110,7 +110,7 @@
 
     <!-- Theme target switcher -->
     <string name="theme_target_global">🌐 Global default</string>
-    <string name="theme_target_global_plain">Other Bluetooth device</string>
+    <string name="theme_target_global_plain">Default device</string>
     <string name="devices_paired_title">Paired earbuds</string>
     <string name="devices_paired_hint">Tap a device to open its visuals, history and sharing.</string>
     <string name="devices_global_summary">Default · Animation: %1$s</string>
@@ -125,7 +125,7 @@
 
     <!-- Notification channel -->
     <string name="notification_channel_name">Earbud connection monitor</string>
-    <string name="notification_channel_desc">Keeps the VibePop monitor service running in the background</string>
+    <string name="notification_channel_desc">Keeps the PK Bluetooth monitor service running in the background</string>
 
     <!-- Bottom navigation -->
     <string name="nav_dashboard">Dashboard</string>
@@ -163,6 +163,7 @@
     <string name="media_default_active">Default animation · Tap to choose your media</string>
     <string name="media_legacy_preset">Built-in visual active: %1$s</string>
     <string name="media_change_action">Browse files</string>
+    <string name="selected_visual_file">Selected file: %1$s</string>
     <string name="detail_original_name">Bluetooth name</string>
     <string name="detail_save_name">Save</string>
     <string name="detail_history_action">History</string>
@@ -245,7 +246,7 @@
     <string name="perm_oem_title">Lock-screen &amp; background popups</string>
     <string name="perm_oem_desc">Required on Xiaomi/OPPO/vivo builds to show popups on the lock screen and in the background</string>
     <string name="settings_bg_title">💡 Keeping the service alive</string>
-    <string name="settings_bg_body">On Chinese Android builds (Xiaomi HyperOS, Huawei HarmonyOS, OPPO ColorOS, vivo OriginOS), set VibePop to “No restrictions” under Battery and lock it in the recent-apps screen so the system does not kill the monitoring service.</string>
+    <string name="settings_bg_body">On Chinese Android builds (Xiaomi HyperOS, Huawei HarmonyOS, OPPO ColorOS, vivo OriginOS), set PK Bluetooth to “No restrictions” under Battery and lock it in the recent-apps screen so the system does not kill the monitoring service.</string>
 
     <!-- App updates -->
     <string name="update_title">🔄 App updates</string>
