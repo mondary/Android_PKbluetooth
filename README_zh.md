@@ -9,6 +9,8 @@
 
 Chrome_PKbluetooth 是独立应用（`design.mondary.pkbluetooth`）：可与 VibePop 并存安装，互不更新。除本节外，以下为上游 VibePop 项目说明。
 
+Chrome_PKbluetooth 最新签名 APK：[下载](https://github.com/mondary/Chrome_PKbluetooth/releases/latest/download/Chrome_PKbluetooth.apk)。应用内可在设置中点击「检查更新」；有新版本时会打开 APK 下载，再由 Android 安装器确认安装。更新不静默进行，所有版本使用同一签名密钥。
+
 ---
 
 # VibePop - 蓝牙耳机自定义拟真弹窗框架

@@ -9,6 +9,12 @@
 
 Chrome_PKbluetooth est une application indépendante (`design.mondary.pkbluetooth`) : elle s'installe à côté de VibePop, et aucune des deux ne met l'autre à jour. Le popup apparaît à la connexion d'un appareil listé en liste blanche, y compris sur l'écran de verrouillé ; chaque appareil peut avoir son média, son nom et sa durée.
 
+## Téléchargement et mises à jour
+
+- [Télécharger le dernier APK signé](https://github.com/mondary/Chrome_PKbluetooth/releases/latest/download/Chrome_PKbluetooth.apk).
+- Depuis l'app : Réglages → Mises à jour → **VÉRIFIER**. Si une nouvelle version est disponible, l'app ouvre le téléchargement de l'APK signé ; Android demande de confirmer l'installation. L'installation n'est pas silencieuse.
+- Toutes les versions utilisent la même clé privée de signature : les mises à jour s'installent sur cette version. Gardez la clé secrète et ne désinstallez pas l'app pour la mettre à jour.
+
 ## Popup et médias
 
 - Le drawer centre le média actif ; remplacez-le depuis le sélecteur Android, ou gardez un visuel intégré.
@@ -37,7 +43,7 @@ JDK 17 et un SDK Android.
 ./gradlew test assembleDebug
 ```
 
-Aucun canal de diffusion n'existe encore ; la vérification de mises à jour est désactivée dans l'application en attendant. Les vérifications de partage de bout en bout s'exécutent sur un appareil ou un émulateur :
+Les releases signées et le manifeste de mise à jour sont publiés par GitHub Actions lorsqu'un tag `v*` est poussé. Les vérifications de partage de bout en bout s'exécutent sur un appareil ou un émulateur :
 
 ```bash
 ./gradlew assembleDebugAndroidTest

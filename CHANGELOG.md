@@ -15,6 +15,12 @@ Statut : `2026.11.1` — simplification de la configuration des médias
 
 ## Releases
 
+### [2026.11.5] - 2026-11-23
+
+- Publication de l'APK signé et du manifeste de mise à jour à URL stable ; vérification intégrée, téléchargement dans le navigateur et confirmation par l'installeur Android.
+- Conservation de la clé de signature et workflow GitHub Actions pour publier les versions suivantes sans casser les mises à jour.
+- README anglais/français/chinois synchronisés avec le canal public.
+
 ### [2026.11.4] - 2026-11-23
 
 - Renommage du produit en Chrome_PKbluetooth (nom affiché, page de partage, découverte réseau).
