@@ -763,15 +763,6 @@ class MainActivity : AppCompatActivity() {
 
         // 弹窗参数配置
         viewModel.popupConfig.observe(this) { config ->
-            val detail = detail
-
-            if (detail.switchForceSpeakerphone.isChecked != config.isForceSpeakerphone) {
-                detail.switchForceSpeakerphone.isChecked = config.isForceSpeakerphone
-            }
-
-            detail.sliderDismissDelay.value = config.autoDismissSeconds.toFloat()
-            detail.tvDismissDelayLabel.text = getString(R.string.setting_dismiss_delay, config.autoDismissSeconds)
-
             binding.tabDevicesLayout.tvGlobalThemeSummary.text =
                 getString(R.string.devices_global_summary, themeLabel(config.animationTheme))
             applyTargetThumb(
@@ -781,8 +772,17 @@ class MainActivity : AppCompatActivity() {
                 config.customMediaPath
             )
 
-            if (currentThemeTargetAddress == null && this::detail.isInitialized) {
-                loadThemeTargetUI(null)
+            // le drawer n'existe qu'après sa première ouverture
+            if (this::detail.isInitialized) {
+                val detail = detail
+                if (detail.switchForceSpeakerphone.isChecked != config.isForceSpeakerphone) {
+                    detail.switchForceSpeakerphone.isChecked = config.isForceSpeakerphone
+                }
+                detail.sliderDismissDelay.value = config.autoDismissSeconds.toFloat()
+                detail.tvDismissDelayLabel.text = getString(R.string.setting_dismiss_delay, config.autoDismissSeconds)
+                if (currentThemeTargetAddress == null) {
+                    loadThemeTargetUI(null)
+                }
             }
         }
     }
