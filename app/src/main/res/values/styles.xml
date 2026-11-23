@@ -7,17 +7,6 @@
     </style>
 
     <!-- Alternative fade animations -->
-    <style name="PopupFadeAnimation">
-        <item name="android:windowEnterAnimation">@anim/fade_in</item>
-        <item name="android:windowExitAnimation">@anim/fade_out</item>
-    </style>
 
     <!-- Rounded card style -->
-    <style name="CardViewStyle" parent="CardView">
-        <item name="cardCornerRadius">28dp</item>
-        <item name="cardElevation">16dp</item>
-        <item name="cardMaxElevation">20dp</item>
-        <item name="cardPreventCornerOverlap">true</item>
-        <item name="cardUseCompatPadding">false</item>
-    </style>
 </resources>

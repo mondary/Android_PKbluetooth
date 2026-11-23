@@ -11,3 +11,5 @@
 - Vérifier les langues et le lien du hub : `node scripts/test-promo.cjs /chemin/vers/Web_HubApps/index.html`.
 - Si le hub public contient d’autres modifications, `scripts/merge-hub-publication.py` ajoute uniquement la fiche PK Bluetooth à une copie du hub distant, sans remplacer ses autres entrées. Conserver l’original distant et comparer son empreinte avant upload.
 - Aucune capture d’écran réelle de l’interface de l’application n’est disponible dans le dépôt. Les popups sont des reconstitutions web, pas des captures Android. Captures et revue visuelle mobile/desktop restent à réaliser sur un environnement de test adapté.
+
+- GIFs README : `store/gifs/popup-*.gif`, générés par `python3 scripts/generate-readme-gifs.py` (Pillow + ffmpeg, polices système macOS). Ils superposent nom, état et batterie au visuel intégré.

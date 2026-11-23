@@ -6,7 +6,7 @@ Historique de Android_PKbluetooth et de sa base VibePop.
 
 ## TODO — Roadmap
 
-Statut : `2026.11.16` — dépôt entièrement francophone et anglophone
+Statut : `2026.11.17` — APK allégé et aperçus du popup
 
 - [x] Mettre le média actif au premier plan du drawer
 - [x] Restaurer le choix lecture unique / boucle pour les vidéos
@@ -21,6 +21,14 @@ Statut : `2026.11.16` — dépôt entièrement francophone et anglophone
 ---
 
 ## Releases
+
+## [2026.11.17] - 2026-11-23
+
+### Changed
+- R8 et la réduction des ressources sont activés ; l’APK passe d’environ 6,9 Mo à 4,1 Mo.
+- Suppression de 70 ressources inutilisées, de deux dépendances mortes, des icônes legacy et de branches SDK obsolètes.
+- Flux média fermés correctement, rendu de la courbe batterie sans allocations par image et référence WindowManager libérée.
+- Ajout de deux GIFs du popup complet (nom, état, batterie) dans les READMEs FR/EN.
 
 ## [2026.11.16] - 2026-11-23
 

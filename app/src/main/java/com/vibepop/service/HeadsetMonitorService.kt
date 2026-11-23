@@ -40,11 +40,7 @@ class HeadsetMonitorService : Service() {
                     return
                 }
                 val intent = Intent(context, HeadsetMonitorService::class.java)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    ContextCompat.startForegroundService(context, intent)
-                } else {
-                    context.startService(intent)
-                }
+                ContextCompat.startForegroundService(context, intent)
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to start HeadsetMonitorService: ${e.message}")
             }
@@ -119,7 +115,7 @@ class HeadsetMonitorService : Service() {
             .setContentTitle(getString(R.string.service_notification_title))
             .setContentText(getString(R.string.service_notification_desc))
             .setSmallIcon(R.drawable.ic_bluetooth)
-            .setLargeIcon(android.graphics.BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher))
+            .setLargeIcon(appIconBitmap())
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setOngoing(true)
@@ -145,6 +141,20 @@ class HeadsetMonitorService : Service() {
                 stopSelf()
             }
         }
+    }
+
+
+    /** Render the adaptive launcher icon to a bitmap for the notification shade. */
+    private fun appIconBitmap(): android.graphics.Bitmap? = try {
+        val size = (64 * resources.displayMetrics.density).toInt()
+        val drawable = androidx.core.content.ContextCompat.getDrawable(this, R.mipmap.ic_launcher)
+        if (drawable == null) null else android.graphics.Bitmap.createBitmap(size, size, android.graphics.Bitmap.Config.ARGB_8888).also { bitmap ->
+            val canvas = android.graphics.Canvas(bitmap)
+            drawable.setBounds(0, 0, size, size)
+            drawable.draw(canvas)
+        }
+    } catch (e: Exception) {
+        null
     }
 
     private fun registerHeadsetReceiver() {

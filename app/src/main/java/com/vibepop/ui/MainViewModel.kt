@@ -185,10 +185,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
             val safeAddress = address.replace(":", "_").uppercase()
             val destFile = File(context.filesDir, "device_media_${safeAddress}$ext")
-            val inputStream = context.contentResolver.openInputStream(uri) ?: return Pair(false, "")
-            FileOutputStream(destFile).use { output ->
-                inputStream.copyTo(output)
-            }
+            context.contentResolver.openInputStream(uri)?.use { input ->
+                FileOutputStream(destFile).use { output -> input.copyTo(output) }
+            } ?: return Pair(false, "")
 
             val mediaPath = destFile.absolutePath
             val cropRect = if (type == "video") VideoCropDetector.detectCropRatio(destFile) else android.graphics.RectF(0f, 0f, 1f, 1f)
@@ -220,10 +219,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val ext = resolveMediaExtension(mimeType, uri, type)
 
             val destFile = File(context.filesDir, "custom_popup_media$ext")
-            val inputStream = context.contentResolver.openInputStream(uri) ?: return Pair(false, "")
-            FileOutputStream(destFile).use { output ->
-                inputStream.copyTo(output)
-            }
+            context.contentResolver.openInputStream(uri)?.use { input ->
+                FileOutputStream(destFile).use { output -> input.copyTo(output) }
+            } ?: return Pair(false, "")
 
             val mediaPath = destFile.absolutePath
             val cropRect = if (type == "video") VideoCropDetector.detectCropRatio(destFile) else android.graphics.RectF(0f, 0f, 1f, 1f)

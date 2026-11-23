@@ -220,12 +220,10 @@ class PopupViewBinder(
             val context = rootView.context
             val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager ?: return
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                val speakerDevice = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
-                    .firstOrNull { it.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER }
-                if (speakerDevice != null) {
-                    mp.setPreferredDevice(speakerDevice)
-                }
+            val speakerDevice = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
+                .firstOrNull { it.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER }
+            if (speakerDevice != null) {
+                mp.setPreferredDevice(speakerDevice)
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -418,7 +416,7 @@ class PopupViewBinder(
             return
         }
 
-        tvBatteryLevel.text = "$batteryPercent%"
+        tvBatteryLevel.text = context.getString(R.string.battery_percent, batteryPercent)
         ivBatteryCharging.visibility = if (isCharging) View.VISIBLE else View.GONE
 
         // Color the badge by level and charging state.

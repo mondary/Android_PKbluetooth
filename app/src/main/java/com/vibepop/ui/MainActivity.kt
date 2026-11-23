@@ -316,7 +316,7 @@ class MainActivity : AppCompatActivity() {
 
         // Accès rapide au profil par défaut depuis Appareils et Réglages.
         binding.tabDevicesLayout.rowGlobalSettings.setOnClickListener { openDetail(null) }
-        binding.tabSettingsLayout.rowGlobalSettings.setOnClickListener { openDetail(null) }
+        binding.tabSettingsLayout.settingsRowGlobalSettings.setOnClickListener { openDetail(null) }
 
         // Bandeau permissions
         binding.tabDevicesLayout.cardPermissionWarning.setOnClickListener {
@@ -995,7 +995,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.popupConfig.observe(this) { config ->
             val summary = getString(R.string.devices_global_summary, themeLabel(config.animationTheme))
             binding.tabDevicesLayout.tvGlobalThemeSummary.text = summary
-            binding.tabSettingsLayout.tvGlobalThemeSummary.text = summary
+            binding.tabSettingsLayout.settingsTvGlobalThemeSummary.text = summary
             applyTargetThumb(
                 binding.tabDevicesLayout.ivGlobalThemeThumb,
                 config.animationTheme,
@@ -1003,7 +1003,7 @@ class MainActivity : AppCompatActivity() {
                 config.customMediaPath
             )
             applyTargetThumb(
-                binding.tabSettingsLayout.ivGlobalThemeThumb,
+                binding.tabSettingsLayout.settingsIvGlobalThemeThumb,
                 config.animationTheme,
                 config.customMediaType,
                 config.customMediaPath

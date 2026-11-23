@@ -17,24 +17,18 @@ object PermissionHelper {
      * Whether the display-over-other-apps permission is granted.
      */
     fun hasOverlayPermission(context: Context): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Settings.canDrawOverlays(context)
-        } else {
-            true
-        }
+        return Settings.canDrawOverlays(context)
     }
 
     /**
      * Open the overlay permission settings.
      */
     fun requestOverlayPermission(activity: Activity, requestCode: Int = 1001) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val intent = Intent(
-                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:${activity.packageName}")
-            )
-            activity.startActivityForResult(intent, requestCode)
-        }
+        val intent = Intent(
+            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+            Uri.parse("package:${activity.packageName}")
+        )
+        activity.startActivityForResult(intent, requestCode)
     }
 
     /**

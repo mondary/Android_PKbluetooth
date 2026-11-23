@@ -45,7 +45,7 @@ android {
         minSdk = 26
         targetSdk = 34
         // Ship only the maintained languages; dependency locales are stripped.
-        resourceConfigurations += listOf("en", "fr")
+        resourceConfigurations += listOf("fr")
 
         // Le changelog est la source de vérité du fork FR. Le buildNumber reste
         // accepté pour reproduire d'anciens builds de CI.
@@ -78,7 +78,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             val releaseSigning = signingConfigs.getByName("release")
             if (releaseSigning.storeFile != null) {
                 signingConfig = releaseSigning
@@ -119,12 +120,10 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.cardview)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.dynamicanimation)
     implementation(libs.lottie)
 
     testImplementation(libs.junit)

@@ -1,6 +1,6 @@
 # PK Bluetooth — English
 
-Source version **2026.11.16**
+Source version **2026.11.17**
 
 The complete English documentation is maintained in [README.md](README.md).
 

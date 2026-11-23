@@ -8,14 +8,10 @@
     <string name="history_share">Share history</string>
     <string name="app_name">PK Bluetooth</string>
     <string name="update_ready_to_check">Tap CHECK to look for a new version.</string>
-    <string name="updates_unavailable">Updates are not configured for PK Bluetooth yet.</string>
     <string name="service_notification_title">Earbud popup service running</string>
     <string name="service_notification_desc">Monitoring the connection state of your selected earbuds</string>
 
     <!-- Default English UI -->
-    <string name="btn_test_popup">Preview a popup</string>
-    <string name="btn_confirm">OK</string>
-    <string name="btn_cancel">Cancel</string>
     <string name="btn_go_settings">Go to settings</string>
 
     <!-- Permissions -->
@@ -40,7 +36,6 @@
     <string name="battery_unknown">--%</string>
     <string name="device_name_fallback">Bluetooth earbuds</string>
     <string name="device_name_unknown">Unknown device</string>
-    <string name="name_empty_placeholder">Empty</string>
 
     <!-- Dashboard -->
     <string name="dash_service_running">Service running</string>
@@ -91,9 +86,7 @@
     <string name="overlay_needed_toast">Grant the overlay permission first to show popups</string>
 
     <!-- Rename -->
-    <string name="rename_dialog_title">✏️ Rename the popup</string>
     <string name="rename_dialog_hint">Popup name (leave empty to use the Bluetooth name)</string>
-    <string name="rename_dialog_message">Name shown in the popup for “%1$s”:</string>
     <string name="rename_global_default">Default device</string>
     <string name="rename_target_fallback">Selected earbud</string>
     <string name="rename_updated_toast">Popup name updated to: %1$s</string>
@@ -103,22 +96,16 @@
     <string name="device_empty_hint">No paired Bluetooth device found. Pair your earbuds in the system Bluetooth settings and they will show up here for customisation.</string>
     <string name="device_enabled_status">✅ Popup enabled</string>
     <string name="device_disabled_status">⏸️ Off (no popup) • MAC: %1$s</string>
-    <string name="device_need_enable_toast">Turn on the switch on the right before choosing an animation</string>
     <string name="device_clear_all">Disable all</string>
     <string name="device_clear_all_toast">Popups disabled for all earbuds</string>
     <string name="device_none_enabled_toast">No earbud is enabled right now</string>
 
     <!-- Theme target switcher -->
-    <string name="theme_target_global">🌐 Global default</string>
     <string name="theme_target_global_plain">Default device</string>
     <string name="devices_paired_title">Paired earbuds</string>
     <string name="devices_paired_hint">Tap a device to open its visuals, history and sharing.</string>
     <string name="devices_global_summary">Default · Animation: %1$s</string>
-    <string name="btn_back">Back</string>
-    <string name="theme_target_device">🎧 %1$s</string>
-    <string name="theme_target_device_off">🎧 %1$s (off)</string>
     <string name="theme_target_disabled_hint">Popups are off for this earbud. Enable it in the Devices tab.</string>
-    <string name="spinner_arrow">%1$s  ▼</string>
 
     <!-- List separator -->
     <string name="list_separator">", "</string>
@@ -128,14 +115,10 @@
     <string name="notification_channel_desc">Keeps the PK Bluetooth monitor service running in the background</string>
 
     <!-- Bottom navigation -->
-    <string name="nav_dashboard">Dashboard</string>
-    <string name="nav_themes">Studio</string>
     <string name="nav_devices">Devices</string>
     <string name="nav_settings">Settings</string>
 
     <!-- Dashboard screen -->
-    <string name="app_tagline">Custom lifelike popups for Bluetooth earbuds</string>
-    <string name="cd_app_logo">App icon</string>
     <string name="dash_status_ready">Service ready</string>
     <string name="dash_config_hint_title">System setup needed</string>
     <string name="dash_click_to_configure">Tap to configure now</string>
@@ -143,21 +126,11 @@
     <string name="dash_service_title">Earbud connection monitor</string>
     <string name="dash_service_sub">When enabled, a popup slides up from the bottom as soon as a selected earbud connects</string>
     <string name="dash_preview_title">Popup preview &amp; controls</string>
-    <string name="dash_preview_sub">Set audio routing and display duration, then preview the dark lifelike popup in one tap</string>
     <string name="dash_force_speaker_title">Force phone loudspeaker</string>
     <string name="dash_force_speaker_desc">Play the animation sound through the phone speaker even with earbuds connected</string>
     <string name="dash_test_popup">✨ Test the popup</string>
-    <string name="dash_snapshot_title">Current setup</string>
-    <string name="dash_snapshot_theme">Active theme</string>
-    <string name="dash_snapshot_target">Responding to</string>
 
     <!-- Animation studio -->
-    <string name="themes_title">🎨 Animation studio</string>
-    <string name="themes_subtitle">Give each earbud its own animation</string>
-    <string name="themes_target_label">Customising</string>
-    <string name="themes_section_hint">Media played when the earbud connects</string>
-    <string name="cd_preview_theme">Preview this animation</string>
-    <string name="preview_need_media">Import a media file first</string>
     <string name="btn_close_drawer">Close panel</string>
     <string name="media_current_title">Current media</string>
     <string name="media_default_active">Default animation · Tap to choose your media</string>
@@ -166,10 +139,7 @@
     <string name="selected_visual_file">Selected file: %1$s</string>
     <string name="detail_original_name">Bluetooth name</string>
     <string name="detail_save_name">Save</string>
-    <string name="detail_history_action">History</string>
-    <string name="history_hide_action">Hide history</string>
     <string name="history_shown_count">Showing %1$d of %2$d readings</string>
-    <string name="history_loading">Loading battery history…</string>
     <string name="settings_history_subtitle">Recent readings for this device</string>
     <string name="settings_share_file_subtitle">Choose a file to send</string>
     <string name="settings_lan_share_subtitle">Exchange files on your local network</string>
@@ -213,17 +183,6 @@
     <string name="demo_shokz">Shokz headset</string>
     <string name="demo_peugeot">Peugeot 3008</string>
     <string name="demo_open_ear">Black open-ear buds</string>
-    <string name="themes_popup_name">Popup name</string>
-    <string name="themes_rename">✏️ Rename</string>
-    <string name="themes_section_title">Animation theme</string>
-    <string name="theme_classic_title">Classic AirPods Pro</string>
-    <string name="theme_classic_desc">Lifelike lid opening, earbuds leaving the case and a battery badge in the corner</string>
-    <string name="theme_victory_title">Open-ear earbuds</string>
-    <string name="theme_victory_desc">Looping animation on a dark background, silent</string>
-    <string name="theme_custom_title">Your own media</string>
-    <string name="theme_custom_desc">Use the button below to import an MP4 video or a high-res wallpaper</string>
-    <string name="theme_import_section_desc">Supports MP4 video (with sound), animated GIF, WebP, PNG and JPG</string>
-    <string name="btn_pick_media">🎬 Pick from the gallery</string>
     <string name="theme_video_rules_title">🎬 Video playback &amp; dismiss rules</string>
     <string name="video_dismiss_on_complete">Play once, then close</string>
     <string name="video_dismiss_timer">Loop until the timer ends</string>
@@ -232,8 +191,6 @@
     <!-- Devices screen -->
     <string name="devices_title">🎧 Devices</string>
     <string name="devices_subtitle">Manage paired earbuds, enable popups and give each one its own animation</string>
-    <string name="devices_targets_title">Earbuds that trigger a popup</string>
-    <string name="devices_targets_desc">Nothing triggers by default — only the earbuds you enable. Each of them can have its own content.</string>
     <string name="btn_refresh">Refresh</string>
 
     <!-- Settings screen -->
@@ -251,7 +208,6 @@
     <!-- App updates -->
     <string name="update_title">🔄 App updates</string>
     <string name="update_check">Check</string>
-    <string name="update_current_version">Current version: %1$s</string>
     <string name="update_checking">Checking…</string>
     <string name="update_check_failed">Could not check for updates, try again later</string>
     <string name="update_up_to_date">Up to date (%1$s)</string>
@@ -263,11 +219,11 @@
     <string name="update_later">Later</string>
     <string name="support_kofi">Support on Ko-fi</string>
     <string name="support_kofi_open_failed">Could not open Ko-fi</string>
-    <string name="update_download_failed">Download failed, check your connection</string>
 
     <!-- Popup accessibility -->
     <string name="popup_desc_background">Custom background image</string>
     <string name="popup_desc_drag">Drag to dismiss</string>
     <string name="popup_desc_battery">Battery level</string>
     <string name="popup_desc_charging">Charging</string>
+    <string name="battery_percent">%1$d%%</string>
 </resources>

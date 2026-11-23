@@ -102,12 +102,7 @@ object PopupWindowManager {
             popupView = root
 
             // 3. Configure window flags, bottom gravity and transitions.
-            val layoutType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-            } else {
-                @Suppress("DEPRECATION")
-                WindowManager.LayoutParams.TYPE_PHONE
-            }
+            val layoutType = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
 
             @Suppress("DEPRECATION")
             var flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
@@ -234,6 +229,7 @@ object PopupWindowManager {
             Log.e(TAG, "Error while dismissing popup", e)
         } finally {
             popupView = null
+            windowManager = null
             isShowing = false
         }
     }
@@ -268,12 +264,7 @@ object PopupWindowManager {
             } else {
                 @Suppress("DEPRECATION")
                 val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    vibrator?.vibrate(VibrationEffect.createOneShot(30, VibrationEffect.DEFAULT_AMPLITUDE))
-                } else {
-                    @Suppress("DEPRECATION")
-                    vibrator?.vibrate(30)
-                }
+                vibrator?.vibrate(VibrationEffect.createOneShot(30, VibrationEffect.DEFAULT_AMPLITUDE))
             }
         } catch (e: Exception) {
             Log.w(TAG, "Haptic feedback unavailable: ${e.message}")

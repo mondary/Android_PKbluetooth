@@ -23,8 +23,5 @@
     <string name="lan_empty">No items received yet</string>
     <string name="lan_no_address">No local IPv4 address available</string>
     <string name="lan_refresh">Refresh inbox</string>
-    <string name="bud_style">Popup style</string>
-    <string name="bud_kind">Device animation</string>
-    <string name="bud_auto">Automatic detection</string>
     <string name="chart_24h">Last 24 hours</string>
 </resources>

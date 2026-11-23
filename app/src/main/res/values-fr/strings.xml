@@ -8,14 +8,10 @@
     <string name="history_share">Partager l’historique</string>
     <string name="app_name">PK Bluetooth</string>
     <string name="update_ready_to_check">Touchez VÉRIFIER pour chercher une nouvelle version.</string>
-    <string name="updates_unavailable">Les mises à jour PK Bluetooth ne sont pas encore configurées.</string>
     <string name="service_notification_title">Service de popup écouteurs actif</string>
     <string name="service_notification_desc">Surveillance de la connexion de vos écouteurs sélectionnés</string>
 
     <!-- Textes d’interface de base -->
-    <string name="btn_test_popup">Aperçu du popup</string>
-    <string name="btn_confirm">OK</string>
-    <string name="btn_cancel">Annuler</string>
     <string name="btn_go_settings">Ouvrir les réglages</string>
 
     <!-- Permissions -->
@@ -40,7 +36,6 @@
     <string name="battery_unknown">--%</string>
     <string name="device_name_fallback">Écouteurs Bluetooth</string>
     <string name="device_name_unknown">Appareil inconnu</string>
-    <string name="name_empty_placeholder">Nom de l’appareil</string>
 
     <!-- Console -->
     <string name="dash_service_running">Service actif</string>
@@ -91,9 +86,7 @@
     <string name="overlay_needed_toast">Accordez d’abord la permission de superposition pour afficher le popup</string>
 
     <!-- Renommage -->
-    <string name="rename_dialog_title">✏️ Renommer le popup</string>
     <string name="rename_dialog_hint">Nom affiché (vide = nom Bluetooth d’origine)</string>
-    <string name="rename_dialog_message">Nom affiché dans le popup pour « %1$s » :</string>
     <string name="rename_global_default">Appareil par défaut</string>
     <string name="rename_target_fallback">Écouteur sélectionné</string>
     <string name="rename_updated_toast">Nom du popup mis à jour : %1$s</string>
@@ -103,22 +96,16 @@
     <string name="device_empty_hint">Aucun appareil Bluetooth appairé. Appairez vos écouteurs dans les réglages Bluetooth du système : ils apparaîtront ici pour être personnalisés.</string>
     <string name="device_enabled_status">✅ Popup activé</string>
     <string name="device_disabled_status">⏸️ Désactivé (aucun popup) • MAC : %1$s</string>
-    <string name="device_need_enable_toast">Activez l’interrupteur à droite avant de choisir une animation</string>
     <string name="device_clear_all">Tout désactiver</string>
     <string name="device_clear_all_toast">Popups désactivés pour tous les écouteurs</string>
     <string name="device_none_enabled_toast">Aucun écouteur n’est activé pour le moment</string>
 
     <!-- Sélecteur de cible du thème -->
-    <string name="theme_target_global">🌐 Global</string>
     <string name="theme_target_global_plain">Appareil par défaut</string>
     <string name="devices_paired_title">Écouteurs appairés</string>
     <string name="devices_paired_hint">Touchez un appareil pour ouvrir ses visuels, son historique et ses partages.</string>
     <string name="devices_global_summary">Par défaut · Animation : %1$s</string>
-    <string name="btn_back">Retour</string>
-    <string name="theme_target_device">🎧 %1$s</string>
-    <string name="theme_target_device_off">🎧 %1$s (désactivé)</string>
     <string name="theme_target_disabled_hint">Popup désactivé pour cet appareil. Activez-le dans l’onglet Appareils.</string>
-    <string name="spinner_arrow">%1$s  ▼</string>
 
     <!-- Séparateur de liste -->
     <string name="list_separator">", "</string>
@@ -128,14 +115,10 @@
     <string name="notification_channel_desc">Maintient le service de surveillance PK Bluetooth actif en arrière-plan</string>
 
     <!-- Navigation basse -->
-    <string name="nav_dashboard">Accueil</string>
-    <string name="nav_themes">Atelier</string>
     <string name="nav_devices">Appareils</string>
     <string name="nav_settings">Réglages</string>
 
     <!-- Écran Console -->
-    <string name="app_tagline">Des popups réalistes pour vos écouteurs Bluetooth</string>
-    <string name="cd_app_logo">Icône de l’application</string>
     <string name="dash_status_ready">Service prêt</string>
     <string name="dash_config_hint_title">Réglage système requis</string>
     <string name="dash_click_to_configure">Touchez pour configurer</string>
@@ -143,21 +126,11 @@
     <string name="dash_service_title">Surveillance des écouteurs</string>
     <string name="dash_service_sub">Une fois activé, un popup glisse depuis le bas dès qu’un écouteur sélectionné se connecte</string>
     <string name="dash_preview_title">Aperçu et réglages du popup</string>
-    <string name="dash_preview_sub">Réglez la sortie audio et la durée d’affichage, puis prévisualisez le popup sombre en un geste</string>
     <string name="dash_force_speaker_title">Forcer le haut-parleur</string>
     <string name="dash_force_speaker_desc">Jouer le son de l’animation sur le haut-parleur du téléphone même avec des écouteurs connectés</string>
     <string name="dash_test_popup">✨ Tester le popup</string>
-    <string name="dash_snapshot_title">Configuration actuelle</string>
-    <string name="dash_snapshot_theme">Thème actif</string>
-    <string name="dash_snapshot_target">Appareils réactifs</string>
 
     <!-- Écran Atelier -->
-    <string name="themes_title">🎨 Atelier</string>
-    <string name="themes_subtitle">Donnez à chaque écouteur sa propre animation</string>
-    <string name="themes_target_label">Personnaliser</string>
-    <string name="themes_section_hint">Média joué à la connexion de l’écouteur</string>
-    <string name="cd_preview_theme">Aperçu de cette animation</string>
-    <string name="preview_need_media">Importez d’abord un média</string>
     <string name="btn_close_drawer">Fermer le panneau</string>
     <string name="media_current_title">Média actuel</string>
     <string name="media_default_active">Animation par défaut · Touchez pour choisir votre média</string>
@@ -166,10 +139,7 @@
     <string name="selected_visual_file">Fichier sélectionné : %1$s</string>
     <string name="detail_original_name">Nom Bluetooth</string>
     <string name="detail_save_name">Enregistrer</string>
-    <string name="detail_history_action">Historique</string>
-    <string name="history_hide_action">Masquer l’historique</string>
     <string name="history_shown_count">%1$d affichées sur %2$d mesures</string>
-    <string name="history_loading">Chargement de l’historique…</string>
     <string name="settings_history_subtitle">Dernières mesures de cet appareil</string>
     <string name="settings_share_file_subtitle">Choisir un fichier à envoyer</string>
     <string name="settings_lan_share_subtitle">Échanger sur le réseau local</string>
@@ -213,17 +183,6 @@
     <string name="demo_shokz">Shokz</string>
     <string name="demo_peugeot">Peugeot 3008</string>
     <string name="demo_open_ear">Open-ear noirs</string>
-    <string name="themes_popup_name">Nom du popup</string>
-    <string name="themes_rename">✏️ Renommer</string>
-    <string name="themes_section_title">Thème d’animation</string>
-    <string name="theme_classic_title">AirPods Pro classique</string>
-    <string name="theme_classic_desc">Ouverture du boîtier, sortie des écouteurs et pastille de batterie en haut à droite</string>
-    <string name="theme_victory_title">Écouteurs open-ear</string>
-    <string name="theme_victory_desc">Animation en boucle sur fond sombre, sans son</string>
-    <string name="theme_custom_title">Vos propres médias</string>
-    <string name="theme_custom_desc">Utilisez le bouton ci-dessous pour importer une vidéo MP4 ou un fond d’écran HD</string>
-    <string name="theme_import_section_desc">Prend en charge les vidéos MP4 (avec son), les GIF animés, WebP, PNG et JPG</string>
-    <string name="btn_pick_media">🎬 Choisir un média</string>
     <string name="theme_video_rules_title">🎬 Lecture et fermeture des vidéos</string>
     <string name="video_dismiss_on_complete">Lire une fois, puis fermer</string>
     <string name="video_dismiss_timer">Boucler jusqu’à la fin du délai</string>
@@ -232,8 +191,6 @@
     <!-- Écran Appareils -->
     <string name="devices_title">🎧 Appareils</string>
     <string name="devices_subtitle">Gérez vos écouteurs appairés, activez les popups et personnalisez chaque appareil</string>
-    <string name="devices_targets_title">Écouteurs qui déclenchent un popup</string>
-    <string name="devices_targets_desc">Rien ne se déclenche par défaut, seulement les écouteurs que vous activez. Chacun peut avoir son propre contenu.</string>
     <string name="btn_refresh">Actualiser</string>
 
     <!-- Écran Réglages -->
@@ -251,7 +208,6 @@
     <!-- Mises à jour de l’app -->
     <string name="update_title">🔄 Mises à jour</string>
     <string name="update_check">Vérifier</string>
-    <string name="update_current_version">Version actuelle : %1$s</string>
     <string name="update_checking">Vérification…</string>
     <string name="update_check_failed">Impossible de vérifier, réessayez plus tard</string>
     <string name="update_up_to_date">À jour (%1$s)</string>
@@ -263,11 +219,11 @@
     <string name="update_later">Plus tard</string>
     <string name="support_kofi">Soutenir sur Ko-fi</string>
     <string name="support_kofi_open_failed">Impossible d’ouvrir Ko-fi</string>
-    <string name="update_download_failed">Échec du téléchargement, vérifiez la connexion</string>
 
     <!-- Accessibilité du popup -->
     <string name="popup_desc_background">Image d’arrière-plan personnalisée</string>
     <string name="popup_desc_drag">Glisser vers le bas pour fermer</string>
     <string name="popup_desc_battery">Niveau de batterie</string>
     <string name="popup_desc_charging">En charge</string>
+    <string name="battery_percent">%1$d %%</string>
 </resources>
