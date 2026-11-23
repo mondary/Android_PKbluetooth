@@ -91,7 +91,7 @@
     <string name="rename_cleared_toast">已清空自定义名称（弹窗将显示系统原名）</string>
 
     <!-- 设备列表 -->
-    <string name="device_empty_hint">未发现已配对的蓝牙设备。请先在系统蓝牙设置中连接配对，并在此处勾选启用。</string>
+    <string name="device_empty_hint">未发现已配对的蓝牙设备。请先在系统蓝牙设置中连接配对，之后即可在此处单独配置。</string>
     <string name="device_enabled_status">✅ 已开启弹窗响应</string>
     <string name="device_disabled_status">⏸️ 未开启（不响应） • MAC: %1$s</string>
     <string name="device_need_enable_toast">请先开启右侧响应开关，再进行动效配置</string>
@@ -101,6 +101,10 @@
 
     <!-- 动效工坊目标切换 -->
     <string name="theme_target_global">🌐 全局默认</string>
+    <string name="theme_target_global_plain">全局设置</string>
+    <string name="devices_paired_title">已配对耳机</string>
+    <string name="devices_global_summary">动效：%1$s</string>
+    <string name="btn_back">返回</string>
     <string name="theme_target_device">🎧 %1$s</string>
     <string name="theme_target_device_off">🎧 %1$s（未启用）</string>
     <string name="theme_target_disabled_hint">该耳机的弹窗响应未开启，请到「设备管理」中启用</string>
@@ -176,7 +180,7 @@
 
     <!-- 设置与权限 -->
     <string name="settings_title">⚙️ 设置与权限</string>
-    <string name="settings_subtitle">系统必要权限检测、音频输出模式与弹窗停留时长设置</string>
+    <string name="settings_subtitle">监听服务、系统权限与版本更新</string>
     <string name="settings_perms_title">🛡️ 系统必要权限</string>
     <string name="settings_perms_desc">请确保开启以下必要权限，以保证在锁屏、桌面或应用内均可正常弹出</string>
     <string name="perm_media_title">相册与多媒体访问权限</string>

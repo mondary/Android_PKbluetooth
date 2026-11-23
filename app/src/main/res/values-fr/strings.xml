@@ -91,7 +91,7 @@
     <string name="rename_cleared_toast">Nom personnalisé effacé (le nom Bluetooth sera utilisé)</string>
 
     <!-- Appareils -->
-    <string name="device_empty_hint">Aucun appareil Bluetooth appairé. Appairez vos écouteurs dans les réglages Bluetooth du système, puis activez-les ici.</string>
+    <string name="device_empty_hint">Aucun appareil Bluetooth appairé. Appairez vos écouteurs dans les réglages Bluetooth du système : ils apparaîtront ici pour être personnalisés.</string>
     <string name="device_enabled_status">✅ Popup activé</string>
     <string name="device_disabled_status">⏸️ Désactivé (aucun popup) • MAC : %1$s</string>
     <string name="device_need_enable_toast">Activez l’interrupteur à droite avant de choisir une animation</string>
@@ -101,6 +101,10 @@
 
     <!-- Sélecteur de cible du thème -->
     <string name="theme_target_global">🌐 Global</string>
+    <string name="theme_target_global_plain">Réglages globaux</string>
+    <string name="devices_paired_title">Écouteurs appairés</string>
+    <string name="devices_global_summary">Animation : %1$s</string>
+    <string name="btn_back">Retour</string>
     <string name="theme_target_device">🎧 %1$s</string>
     <string name="theme_target_device_off">🎧 %1$s (désactivé)</string>
     <string name="theme_target_disabled_hint">Popup désactivé pour cet appareil. Activez-le dans l’onglet Appareils.</string>
@@ -176,7 +180,7 @@
 
     <!-- Écran Réglages -->
     <string name="settings_title">⚙️ Réglages et permissions</string>
-    <string name="settings_subtitle">Permissions système requises, sortie audio et durée d’affichage du popup</string>
+    <string name="settings_subtitle">Service de surveillance, permissions système et mises à jour</string>
     <string name="settings_perms_title">🛡️ Permissions requises</string>
     <string name="settings_perms_desc">Activez ces permissions pour que le popup s’affiche sur l’écran verrouillé, l’accueil ou dans toute app</string>
     <string name="perm_media_title">Accès aux photos et médias</string>

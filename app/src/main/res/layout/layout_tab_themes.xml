@@ -14,45 +14,45 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <!-- 页面标题 -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/themes_title"
-            android:textColor="@color/text_primary"
-            android:textSize="22sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/themes_subtitle"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp" />
-
-        <!-- 目标切换：全局默认或某一只已开启的耳机 -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/themes_target_label"
-            android:textColor="@color/text_secondary"
-            android:textSize="11sp"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/spinnerThemeTarget"
+        <!-- 返回 + 当前目标 -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/bg_battery_badge"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:popupBackground="@color/bg_card_dark"
-            android:dropDownVerticalOffset="46dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:spinnerMode="dropdown" />
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnBackToDevices"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/btn_back"
+                android:padding="8dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/text_primary" />
+
+            <TextView
+                android:id="@+id/tvDetailTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="AirPods de Clem" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/themes_section_hint"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp" />
 
         <TextView
             android:id="@+id/tvTargetDisabledHint"
@@ -123,6 +123,105 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- 全局弹窗选项（仅「全局默认」显示） -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardGlobalPopupOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="@color/bg_card_dark"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="2dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dash_preview_title"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/dash_preview_sub"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="11sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/dash_force_speaker_title"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/dash_force_speaker_desc"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switchForceSpeakerphone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/card_stroke" />
+
+                <TextView
+                    android:id="@+id/tvDismissDelayLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    tools:text="Durée du popup : 4 s" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderDismissDelay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1"
+                    android:value="4"
+                    android:valueFrom="2"
+                    android:valueTo="15" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <!-- 动效主题标题 -->
         <TextView
             android:layout_width="wrap_content"
@@ -132,14 +231,6 @@
             android:textColor="@color/text_primary"
             android:textSize="14sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="@string/themes_section_hint"
-            android:textColor="@color/text_secondary"
-            android:textSize="11sp" />
 
         <!-- 卡片 1: 经典 AirPods -->
         <com.google.android.material.card.MaterialCardView
@@ -429,7 +520,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="14dp"
             app:cardBackgroundColor="@color/bg_card_dark"
             app:cardCornerRadius="18dp"
             app:cardElevation="3dp"
@@ -507,6 +598,23 @@
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
+        <!-- 预览按钮 -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnTestPopup"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/dash_test_popup"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/primary"
+            app:cornerRadius="14dp"
+            app:icon="@drawable/ic_bluetooth_headset"
+            app:iconGravity="textStart"
+            app:iconTint="#FFFFFF" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

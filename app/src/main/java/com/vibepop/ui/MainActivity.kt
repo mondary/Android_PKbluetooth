@@ -36,8 +36,7 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     private var currentThemeTargetAddress: String? = null
-    private var themeTargetList = listOf<ThemeTargetItem>()
-    private var isProgrammaticSpinnerChange = false
+    private var inDetail = false
     private var hasPromptedBluetoothDialog = false
     private var bluetoothReceiverRegistered = false
     private var bondedDeviceItems = listOf<BondedDeviceItem>()
@@ -209,55 +208,72 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * 底部导航栏切换逻辑
+     * 底部导航：Appareils / Réglages, plus la page de détail d'une cible
      */
     private fun setupNavigation() {
         binding.bottomNav.setOnItemSelectedListener { item ->
             switchTab(item.itemId)
             true
         }
-
-        // 默认激活控制台 Tab
-        switchTab(R.id.nav_dashboard)
+        switchTab(R.id.nav_devices)
+        renderBondedDevices(bondedDeviceItems)
     }
 
     private fun switchTab(itemId: Int) {
-        binding.tabDashboardLayout.root.visibility = if (itemId == R.id.nav_dashboard) View.VISIBLE else View.GONE
-        binding.tabThemesLayout.root.visibility = if (itemId == R.id.nav_themes) View.VISIBLE else View.GONE
+        inDetail = false
+        binding.tabThemesLayout.root.visibility = View.GONE
         binding.tabDevicesLayout.root.visibility = if (itemId == R.id.nav_devices) View.VISIBLE else View.GONE
         binding.tabSettingsLayout.root.visibility = if (itemId == R.id.nav_settings) View.VISIBLE else View.GONE
+    }
 
-        if (itemId == R.id.nav_themes) {
-            loadThemeTargetUI(currentThemeTargetAddress)
+    /** 打开某个目标的配置页；address 为 null 表示全局默认 */
+    private fun openDetail(address: String?) {
+        inDetail = true
+        currentThemeTargetAddress = address
+        binding.tabDevicesLayout.root.visibility = View.GONE
+        binding.tabSettingsLayout.root.visibility = View.GONE
+        binding.tabThemesLayout.root.visibility = View.VISIBLE
+
+        binding.tabThemesLayout.tvDetailTitle.text = if (address == null) {
+            getString(R.string.theme_target_global_plain)
+        } else {
+            bondedDeviceItems.firstOrNull { it.address == address }?.name
+                ?: getString(R.string.rename_target_fallback)
         }
+        binding.tabThemesLayout.cardGlobalPopupOptions.visibility =
+            if (address == null) View.VISIBLE else View.GONE
+
+        loadThemeTargetUI(address)
+        binding.tabThemesLayout.root.scrollTo(0, 0)
+    }
+
+    private fun closeDetail() {
+        if (!inDetail) return
+        inDetail = false
+        binding.tabThemesLayout.root.visibility = View.GONE
+        val onSettings = binding.bottomNav.selectedItemId == R.id.nav_settings
+        binding.tabDevicesLayout.root.visibility = if (onSettings) View.GONE else View.VISIBLE
+        binding.tabSettingsLayout.root.visibility = if (onSettings) View.VISIBLE else View.GONE
+    }
+
+    override fun onBackPressed() {
+        if (inDetail) {
+            closeDetail()
+            return
+        }
+        @Suppress("DEPRECATION")
+        super.onBackPressed()
     }
 
     /**
      * 1. 🏠 控制台面板交互绑定
      */
     private fun setupDashboardTab() {
-        val dash = binding.tabDashboardLayout
+        // Entrée « Réglages globaux »
+        binding.tabDevicesLayout.rowGlobalSettings.setOnClickListener { openDetail(null) }
 
-        // 模拟弹窗一键测试
-        dash.btnTestPopup.setOnClickListener {
-            if (!PermissionHelper.hasOverlayPermission(this)) {
-                Toast.makeText(this, getString(R.string.overlay_needed_toast), Toast.LENGTH_SHORT).show()
-                binding.bottomNav.selectedItemId = R.id.nav_settings
-                PermissionHelper.requestOverlayPermission(this)
-                return@setOnClickListener
-            }
-            viewModel.triggerMockPopup(applicationContext)
-        }
-
-        // 服务开关
-        dash.switchService.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (buttonView.isPressed) {
-                viewModel.setServiceEnabled(this, isChecked)
-            }
-        }
-
-        // 权限警告条点击 -> 切换至设置/权限 Tab 或引导开启蓝牙
-        dash.cardPermissionWarning.setOnClickListener {
+        // Bandeau permissions
+        binding.tabDevicesLayout.cardPermissionWarning.setOnClickListener {
             if (!PermissionHelper.isBluetoothEnabled(this)) {
                 PermissionHelper.promptEnableBluetooth(this)
             } else {
@@ -265,28 +281,26 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // 声音模式切换
-        dash.switchForceSpeakerphone.setOnCheckedChangeListener { buttonView, isChecked ->
+        // Retour depuis la page de détail
+        binding.tabThemesLayout.btnBackToDevices.setOnClickListener { closeDetail() }
+
+        // Aperçu de la cible courante
+        binding.tabThemesLayout.btnTestPopup.setOnClickListener { previewCurrentTarget() }
+
+        // Sortie haut-parleur (option globale)
+        binding.tabThemesLayout.switchForceSpeakerphone.setOnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.isPressed) {
                 viewModel.updateForceSpeakerphone(isChecked)
             }
         }
 
-        // 弹窗时长滑动条
-        dash.sliderDismissDelay.addOnChangeListener { _, value, fromUser ->
+        // Durée d'affichage (option globale)
+        binding.tabThemesLayout.sliderDismissDelay.addOnChangeListener { _, value, fromUser ->
             if (fromUser) {
                 val seconds = value.toInt()
-                dash.tvDismissDelayLabel.text = getString(R.string.setting_dismiss_delay, seconds)
+                binding.tabThemesLayout.tvDismissDelayLabel.text = getString(R.string.setting_dismiss_delay, seconds)
                 viewModel.updateDismissSeconds(seconds)
             }
-        }
-
-        // 快捷导航按钮
-        dash.btnQuickGoThemes.setOnClickListener {
-            binding.bottomNav.selectedItemId = R.id.nav_themes
-        }
-        dash.btnQuickGoDevices.setOnClickListener {
-            binding.bottomNav.selectedItemId = R.id.nav_devices
         }
     }
 
@@ -335,9 +349,6 @@ class MainActivity : AppCompatActivity() {
                 viewModel.saveDevicePopupConfig(this, address, devConfig.copy(videoDismissMode = mode))
             }
         }
-
-        // 即使暂时没有可用的已配对设备，也要让「全局默认」这一项可见
-        setupThemesDropdown(bondedDeviceItems)
 
         // 内置演示视觉库
         buildDemoLibrary()
@@ -476,7 +487,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val targetTitle = if (address == null) getString(R.string.rename_global_default) else {
-            themeTargetList.find { it.address == address }?.title ?: getString(R.string.rename_target_fallback)
+            bondedDeviceItems.firstOrNull { it.address == address }?.name ?: getString(R.string.rename_target_fallback)
         }
 
         com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
@@ -515,78 +526,6 @@ class MainActivity : AppCompatActivity() {
                 devConfig.copy(animationTheme = theme)
             }
             viewModel.saveDevicePopupConfig(this, address, updated)
-            loadThemeTargetUI(address)
-        }
-    }
-
-    private fun setupThemesDropdown(devices: List<BondedDeviceItem>) {
-        val spinner = binding.tabThemesLayout.spinnerThemeTarget
-
-        val items = mutableListOf<ThemeTargetItem>()
-        items.add(ThemeTargetItem(getString(R.string.theme_target_global), null))
-        for (device in devices) {
-            // Tous les appareils appairés sont personnalisables, même si leur popup
-            // est désactivé : la configuration se fait avant l'activation.
-            val title = if (device.isSelected) {
-                getString(R.string.theme_target_device, device.name)
-            } else {
-                getString(R.string.theme_target_device_off, device.name)
-            }
-            items.add(ThemeTargetItem(title, device.address))
-        }
-        themeTargetList = items
-
-        val adapter = object : android.widget.ArrayAdapter<ThemeTargetItem>(
-            this,
-            R.layout.item_spinner_target,
-            items
-        ) {
-            override fun getView(position: Int, convertView: View?, parent: android.view.ViewGroup): View {
-                val tv = (convertView ?: layoutInflater.inflate(R.layout.item_spinner_target, parent, false)) as TextView
-                val item = getItem(position)
-                tv.text = getString(R.string.spinner_arrow, item?.title)
-                return tv
-            }
-
-            override fun getDropDownView(position: Int, convertView: View?, parent: android.view.ViewGroup): View {
-                val tv = (convertView ?: layoutInflater.inflate(R.layout.item_spinner_dropdown, parent, false)) as TextView
-                val item = getItem(position)
-                tv.text = item?.title
-                val isCurrent = item?.address == currentThemeTargetAddress
-                tv.setTextColor(ContextCompat.getColor(this@MainActivity, if (isCurrent) R.color.primary else R.color.text_primary))
-                return tv
-            }
-        }
-        spinner.adapter = adapter
-
-        // 恢复之前选中的位置或默认
-        val targetIndex = items.indexOfFirst { it.address == currentThemeTargetAddress }.let {
-            if (it >= 0) it else 0
-        }
-        isProgrammaticSpinnerChange = true
-        spinner.setSelection(targetIndex, false)
-        isProgrammaticSpinnerChange = false
-        currentThemeTargetAddress = items[targetIndex].address
-
-        spinner.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (isProgrammaticSpinnerChange) return
-                val item = items.getOrNull(position) ?: return
-                currentThemeTargetAddress = item.address
-                loadThemeTargetUI(item.address)
-            }
-            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
-        }
-    }
-
-    private fun selectTargetInDropdown(address: String?) {
-        val spinner = binding.tabThemesLayout.spinnerThemeTarget
-        val index = themeTargetList.indexOfFirst { it.address == address }
-        if (index >= 0) {
-            isProgrammaticSpinnerChange = true
-            spinner.setSelection(index, false)
-            isProgrammaticSpinnerChange = false
-            currentThemeTargetAddress = address
             loadThemeTargetUI(address)
         }
     }
@@ -743,7 +682,7 @@ class MainActivity : AppCompatActivity() {
 
         // 服务状态
         viewModel.isServiceRunning.observe(this) { running ->
-            val dash = binding.tabDashboardLayout
+            val dash = binding.tabSettingsLayout
             if (dash.switchService.isChecked != running) {
                 dash.switchService.isChecked = running
             }
@@ -764,24 +703,23 @@ class MainActivity : AppCompatActivity() {
         viewModel.bondedDevices.observe(this) { devices ->
             bondedDeviceItems = devices
             renderBondedDevices(devices)
-            setupThemesDropdown(devices)
         }
 
         // 弹窗参数配置
         viewModel.popupConfig.observe(this) { config ->
-            val dash = binding.tabDashboardLayout
+            val detail = binding.tabThemesLayout
 
-            // 扬声器外放
-            if (dash.switchForceSpeakerphone.isChecked != config.isForceSpeakerphone) {
-                dash.switchForceSpeakerphone.isChecked = config.isForceSpeakerphone
+            if (detail.switchForceSpeakerphone.isChecked != config.isForceSpeakerphone) {
+                detail.switchForceSpeakerphone.isChecked = config.isForceSpeakerphone
             }
 
-            // 倒计时滑块
-            dash.sliderDismissDelay.value = config.autoDismissSeconds.toFloat()
-            dash.tvDismissDelayLabel.text = getString(R.string.setting_dismiss_delay, config.autoDismissSeconds)
+            detail.sliderDismissDelay.value = config.autoDismissSeconds.toFloat()
+            detail.tvDismissDelayLabel.text = getString(R.string.setting_dismiss_delay, config.autoDismissSeconds)
 
-            // 仅在当前选择全局默认时同步动效工坊卡片
-            if (currentThemeTargetAddress == null) {
+            binding.tabDevicesLayout.tvGlobalThemeSummary.text =
+                getString(R.string.devices_global_summary, themeLabel(config.animationTheme))
+
+            if (currentThemeTargetAddress == null && inDetail) {
                 loadThemeTargetUI(null)
             }
         }
@@ -817,7 +755,7 @@ class MainActivity : AppCompatActivity() {
         if (!bluetooth) missingList.add(getString(R.string.perm_missing_bluetooth))
         if (!notification) missingList.add(getString(R.string.perm_missing_notification))
 
-        val dash = binding.tabDashboardLayout
+        val dash = binding.tabDevicesLayout
         if (missingList.isNotEmpty()) {
             dash.cardPermissionWarning.visibility = View.VISIBLE
             dash.tvMissingPermSummary.text = getString(
@@ -852,7 +790,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateThemeCardsUI(theme: String, mediaType: String, mediaPath: String?) {
         val themes = binding.tabThemesLayout
-        val dash = binding.tabDashboardLayout
 
         val activeStrokeColor = ContextCompat.getColor(this, R.color.primary)
         val defaultStrokeColor = ContextCompat.getColor(this, R.color.card_stroke)
@@ -876,7 +813,6 @@ class MainActivity : AppCompatActivity() {
             themes.cardThemeGreatVictory.strokeColor = activeStrokeColor
             themes.cardThemeGreatVictory.strokeWidth = activeStrokeWidth
             themes.ivCheckGreatVictory.visibility = View.VISIBLE
-            dash.tvQuickThemeName.text = getString(R.string.dash_theme_great_victory)
         } else if (theme == "custom_media") {
             themes.cardThemeCustom.strokeColor = activeStrokeColor
             themes.cardThemeCustom.strokeWidth = activeStrokeWidth
@@ -889,25 +825,22 @@ class MainActivity : AppCompatActivity() {
             }
             val fileName = mediaPath?.let { java.io.File(it).name } ?: ""
             themes.tvCustomMediaDetail.text = if (fileName.isNotEmpty()) getString(R.string.media_active_hint, typeDesc, fileName) else getString(R.string.media_active_hint_no_file, typeDesc)
-            dash.tvQuickThemeName.text = getString(R.string.dash_theme_custom)
         } else {
             themes.cardThemeClassic.strokeColor = activeStrokeColor
             themes.cardThemeClassic.strokeWidth = activeStrokeWidth
             themes.ivCheckClassic.visibility = View.VISIBLE
-            dash.tvQuickThemeName.text = getString(R.string.dash_theme_classic)
         }
     }
 
     private fun renderBondedDevices(devices: List<BondedDeviceItem>) {
         val container = binding.tabDevicesLayout.layoutBondedDevicesContainer
-        val dash = binding.tabDashboardLayout
         container.removeAllViews()
 
         val selectedCount = devices.count { it.isSelected }
-        if (selectedCount > 0) {
-            dash.tvQuickDeviceFilter.text = getString(R.string.dash_devices_enabled, selectedCount)
+        binding.tabDevicesLayout.tvEnabledDevicesSummary.text = if (selectedCount > 0) {
+            getString(R.string.dash_devices_enabled, selectedCount)
         } else {
-            dash.tvQuickDeviceFilter.text = getString(R.string.dash_devices_none)
+            getString(R.string.dash_devices_none)
         }
 
         if (devices.isEmpty()) {
@@ -960,25 +893,12 @@ class MainActivity : AppCompatActivity() {
                 )
             }
 
-            // 1. 左侧齿轮设置图标（点击直接跳转动效工坊定制该耳机效果）
-            val gearIv = ImageView(this).apply {
-                layoutParams = LinearLayout.LayoutParams((32 * density).toInt(), (32 * density).toInt())
-                setImageResource(R.drawable.ic_settings)
-                setColorFilter(if (isSelected) primaryColor else textSecondaryColor)
-                setPadding((4 * density).toInt(), (4 * density).toInt(), (4 * density).toInt(), (4 * density).toInt())
-                background = ContextCompat.getDrawable(this@MainActivity, android.R.drawable.list_selector_background)
-                isClickable = true
-                isFocusable = true
-                setOnClickListener {
-                    if (!device.isSelected) {
-                        Toast.makeText(this@MainActivity, getString(R.string.device_need_enable_toast), Toast.LENGTH_SHORT).show()
-                        return@setOnClickListener
-                    }
-                    binding.bottomNav.selectedItemId = R.id.nav_themes
-                    selectTargetInDropdown(device.address)
-                }
+            // 1. 左侧状态圆点
+            val dot = View(this).apply {
+                layoutParams = LinearLayout.LayoutParams((10 * density).toInt(), (10 * density).toInt())
+                setBackgroundResource(if (isSelected) R.drawable.bg_status_dot_green else R.drawable.bg_status_dot_gray)
             }
-            row.addView(gearIv)
+            row.addView(dot)
 
             // 2. 中间耳机信息
             val infoLayout = LinearLayout(this).apply {
@@ -1019,9 +939,38 @@ class MainActivity : AppCompatActivity() {
             }
             row.addView(switchBtn)
 
+            val chevron = ImageView(this).apply {
+                layoutParams = LinearLayout.LayoutParams((20 * density).toInt(), (20 * density).toInt()).apply {
+                    marginStart = (8 * density).toInt()
+                }
+                setImageResource(R.drawable.ic_chevron_right)
+                setColorFilter(textSecondaryColor)
+            }
+            row.addView(chevron)
+
+            card.setOnClickListener { openDetail(device.address) }
+
             card.addView(row)
             container.addView(card)
         }
+    }
+
+    private fun themeLabel(theme: String): String = when (theme) {
+        "great_victory" -> getString(R.string.dash_theme_great_victory)
+        "custom_media" -> getString(R.string.dash_theme_custom)
+        else -> getString(R.string.dash_theme_classic)
+    }
+
+    /** 预览当前目标的完整配置（不修改任何偏好） */
+    private fun previewCurrentTarget() {
+        if (!PermissionHelper.hasOverlayPermission(this)) {
+            Toast.makeText(this, getString(R.string.overlay_needed_toast), Toast.LENGTH_SHORT).show()
+            binding.bottomNav.selectedItemId = R.id.nav_settings
+            PermissionHelper.requestOverlayPermission(this)
+            return
+        }
+        val config = currentTargetConfig() ?: return
+        viewModel.previewPopup(applicationContext, config, previewDeviceState())
     }
 
     /**
@@ -1205,8 +1154,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
-data class ThemeTargetItem(
-    val title: String,
-    val address: String?
-)

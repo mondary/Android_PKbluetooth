@@ -91,7 +91,7 @@
     <string name="rename_cleared_toast">Custom name cleared (the Bluetooth name will be used)</string>
 
     <!-- Devices -->
-    <string name="device_empty_hint">No paired Bluetooth device found. Pair your earbuds in the system Bluetooth settings, then enable them here.</string>
+    <string name="device_empty_hint">No paired Bluetooth device found. Pair your earbuds in the system Bluetooth settings and they will show up here for customisation.</string>
     <string name="device_enabled_status">✅ Popup enabled</string>
     <string name="device_disabled_status">⏸️ Off (no popup) • MAC: %1$s</string>
     <string name="device_need_enable_toast">Turn on the switch on the right before choosing an animation</string>
@@ -101,6 +101,10 @@
 
     <!-- Theme target switcher -->
     <string name="theme_target_global">🌐 Global default</string>
+    <string name="theme_target_global_plain">Global settings</string>
+    <string name="devices_paired_title">Paired earbuds</string>
+    <string name="devices_global_summary">Animation: %1$s</string>
+    <string name="btn_back">Back</string>
     <string name="theme_target_device">🎧 %1$s</string>
     <string name="theme_target_device_off">🎧 %1$s (off)</string>
     <string name="theme_target_disabled_hint">Popups are off for this earbud. Enable it in the Devices tab.</string>
@@ -176,7 +180,7 @@
 
     <!-- Settings screen -->
     <string name="settings_title">⚙️ Settings &amp; permissions</string>
-    <string name="settings_subtitle">Required system permissions, audio output mode and popup duration</string>
+    <string name="settings_subtitle">Monitor service, system permissions and updates</string>
     <string name="settings_perms_title">🛡️ Required permissions</string>
     <string name="settings_perms_desc">Enable these permissions so the popup can appear on the lock screen, the home screen or in any app</string>
     <string name="perm_media_title">Photos &amp; media access</string>
