@@ -6,14 +6,22 @@ Historique de Android_PKbluetooth et de sa base VibePop.
 
 ## TODO — Roadmap
 
-Statut : `2026.11.1` — simplification de la configuration des médias
+Statut : `2026.11.7` — atelier visuel et réglages intégrés
 
 - [x] Mettre le média actif au premier plan du drawer
 - [x] Restaurer le choix lecture unique / boucle pour les vidéos
+- [x] Séparer visuels et animations, avec aperçu BudPop intégré
+- [x] Afficher renommage, historique et crédits sans dialogues imbriqués
 
 ---
 
 ## Releases
+
+### [2026.11.7] - 2026-11-23
+
+- Refonte du panneau de personnalisation en onglets « Visuel » et « Animation » ; aperçu BudPop animé intégré pour les trois styles et les neuf familles d’appareils.
+- Renommage et historique batterie dépliables dans le panneau ; outils, historique et crédits regroupés dans une carte compacte des réglages.
+- Déplacement du dépôt dans `PROJECTS/Android/Android_PKbluetooth`.
 
 ### [2026.11.6] - 2026-11-23
 

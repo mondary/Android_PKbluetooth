@@ -18,9 +18,11 @@ Android_PKbluetooth is an independent app (`design.mondary.pkbluetooth`): it ins
 ## Popup and media
 
 - The drawer centers on the active media; replace it from the Android picker, or keep an included visual.
+- The studio separates **Visual** and **Animation** tabs. Browse each BudPop device family and play its animated preview inline before applying it.
+- Rename a device and expand its battery history in the same panel; history and credits also expand directly in Settings.
 - Videos play once and close the popup, or loop until the countdown ends.
 - Three BudPop card styles — bare, lovely, fanciest — with nine device families (earbuds, headphones, speakers, soundbars, keyboards, mice, car adapters, game controllers, other), drawn live in Kotlin. The family is detected from the device, or forced per device.
-- Everything is a preview away: the test button plays the current target's exact configuration.
+- The test button still plays the current target's exact popup configuration.
 
 ## Battery
 

@@ -11,6 +11,8 @@ Android_PKbluetooth 是独立应用（`design.mondary.pkbluetooth`）：可与 V
 
 Android_PKbluetooth 最新签名 APK：[下载](https://github.com/mondary/Android_PKbluetooth/releases/latest/download/Android_PKbluetooth.apk)。应用内可在设置中点击「检查更新」；有新版本时会打开 APK 下载，再由 Android 安装器确认安装。更新不静默进行，所有版本使用同一签名密钥。
 
+应用内「视觉 / 动画」标签提供 BudPop 设备动画预览；重命名、电量记录和许可信息均可在页面内展开查看。
+
 ---
 
 # VibePop - 蓝牙耳机自定义拟真弹窗框架
