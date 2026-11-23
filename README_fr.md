@@ -19,15 +19,15 @@ Android_PKbluetooth est une application indépendante (`design.mondary.pkbluetoo
 
 - Le drawer centre le média actif ; remplacez-le depuis le sélecteur Android, ou gardez un visuel intégré.
 - L’atelier sépare les onglets **Visuel** et **Animation**. Parcourez les familles BudPop et lancez leur aperçu animé dans le panneau avant de choisir.
-- Le renommage et l’historique batterie se déplient dans ce même panneau ; historique et crédits s’ouvrent aussi directement dans les réglages.
+- Le renommage, l’historique batterie et les partages fichier/Wi‑Fi se déplient dans le panneau de chaque appareil ; les réglages proposent aussi **Autre appareil Bluetooth** comme profil par défaut, avec les crédits et licences tout en bas.
 - Les vidéos se lisent une fois puis ferment le popup, ou bouclent jusqu'à la fin du compte à rebours.
-- Trois styles de carte BudPop — minimal, lovely, fanciest — avec neuf familles d'appareils (écouteurs, casques, enceintes, barres de son, claviers, souris, adaptateurs voiture, manettes, autre), dessinées à la volée en Kotlin. La famille est détectée depuis l'appareil, ou forcée par appareil.
+- Trois styles de carte BudPop — minimal, lovely, fanciest — avec neuf familles d'appareils (écouteurs, casques, enceintes, barres de son, claviers, souris, adaptateurs voiture, manettes, générique), dessinées à la volée en Kotlin. La famille est détectée depuis l'appareil, ou forcée par appareil.
 - Le bouton de test rejoue toujours la configuration exacte du popup de la cible courante.
 
 ## Batterie
 
 - Seuls les niveaux réellement transmis par l'appareil sont enregistrés, dans une base SQLite locale, dédoublonnés, conservés 30 jours.
-- L'historique liste les 500 dernières mesures, par appareil ou globalement, avec une courbe sur 24 heures ; il se partage en texte.
+- L'historique liste les 500 dernières mesures de l'appareil sélectionné, avec une courbe sur 24 heures ; il se partage en texte.
 - Les appareils qui ne remontent rien via Android sont lus via le service GATT Batterie standard (et les bracelets Huami via leur caractéristique propre).
 - Un widget d'écran d'accueil affiche le dernier niveau de quatre appareils.
 

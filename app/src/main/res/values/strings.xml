@@ -94,7 +94,7 @@
     <string name="rename_dialog_title">✏️ 修改弹窗显示名称</string>
     <string name="rename_dialog_hint">弹窗显示名称（留空则展示系统蓝牙原名）</string>
     <string name="rename_dialog_message">正在为【%1$s】设置弹窗上展示的名称：</string>
-    <string name="rename_global_default">全局默认</string>
+    <string name="rename_global_default">默认设备</string>
     <string name="rename_target_fallback">所选耳机</string>
     <string name="rename_updated_toast">已更新弹窗显示名称为：%1$s</string>
     <string name="rename_cleared_toast">已清空自定义名称（弹窗将显示系统原名）</string>
@@ -110,9 +110,10 @@
 
     <!-- 动效工坊目标切换 -->
     <string name="theme_target_global">🌐 全局默认</string>
-    <string name="theme_target_global_plain">全局设置</string>
+    <string name="theme_target_global_plain">其他蓝牙设备</string>
     <string name="devices_paired_title">已配对耳机</string>
-    <string name="devices_global_summary">动效：%1$s</string>
+    <string name="devices_paired_hint">点击设备可打开其视觉、电量记录与分享。</string>
+    <string name="devices_global_summary">默认 · 动效：%1$s</string>
     <string name="btn_back">返回</string>
     <string name="theme_target_device">🎧 %1$s</string>
     <string name="theme_target_device_off">🎧 %1$s（未启用）</string>
@@ -161,18 +162,18 @@
     <string name="media_current_title">当前媒体</string>
     <string name="media_default_active">默认动效 · 点击选择自己的媒体</string>
     <string name="media_legacy_preset">当前使用内置视觉：%1$s</string>
-    <string name="media_change_action">浏览</string>
+    <string name="media_change_action">浏览文件</string>
     <string name="detail_original_name">蓝牙名称</string>
     <string name="detail_save_name">保存</string>
     <string name="detail_history_action">电量记录</string>
     <string name="history_hide_action">收起记录</string>
     <string name="history_shown_count">显示 %1$d / %2$d 条记录</string>
     <string name="history_loading">正在加载电量记录…</string>
-    <string name="settings_tools_title">工具与数据</string>
-    <string name="settings_history_subtitle">最近收到的电量记录</string>
+    <string name="settings_history_subtitle">此设备最近的测量记录</string>
     <string name="settings_share_file_subtitle">选择要发送的文件</string>
     <string name="settings_lan_share_subtitle">在本地网络中交换文件</string>
     <string name="settings_credits_subtitle">来源与许可</string>
+    <string name="settings_device_data_title">设备数据与分享</string>
     <string name="animation_tab_visual">视觉</string>
     <string name="animation_tab_motion">动画</string>
     <string name="animation_browser_title">BudPop 动画</string>
@@ -193,7 +194,7 @@
     <string name="bud_kind_mouse">鼠标</string>
     <string name="bud_kind_car">车载适配器</string>
     <string name="bud_kind_gamepad">游戏手柄</string>
-    <string name="bud_kind_other">其他设备</string>
+    <string name="bud_kind_other">通用</string>
     <string name="bud_kind_desc_earbuds">左右耳机从两侧飞入并交错。</string>
     <string name="bud_kind_desc_headphones">头戴耳机旋转落下并弹跳。</string>
     <string name="bud_kind_desc_speaker">音箱飞入、弹跳，然后律动。</string>

@@ -94,7 +94,7 @@
     <string name="rename_dialog_title">✏️ Renommer le popup</string>
     <string name="rename_dialog_hint">Nom affiché (vide = nom Bluetooth d’origine)</string>
     <string name="rename_dialog_message">Nom affiché dans le popup pour « %1$s » :</string>
-    <string name="rename_global_default">Global par défaut</string>
+    <string name="rename_global_default">Appareil par défaut</string>
     <string name="rename_target_fallback">Écouteur sélectionné</string>
     <string name="rename_updated_toast">Nom du popup mis à jour : %1$s</string>
     <string name="rename_cleared_toast">Nom personnalisé effacé (le nom Bluetooth sera utilisé)</string>
@@ -110,9 +110,10 @@
 
     <!-- Sélecteur de cible du thème -->
     <string name="theme_target_global">🌐 Global</string>
-    <string name="theme_target_global_plain">Réglages globaux</string>
+    <string name="theme_target_global_plain">Autre appareil Bluetooth</string>
     <string name="devices_paired_title">Écouteurs appairés</string>
-    <string name="devices_global_summary">Animation : %1$s</string>
+    <string name="devices_paired_hint">Touchez un appareil pour ouvrir ses visuels, son historique et ses partages.</string>
+    <string name="devices_global_summary">Par défaut · Animation : %1$s</string>
     <string name="btn_back">Retour</string>
     <string name="theme_target_device">🎧 %1$s</string>
     <string name="theme_target_device_off">🎧 %1$s (désactivé)</string>
@@ -161,18 +162,18 @@
     <string name="media_current_title">Média actuel</string>
     <string name="media_default_active">Animation par défaut · Touchez pour choisir votre média</string>
     <string name="media_legacy_preset">Visuel intégré actif : %1$s</string>
-    <string name="media_change_action">Explorer</string>
+    <string name="media_change_action">Explorer mes fichiers</string>
     <string name="detail_original_name">Nom Bluetooth</string>
     <string name="detail_save_name">Enregistrer</string>
     <string name="detail_history_action">Historique</string>
     <string name="history_hide_action">Masquer l’historique</string>
     <string name="history_shown_count">%1$d affichées sur %2$d mesures</string>
     <string name="history_loading">Chargement de l’historique…</string>
-    <string name="settings_tools_title">Outils et données</string>
-    <string name="settings_history_subtitle">Dernières mesures de batterie reçues</string>
+    <string name="settings_history_subtitle">Dernières mesures de cet appareil</string>
     <string name="settings_share_file_subtitle">Choisir un fichier à envoyer</string>
     <string name="settings_lan_share_subtitle">Échanger sur le réseau local</string>
     <string name="settings_credits_subtitle">Sources et licences</string>
+    <string name="settings_device_data_title">Données et partage</string>
     <string name="animation_tab_visual">Visuel</string>
     <string name="animation_tab_motion">Animation</string>
     <string name="animation_browser_title">Animations BudPop</string>
@@ -193,7 +194,7 @@
     <string name="bud_kind_mouse">Souris</string>
     <string name="bud_kind_car">Adaptateur voiture</string>
     <string name="bud_kind_gamepad">Manette</string>
-    <string name="bud_kind_other">Autre appareil</string>
+    <string name="bud_kind_other">Générique</string>
     <string name="bud_kind_desc_earbuds">Les deux écouteurs arrivent en sens inverse et se croisent.</string>
     <string name="bud_kind_desc_headphones">Le casque tombe en tournant, puis rebondit.</string>
     <string name="bud_kind_desc_speaker">L’enceinte est lancée, rebondit, puis pulse.</string>

@@ -6,16 +6,33 @@ Historique de Android_PKbluetooth et de sa base VibePop.
 
 ## TODO — Roadmap
 
-Statut : `2026.11.7` — atelier visuel et réglages intégrés
+Statut : `2026.11.9` — nom du paquet Android corrigé
 
 - [x] Mettre le média actif au premier plan du drawer
 - [x] Restaurer le choix lecture unique / boucle pour les vidéos
 - [x] Séparer visuels et animations, avec aperçu BudPop intégré
 - [x] Afficher renommage, historique et crédits sans dialogues imbriqués
+- [x] Regrouper historique et partages dans le panneau de chaque appareil
+- [x] Placer les crédits et licences en bas des réglages
+- [x] Intégrer « Explorer mes fichiers » à la bibliothèque de visuels
+- [x] Utiliser « Autre appareil Bluetooth » comme réglage par défaut
+- [x] Remplacer l’ancienne icône VibePop par l’icône PK Bluetooth
 
 ---
 
 ## Releases
+
+### [2026.11.9] - 2026-11-23
+
+- Livraison locale de l’APK sous le nom `Android_PKbluetooth.apk`.
+
+### [2026.11.8] - 2026-11-23
+
+- Réglages réorganisés : les crédits et licences descendent en bas de page, les outils globaux disparaissent.
+- L’historique batterie, le partage de fichier et le partage Wi‑Fi se retrouvent dans le panneau de chaque appareil.
+- « Explorer mes fichiers » est intégré à la carte des visuels, avec une action pleine largeur.
+- L’entrée par défaut devient « Autre appareil Bluetooth » et la famille d’animation « Autre appareil » devient « Générique ».
+- Remplacement de l’ancienne icône VibePop par l’icône PK Bluetooth sur toutes les densités et l’icône adaptative.
 
 ### [2026.11.7] - 2026-11-23
 
