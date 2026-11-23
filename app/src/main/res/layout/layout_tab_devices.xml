@@ -115,9 +115,14 @@
                 android:padding="16dp">
 
                 <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:contentDescription="@string/theme_target_global_plain"
+                    android:id="@+id/ivGlobalThemeThumb"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_media_thumb"
+                    android:clipToOutline="true"
+                    android:contentDescription="@null"
+                    android:padding="8dp"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/ic_nav_palette"
                     app:tint="@color/primary" />
 

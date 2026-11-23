@@ -162,7 +162,7 @@
     <string name="theme_classic_title">经典 AirPods Pro</string>
     <string name="theme_classic_desc">拟真开盖、耳机出仓动效与右上角电量指示</string>
     <string name="theme_victory_title">伟大胜利</string>
-    <string name="theme_victory_desc">全景高光胜利动效（自带震撼原声音效）</string>
+    <string name="theme_victory_desc">深色背景的循环动画（无声）</string>
     <string name="theme_custom_title">本地多媒体导入</string>
     <string name="theme_custom_desc">点击下方按钮导入 MP4 视频或高清壁纸</string>
     <string name="theme_import_section_desc">支持 MP4 视频（可带原声音效）、GIF 动图、WebP、PNG、JPG</string>

@@ -43,7 +43,7 @@
     <string name="dash_missing_perm_summary">Permission manquante : %1$s. Touchez pour configurer</string>
     <string name="dash_bt_off_warning">⚠️ Le Bluetooth est désactivé — touchez pour l’activer</string>
     <string name="dash_theme_classic">AirPods Pro</string>
-    <string name="dash_theme_great_victory">Grande Victoire</string>
+    <string name="dash_theme_great_victory">Écouteurs open-ear</string>
     <string name="dash_theme_custom">Média personnalisé</string>
 
     <!-- Types de médias -->
@@ -161,8 +161,8 @@
     <string name="themes_section_title">Thème d’animation</string>
     <string name="theme_classic_title">AirPods Pro classique</string>
     <string name="theme_classic_desc">Ouverture du boîtier, sortie des écouteurs et pastille de batterie en haut à droite</string>
-    <string name="theme_victory_title">Grande Victoire</string>
-    <string name="theme_victory_desc">Vidéo de démo tirée d’un mème chinois, avec son</string>
+    <string name="theme_victory_title">Écouteurs open-ear</string>
+    <string name="theme_victory_desc">Animation en boucle sur fond sombre, sans son</string>
     <string name="theme_custom_title">Vos propres médias</string>
     <string name="theme_custom_desc">Utilisez le bouton ci-dessous pour importer une vidéo MP4 ou un fond d’écran HD</string>
     <string name="theme_import_section_desc">Prend en charge les vidéos MP4 (avec son), les GIF animés, WebP, PNG et JPG</string>

@@ -43,7 +43,7 @@
     <string name="dash_missing_perm_summary">Missing permission: %1$s. Tap to set it up</string>
     <string name="dash_bt_off_warning">⚠️ Bluetooth is off — tap to turn it on</string>
     <string name="dash_theme_classic">AirPods Pro</string>
-    <string name="dash_theme_great_victory">Great Victory</string>
+    <string name="dash_theme_great_victory">Open-ear earbuds</string>
     <string name="dash_theme_custom">Custom media</string>
 
     <!-- Media types -->
@@ -161,8 +161,8 @@
     <string name="themes_section_title">Animation theme</string>
     <string name="theme_classic_title">Classic AirPods Pro</string>
     <string name="theme_classic_desc">Lifelike lid opening, earbuds leaving the case and a battery badge in the corner</string>
-    <string name="theme_victory_title">Great Victory</string>
-    <string name="theme_victory_desc">Panoramic victory animation with its own punchy soundtrack</string>
+    <string name="theme_victory_title">Open-ear earbuds</string>
+    <string name="theme_victory_desc">Looping animation on a dark background, silent</string>
     <string name="theme_custom_title">Your own media</string>
     <string name="theme_custom_desc">Use the button below to import an MP4 video or a high-res wallpaper</string>
     <string name="theme_import_section_desc">Supports MP4 video (with sound), animated GIF, WebP, PNG and JPG</string>
