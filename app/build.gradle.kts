@@ -50,7 +50,7 @@ android {
         val changelogVersion = rootProject.file("CHANGELOG.md")
             .takeIf { it.exists() }
             ?.readText()
-            ?.let { Regex("""(?m)^### \[(\d{4}\.\d{2}\.\d+)]""").find(it)?.groupValues?.get(1) }
+            ?.let { Regex("""(?m)^#{2,3} \[(\d{4}\.\d{2}\.\d+)]""").find(it)?.groupValues?.get(1) }
         val releaseVersion = (project.findProperty("frVersion") as String?) ?: changelogVersion
         val releaseVersionCode = (project.findProperty("frVersionCode") as String?)?.toIntOrNull()
         val calVerCode = releaseVersion
