@@ -200,7 +200,10 @@
     <string name="update_available_title">有新版本可用</string>
     <string name="update_available_message">版本 %1$s 已发布（当前 %2$s）。现在下载吗？</string>
     <string name="update_download">下载</string>
-    <string name="update_download_started">已开始下载，完成后点击通知安装</string>
+    <string name="update_download_started">已开始下载…</string>
+    <string name="update_ready_to_install">APK 已保存到「下载」文件夹，点击通知即可安装</string>
+    <string name="btn_open_downloads">打开下载文件夹</string>
+    <string name="update_install_failed_open">无法打开下载文件夹</string>
     <string name="update_download_notification">正在下载 VibePop 更新</string>
     <string name="update_later">稍后</string>
     <string name="update_download_failed">下载失败，请检查网络</string>
