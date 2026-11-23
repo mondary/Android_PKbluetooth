@@ -14,7 +14,7 @@ import java.security.MessageDigest
  */
 object UpdateChecker {
 
-    const val MANIFEST_URL = "https://github.com/mondary/vibepop/releases/download/latest/update.json"
+    const val MANIFEST_URL = "https://github.com/mondary/vibepop/releases/latest/download/update.json"
 
     private const val TIMEOUT_MS = 20_000
     private const val USER_AGENT = "VibePop-FR-Updater"

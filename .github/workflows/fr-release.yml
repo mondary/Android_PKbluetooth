@@ -62,7 +62,7 @@ jobs:
           data = {
               "versionCode": 1000000 + run,
               "versionName": f"1.1.2-fr.{run}",
-              "apkUrl": "https://github.com/mondary/vibepop/releases/download/latest/VibePop-fr.apk",
+              "apkUrl": "https://github.com/mondary/vibepop/releases/latest/download/VibePop-fr.apk",
               "sha256": digest,
               "notes": lines[0][:200] if lines else "Build automatique",
           }
@@ -71,15 +71,17 @@ jobs:
           print(json.dumps(data, ensure_ascii=False, indent=2))
           PY
 
-      - name: Publish latest release
+      - name: Publish release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: latest
-          name: VibePop FR — latest build
+          tag_name: fr.${{ github.run_number }}
+          name: VibePop FR — 1.1.2-fr.${{ github.run_number }}
+          target_commitish: ${{ github.sha }}
           body: |
-            Build automatique de la branche `fr-live`.
+            Build automatique du commit ${{ github.sha }} (branche `fr-live`).
             L'application le détecte via `update.json`.
-          prerelease: true
+          prerelease: false
+          make_latest: true
           overwrite_files: true
           files: |
             VibePop-fr.apk
