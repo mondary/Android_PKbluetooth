@@ -13,4 +13,8 @@ ffmpeg -hide_banner -loglevel error -y -i "$FRAMES/minimal/0000.png" \
 ffmpeg -hide_banner -loglevel error -y -i /tmp/pkbt-style-minimal.png \
   -vf "split[s0][s1];[s0]palettegen=max_colors=64[p];[s1][p]paletteuse=dither=bayer:bayer_scale=3" \
   -loop 0 "$ROOT/store/gifs/style-minimal.gif"
-echo "Style GIFs written to $ROOT/store/gifs"
+for style in minimal lovely fanciest; do
+  ffmpeg -hide_banner -loglevel error -y -i "$ROOT/store/gifs/style-$style.gif" \
+    -frames:v 1 -q:v 3 "$ROOT/store/assets/style-$style.jpg"
+done
+echo "Style GIFs and reduced-motion posters written to $ROOT/store"

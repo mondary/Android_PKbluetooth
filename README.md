@@ -1,6 +1,6 @@
 # PK Bluetooth
 
-Source version **2026.11.20**
+Source version **2026.11.21**
 
 > Android app that shows a custom popup when a Bluetooth device connects, records its real battery levels and exchanges files between your devices.
 > Built on [VibePop](https://github.com/daloyanf/vibepop), with popup styles adapted from [BudPop](https://github.com/AweSanjam/BudPop) and battery/sharing features inspired by [btManage](https://github.com/fhnb16/btManage-android). See [third-party notices](THIRD_PARTY_NOTICES.md).

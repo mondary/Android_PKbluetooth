@@ -6,7 +6,7 @@ Historique de Android_PKbluetooth et de sa base VibePop.
 
 ## TODO — Roadmap
 
-Statut : `2026.11.20` — styles rendus depuis l’app
+Statut : `2026.11.21` — refonte de la page promo
 
 - [x] Mettre le média actif au premier plan du drawer
 - [x] Restaurer le choix lecture unique / boucle pour les vidéos
@@ -21,6 +21,13 @@ Statut : `2026.11.20` — styles rendus depuis l’app
 ---
 
 ## Releases
+
+## [2026.11.21] - 2026-11-24
+
+### Changed
+- Refonte de la page de présentation autour du fond animé de circuits et d’ions fourni : titre éditorial, panneau signal avec popup, chiffres clés, aperçus et styles réorganisés, bandeau d’installation.
+- Le fond animé est servi en MP4 H.264 (299 Ko) avec poster JPG ; le GIF optimisé reste la source de l’animation et n’est plus chargé par la page.
+- Les styles affichent une image fixe quand la réduction des animations est demandée.
 
 ## [2026.11.20] - 2026-11-23
 
